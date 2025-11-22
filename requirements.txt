@@ -1,1 +1,1 @@
-pip install pandas sodapy requests beautifulsoup4 openpyxl
+pip install pandas sodapy requests beautifulsoup4 openpyxl xlrd geopandas unidecode pyarrow
