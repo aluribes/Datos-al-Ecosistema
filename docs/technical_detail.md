@@ -4,12 +4,17 @@ Este documento detalla el estado actual del desarrollo técnico, la arquitectura
 
 | Sección | Descripción |
 | :--- | :--- |
-| [📍 Estado Actual](#estado-actual-en-qué-vamos) | Resumen de progreso por capas (Bronze/Silver/Gold). |
-| [🛠️ Arquitectura](#arquitectura-y-flujo-de-datos) | Explicación técnica de los scripts y procesos. |
-| [🚀 Roadmap](#siguientes-pasos-roadmap) | Pasos futuros inmediatos. |
-| [🔍 Detalle Técnico del Roadmap](#siguientes-pasos-en-detalle) | Explicación profunda de Joins, Agregaciones y Features. |
-| [❓ FAQ](#faq-conceptos-generales) | Definiciones de conceptos clave como Parquet. |
+| [📍 Estado Actual](#estado-actual) | Resumen de progreso por capas (Bronze/Silver/Gold). |
+| [🛠️ Arquitectura](#arquitectura) | Explicación técnica de los scripts y procesos. |
+| [🚀 Roadmap](#roadmap) | Pasos futuros inmediatos. |
+| [🔍 Detalle Técnico del Roadmap](#detalle-tecnico-del-roadmap) | Explicación profunda de Joins, Agregaciones y Features. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1. Construcción de la Capa Gold](#construccion-gold) | Detalles sobre Joins y Agregaciones. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[2. Feature Engineering](#feature-engineering) | Variables temporales y lags. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[3. Modelado Predictivo](#modelado-predictivo) | Mock model, regresión y clasificación. |
+| [❓ FAQ](#faq) | Definiciones de conceptos clave como Parquet. |
 
+
+<a id="estado-actual"></a>
 ## 📍 Estado Actual: ¿En qué vamos?
 
 **Resumen**: Hemos completado exitosamente la **Capa Bronze (Ingesta)** y la **Capa Silver (Limpieza y Estandarización)** para nuestras fuentes de datos principales (Policía Nacional y DANE).
@@ -23,8 +28,8 @@ Actualmente, el proyecto se encuentra listo para iniciar la construcción de la 
 | **Gold** | 🚧 Pendiente | Enriquecimiento, cruce de datos y tabla maestra para el modelo. |
 | **Modelo** | ⏳ Pendiente | Entrenamiento del modelo predictivo. |
 
----
 
+<a id="arquitectura"></a>
 ## 🛠️ Arquitectura y Flujo de Datos
 
 ### 1. Capa Bronze: Ingesta de Datos
@@ -56,11 +61,7 @@ Aquí es donde ocurre la "magia" de la calidad de datos. Transformamos archivos 
     *   **GeoJSON**: Se optimiza el archivo de polígonos de los municipios para que sea ligero y compatible.
 
 
-
----
-
-## 🚀 Siguientes Pasos (Roadmap)
-
+<a id="roadmap"></a>
 ## 🚀 Siguientes Pasos (Roadmap)
 
 Para llegar al objetivo final, estos son los pasos que siguen:
@@ -76,15 +77,17 @@ Para llegar al objetivo final, estos son los pasos que siguen:
     *   Crear un **Mock Model** para pruebas de despliegue.
     *   Entrenar modelos de **Regresión** (cantidad de delitos) y **Clasificación** (tipo de delito).
 
-### 🔍 Siguientes Pasos en Detalle
+<a id="detalle-tecnico-del-roadmap"></a>
+## 🔍 Siguientes Pasos en Detalle
 
 A continuación, explicamos en profundidad la estrategia técnica para las próximas etapas.
 
-#### 1. Construcción de la Capa Gold
+<a id="construccion-gold"></a>
+### 1. Construcción de la Capa Gold
 
 Esta etapa es crítica para habilitar tanto el Dashboard como el Modelo.
 
-**1.1. Unión de Tablas (Joins)**
+**a. Unión de Tablas (Joins)**
 Necesitamos conectar los delitos con la información geográfica oficial. La lógica de unión será la siguiente:
 
 1.  **Origen**: `policia_santander.parquet` (tiene `codigo_dane` del municipio).
@@ -94,26 +97,29 @@ Necesitamos conectar los delitos con la información geográfica oficial. La ló
 *   **Reto Técnico**: No perder la geometría durante el cruce.
 *   **Solución**: Usaremos **GeoPandas** (o alguna otra librería geográfica) para manejar el GeoDataFrame final.
 
-**1.2. Agregación de Datos**
+**b. Agregación de Datos**
 El objetivo aquí es preparar tablas optimizadas para el **Dashboard**. Los datos crudos son demasiado granulares.
 *   **Ejemplo**: Agrupar por `municipio`, `anio`, `mes` y `delito` para visualizar tendencias.
 
-#### 2. Ingeniería de Características (Feature Engineering)
+<a id="feature-engineering"></a>
+### 2. Ingeniería de Características (Feature Engineering)
 Preparación exclusiva para el modelo de IA.
 *   **Variables Temporales**: Día de la semana, festivos, quincena.
 *   **Lags (Rezagos)**: Cantidad de delitos del mes anterior (clave para series de tiempo).
 
-#### 3. Modelado Predictivo
-Nuestro objetivo inmediato es tener un **Mock Model** (modelo base) para probar el flujo de despliegue.
+<a id="modelado-predictivo"></a>
+### 3. Modelado Predictivo
+Nuestro objetivo inmediato es tener un **Mock Model** (modelo base) para probar el flujo de despliegue:
 
-**Objetivos del Modelo:**
-1.  **Predicción de Demanda (Regresión)**:
-    *   *Pregunta*: ¿Cuántos delitos ocurrirán en el municipio X la próxima semana?
-    *   *Variables*: Municipio, Fecha, Sexo.
-2.  **Clasificación de Riesgo**:
-    *   *Pregunta*: Dadas las características (lugar, hora), ¿qué tipo de delito es más probable?
-    *   *Variables*: Municipio, Fecha, Hora.
+**a. Predicción de Demanda (Regresión)**
+*   *Pregunta*: ¿Cuántos delitos ocurrirán en el municipio X la próxima semana?
+*   *Variables*: Municipio, Fecha, Sexo.
 
+**b. Clasificación de Riesgo**
+*   *Pregunta*: Dadas las características (lugar, hora), ¿qué tipo de delito es más probable?
+*   *Variables*: Municipio, Fecha, Hora.
+
+<a id="faq"></a>
 ## ❓ FAQ (Conceptos Generales)
 
 ### 💡 ¿Qué es Parquet y por qué lo usamos?

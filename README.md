@@ -7,8 +7,9 @@ Este repositorio contiene el desarrollo de la solución para el reto **"Datos al
 | [👥 Equipo](#equipo) | Miembros del equipo de desarrollo. |
 | [🎯 Objetivos generales](#objetivos-generales) | Visión general del plan de 6 etapas. |
 | [📂 Estructura General](#estructura-general) | Arquitectura de datos y modelo predictivo. |
-| [🚀 Qué estamos haciendo](#qué-estamos-haciendo) | Detalle de las etapas 1 y 2 (Ingeniería de Datos). |
+| [🚀 Qué estamos haciendo](#que-estamos-haciendo) | Detalle de las etapas 1 y 2 (Ingeniería de Datos). |
 
+<a id="equipo"></a>
 ## 👥 Equipo
 
 Somos un equipo de **4 integrantes** comprometidos con el uso de datos para el impacto social:
@@ -17,6 +18,7 @@ Somos un equipo de **4 integrantes** comprometidos con el uso de datos para el i
 - Mateo Arenas Montoya
 - Sergio Luis López Verbel
 
+<a id="objetivos-generales"></a>
 ## 🎯 Objetivos generales
 
 Para abordar el reto, hemos diseñado un plan de trabajo general compuesto por 6 etapas:
@@ -28,8 +30,9 @@ Para abordar el reto, hemos diseñado un plan de trabajo general compuesto por 6
 5.  Desarrollo del Chatbot.
 6.  Documentación, validación y entrega.
 
-**Este repositorio se centra específicamente en el desarrollo de los pasos 1 y 2**: la construcción de un **Data Lake** robusto (desde la ingesta hasta la capa Oro) y la preparación de la infraestructura necesaria para el posterior análisis y modelado.
+**Este repositorio se centra específicamente en el desarrollo de los pasos 1 y 2**: la construcción de un **Data Lake** robusto (desde la ingesta hasta la capa Oro) y la preparación de la infraestructura, pipelines y modelos de datos para análisis y modelado.
 
+<a id="estructura-general"></a>
 ## 📂 Estructura General
 
 El proyecto sigue una arquitectura de medallón (Medallion Architecture) para el manejo de datos:
@@ -40,6 +43,7 @@ El proyecto sigue una arquitectura de medallón (Medallion Architecture) para el
 
 Además, se implementa un modelo predictivo para predecir comportamientos delictivos.
 
+<a id="que-estamos-haciendo"></a>
 ## 🚀 ¿Qué estamos haciendo?
 
 Actualmente, el repositorio centraliza todo el flujo de ingeniería de datos, desde la obtención de la información hasta su preparación para el análisis avanzado.
