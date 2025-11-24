@@ -1,0 +1,34 @@
+# ========================
+#  ENTORNOS VIRTUALES
+# ========================
+venv/
+.venv/
+env/
+.env/
+
+# ========================
+#  ARCHIVOS DEL SISTEMA
+# ========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+.DS_Store
+Thumbs.db
+
+# ========================
+#  CONFIGURACIÓN PRIVADA
+# ========================
+*.env
+*.ini
+*.cfg
+*.toml
+
+# ========================
+#  VISUAL STUDIO CODE
+# ========================
+.vscode/
+*.code-workspace
+
