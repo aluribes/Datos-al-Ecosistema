@@ -1,1 +1,29 @@
-pip install pandas sodapy requests beautifulsoup4 openpyxl xlrd geopandas unidecode pyarrow
+# =============================================================================
+# Datos-al-Ecosistema - Dependencias
+# Python 3.12.12
+# =============================================================================
+# Instalar con: pip install -r requirements.txt
+# =============================================================================
+
+# --- Manipulación de datos ---
+pandas==2.3.3
+numpy==2.3.5
+
+# --- Datos geoespaciales ---
+geopandas==1.1.1
+shapely==2.1.2
+
+# --- Lectura/escritura de archivos ---
+openpyxl==3.1.5          # Excel .xlsx
+xlrd==2.0.2              # Excel .xls (legacy)
+pyarrow==22.0.0          # Parquet
+
+# --- HTTP y APIs ---
+requests==2.32.5
+sodapy==2.2.0            # Cliente Socrata (datos.gov.co)
+
+# --- Web scraping ---
+beautifulsoup4==4.14.2
+
+# --- Procesamiento de texto ---
+Unidecode==1.4.0
