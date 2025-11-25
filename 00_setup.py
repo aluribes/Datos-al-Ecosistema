@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-def create_structure():
+def create_structure() -> None:
     # Definimos las capas
     layers = ['bronze', 'silver', 'gold']
     

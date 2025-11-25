@@ -80,7 +80,7 @@ pob_filtrado = pob_filtrado[
 # ==========================================
 # 8. EXTRAER EDAD MÍNIMA DESDE EL TEXTO
 # ==========================================
-def extraer_edad_min(texto):
+def extraer_edad_min(texto: str) -> int | None:
     edades = re.findall(r"\d+", texto)
     return int(edades[0]) if edades else None
 
@@ -89,7 +89,7 @@ pob_filtrado["edad_min"] = pob_filtrado["edad"].apply(extraer_edad_min)
 # ==========================================
 # 9. CLASIFICAR GRUPOS DE EDAD
 # ==========================================
-def clasificar_edad(e):
+def clasificar_edad(e: int | None) -> str | None:
     if e is None:
         return None
     if e <= 11:

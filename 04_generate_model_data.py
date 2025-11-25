@@ -11,23 +11,23 @@ GOLD_INPUT = GOLD_ROOT / "gold_integrado.parquet"
 MODEL_OUTPUT = GOLD_ROOT / "model" / "df_modelo.parquet"
 
 
-def ensure_folder(path: Path):
+def ensure_folder(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path: Path):
+def save(df: pd.DataFrame, path: Path) -> None:
     ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 
 # Load GOLD Integrado
-def load_gold_integrado():
+def load_gold_integrado() -> pd.DataFrame:
     print(f"✔ Cargando GOLD integrado: {GOLD_INPUT}")
     return pd.read_parquet(GOLD_INPUT)
 
 
 # Seleccionar dataset para modelado
-def build_model_dataset(df):
+def build_model_dataset(df: pd.DataFrame) -> pd.DataFrame:
 
     print("➤ Construyendo dataset para el modelo predictivo…")
 
@@ -56,7 +56,7 @@ def build_model_dataset(df):
 
 
 # Ejecucion para generar dataset de modelado
-def make_model_dataset():
+def make_model_dataset() -> None:
 
     df = load_gold_integrado()
     df_modelo = build_model_dataset(df)

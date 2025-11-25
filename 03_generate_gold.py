@@ -17,17 +17,17 @@ DIVIPOLA_INPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
 GOLD_OUTPUT = GOLD_ROOT / "gold_integrado.parquet"
 
 
-def ensure_folder(path: Path):
+def ensure_folder(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path: Path):
+def save(df: pd.DataFrame | gpd.GeoDataFrame, path: Path) -> None:
     ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 
 # Cargar GOLD/base
-def load_gold_base():
+def load_gold_base() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     geo = gpd.read_parquet(GEO_INPUT)
     policia = pd.read_parquet(POLICIA_INPUT)
     poblacion = pd.read_parquet(POBLACION_INPUT)
@@ -36,7 +36,12 @@ def load_gold_base():
 
 
 # Integración GOLD
-def integrate_gold(geo, policia, poblacion, divipola):
+def integrate_gold(
+    geo: gpd.GeoDataFrame,
+    policia: pd.DataFrame,
+    poblacion: pd.DataFrame,
+    divipola: pd.DataFrame
+) -> gpd.GeoDataFrame:
 
     print("➤ Agregando centros poblados…")
     centros = (
@@ -129,7 +134,7 @@ def integrate_gold(geo, policia, poblacion, divipola):
 
 
 # Ejecutar gold integrado y guardarlo
-def make_gold():
+def make_gold() -> None:
     geo, policia, poblacion, divipola = load_gold_base()
     df_gold = integrate_gold(geo, policia, poblacion, divipola)
 

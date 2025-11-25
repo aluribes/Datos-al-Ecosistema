@@ -25,14 +25,14 @@ DIVIPOLA_OUTPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
 
 
 # Utilidades 
-def ensure_folder(path: Path):
+def ensure_folder(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
-def save(df, path: Path):
+def save(df: pd.DataFrame | gpd.GeoDataFrame, path: Path) -> None:
     ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
-def check_exists(path: Path, label=None):
+def check_exists(path: Path, label: str | None = None) -> None:
     if not path.exists():
         msg = f"ERROR: No se encontró el archivo requerido:\n{path}"
         if label:
@@ -44,7 +44,7 @@ def check_exists(path: Path, label=None):
 
 # Carga única de los datasets Silver
 
-def load_silver():
+def load_silver() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     print("\n=== Verificando archivos Silver ===")
 
     # Verificaciones previas
@@ -63,7 +63,7 @@ def load_silver():
 
 # Limpieza de cada dataset
 
-def clean_names(df, cols=["municipio", "departamento"]):
+def clean_names(df: pd.DataFrame, cols: list[str] = ["municipio", "departamento"]) -> pd.DataFrame:
     for c in cols:
         if c in df.columns:
             df[c] = (
@@ -75,7 +75,7 @@ def clean_names(df, cols=["municipio", "departamento"]):
             )
     return df
 
-def clean_geo(geo):
+def clean_geo(geo: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     # Eliminar nulos de geometría y reparar
     geo = geo[geo.geometry.notnull()].copy()
     geo["geometry"] = geo["geometry"].buffer(0)
@@ -94,7 +94,7 @@ def clean_geo(geo):
     return geo
 
 
-def clean_policia(df):
+def clean_policia(df: pd.DataFrame) -> pd.DataFrame:
 
     df["codigo_dane"] = df["codigo_dane"].astype(str).str.strip()
 
@@ -139,14 +139,14 @@ def clean_policia(df):
 
 
 
-def clean_poblacion(df):
+def clean_poblacion(df: pd.DataFrame) -> pd.DataFrame:
     df["codigo_municipio"] = pd.to_numeric(df["codigo_municipio"], errors="coerce").astype("Int64")
     df["anio"] = pd.to_numeric(df["anio"], errors="coerce").astype("Int64")
     df = clean_names(df)
     return df
 
 
-def clean_divipola(df):
+def clean_divipola(df: pd.DataFrame) -> pd.DataFrame:
     df["codigo_municipio"] = pd.to_numeric(df["codigo_municipio"], errors="coerce").astype("Int64")
     df = clean_names(df)
     return df
@@ -156,7 +156,7 @@ def clean_divipola(df):
 
 # Ejecutar transformación completa Silver → Gold/base
 
-def prepare_silver_to_gold():
+def prepare_silver_to_gold() -> None:
 
     print("Cargando datos Silver…")
     geo, policia, poblacion, divipola = load_silver()

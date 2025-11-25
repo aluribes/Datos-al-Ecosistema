@@ -13,7 +13,7 @@ DATA_DIR = Path("data/bronze")
 # ---------------------------------------------------------
 # 1. EXTRACCIÓN SOCRATA (DATOS.GOV.CO)
 # ---------------------------------------------------------
-def extract_socrata():
+def extract_socrata() -> None:
     print("--- Iniciando extracción Socrata ---")
     datasets = {
         "delitos_sexuales": "fpe5-yrmw",
@@ -43,7 +43,7 @@ def extract_socrata():
 # ---------------------------------------------------------
 # 2. EXTRACCIÓN DANE (EXCEL DIRECTO)
 # ---------------------------------------------------------
-def extract_dane():
+def extract_dane() -> None:
     print("\n--- Iniciando extracción DANE ---")
     url = "https://geoportal.dane.gov.co/descargas/metadatos/historicos/archivos/Listado_2010.xls"
     path = DATA_DIR / "dane_geo" / "divipola_2010.xls"
@@ -59,7 +59,7 @@ def extract_dane():
 # ---------------------------------------------------------
 # 3. SCRAPING POLICÍA NACIONAL (2025)
 # ---------------------------------------------------------
-def extract_policia_scraping():
+def extract_policia_scraping() -> None:
     print("\n--- Iniciando Scraping Policía Nacional ---")
     base_url = "https://www.policia.gov.co"
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}

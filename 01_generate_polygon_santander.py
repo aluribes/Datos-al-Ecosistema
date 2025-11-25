@@ -4,7 +4,7 @@ import requests
 import geopandas as gpd
 
 
-def gen_pol():
+def gen_pol() -> None:
     url = "https://raw.githubusercontent.com/caticoa3/colombia_mapa/master/co_2018_MGN_MPIO_POLITICO.geojson"
 
     # Descargar archivo

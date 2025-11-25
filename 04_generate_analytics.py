@@ -19,23 +19,23 @@ DELITOS_BASE = [
 ]
 
 
-def ensure_folder(path: Path):
+def ensure_folder(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path: Path):
+def save(df: gpd.GeoDataFrame, path: Path) -> None:
     ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 
 # Load GOLD Integrado
-def load_gold_integrado():
+def load_gold_integrado() -> gpd.GeoDataFrame:
     print(f"✔ Cargando GOLD integrado: {GOLD_INPUT}")
     return gpd.read_parquet(GOLD_INPUT)
 
 
 # Generar indicadores analíticos
-def build_analytics(df):
+def build_analytics(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 
     print("➤ Calculando tasas de delito por 100.000 habitantes…")
 
@@ -59,7 +59,7 @@ def build_analytics(df):
 
 
 # Ejecucion para generar analiticos
-def make_analytics():
+def make_analytics() -> None:
 
     df = load_gold_integrado()
     df_analytics = build_analytics(df)
