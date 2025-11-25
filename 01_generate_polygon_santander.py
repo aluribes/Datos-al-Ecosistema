@@ -1,6 +1,8 @@
-import os
+from pathlib import Path
+
 import requests
 import geopandas as gpd
+
 
 def gen_pol():
     url = "https://raw.githubusercontent.com/caticoa3/colombia_mapa/master/co_2018_MGN_MPIO_POLITICO.geojson"
@@ -20,10 +22,10 @@ def gen_pol():
 
     print(f"Total municipios encontrados: {gdf_santander.shape[0]}")
 
-    output_dir = "data/bronze/dane_geo"
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = Path("data/bronze/dane_geo")
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    geojson_path = os.path.join(output_dir, "santander_municipios.geojson")
+    geojson_path = output_dir / "santander_municipios.geojson"
 
     print(f"Guardando GeoJSON en: {geojson_path}")
     gdf_santander.to_file(geojson_path, driver="GeoJSON")

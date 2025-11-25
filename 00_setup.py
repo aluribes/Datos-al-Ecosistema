@@ -1,4 +1,5 @@
-import os
+from pathlib import Path
+
 
 def create_structure():
     # Definimos las capas
@@ -9,12 +10,12 @@ def create_structure():
 
     for layer in layers:
         for sub in subfolders:
-            path = os.path.join('data', layer, sub)
-            os.makedirs(path, exist_ok=True)
+            path = Path('data') / layer / sub
+            path.mkdir(parents=True, exist_ok=True)
             print(f"Creado: {path}")
             
     # Crear carpeta para logs o scripts
-    os.makedirs('src', exist_ok=True)
+    Path('src').mkdir(exist_ok=True)
 
 if __name__ == "__main__":
     create_structure()

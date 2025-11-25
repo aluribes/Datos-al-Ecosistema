@@ -1,28 +1,28 @@
+from pathlib import Path
+
 import pandas as pd
 import geopandas as gpd
-from pathlib import Path
-import os
 
 # === CONFIGURACIÓN DE RUTAS ===
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+BASE_DIR = Path(__file__).resolve().parent
+GOLD_ROOT = BASE_DIR / "data" / "gold"
 
 # Rutas de entrada (capa Gold base)
-GEO_INPUT = os.path.join(GOLD_ROOT, "base", "geo_gold.parquet")
-POLICIA_INPUT = os.path.join(GOLD_ROOT, "base", "policia_gold.parquet")
-POBLACION_INPUT = os.path.join(GOLD_ROOT, "base", "poblacion_gold.parquet")
-DIVIPOLA_INPUT = os.path.join(GOLD_ROOT, "base", "divipola_gold.parquet")
+GEO_INPUT = GOLD_ROOT / "base" / "geo_gold.parquet"
+POLICIA_INPUT = GOLD_ROOT / "base" / "policia_gold.parquet"
+POBLACION_INPUT = GOLD_ROOT / "base" / "poblacion_gold.parquet"
+DIVIPOLA_INPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
 
 # Ruta de salida
-GOLD_OUTPUT = os.path.join(GOLD_ROOT, "gold_integrado.parquet")
+GOLD_OUTPUT = GOLD_ROOT / "gold_integrado.parquet"
 
 
-def ensure_folder(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
+def ensure_folder(path: Path):
+    path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path):
-    ensure_folder(Path(path).parent)
+def save(df, path: Path):
+    ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 

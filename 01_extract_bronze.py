@@ -1,13 +1,14 @@
+from pathlib import Path
+
 import pandas as pd
 from sodapy import Socrata
 import requests
-import os
 import urllib.parse
 
 # CONFIGURACIÓN
 SOCRATA_TOKEN = None
 CLIENT = Socrata("www.datos.gov.co", SOCRATA_TOKEN)
-DATA_DIR = "data/bronze"
+DATA_DIR = Path("data/bronze")
 
 # ---------------------------------------------------------
 # 1. EXTRACCIÓN SOCRATA (DATOS.GOV.CO)
@@ -31,7 +32,7 @@ def extract_socrata():
             df = pd.DataFrame.from_records(results)
             if not df.empty:
                 # Guardamos en JSON para preservar estructura raw
-                path = f"{DATA_DIR}/socrata_api/{name}.json"
+                path = DATA_DIR / "socrata_api" / f"{name}.json"
                 df.to_json(path, orient='records')
                 print(f"Guardado en {path}")
             else:
@@ -45,7 +46,7 @@ def extract_socrata():
 def extract_dane():
     print("\n--- Iniciando extracción DANE ---")
     url = "https://geoportal.dane.gov.co/descargas/metadatos/historicos/archivos/Listado_2010.xls"
-    path = f"{DATA_DIR}/dane_geo/divipola_2010.xls"
+    path = DATA_DIR / "dane_geo" / "divipola_2010.xls"
     
     try:
         response = requests.get(url, verify=False) # verify=False a veces necesario en gobierno
@@ -93,9 +94,9 @@ def extract_policia_scraping():
             params = urllib.parse.parse_qs(parsed.query)
             if 'src' in params:
                 real_url = params['src'][0] # URL real del Excel
-                file_name = "2025_" + os.path.basename(real_url)
+                file_name = "2025_" + Path(real_url).name
                 
-                save_path = f"{DATA_DIR}/policia_scraping/{file_name}"
+                save_path = DATA_DIR / "policia_scraping" / file_name
                 
                 r = requests.get(real_url, headers=headers)
                 with open(save_path, 'wb') as f:

@@ -1,22 +1,22 @@
-import pandas as pd
 from pathlib import Path
-import os
+
+import pandas as pd
 
 # === CONFIGURACIÓN ===
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+BASE_DIR = Path(__file__).resolve().parent
+GOLD_ROOT = BASE_DIR / "data" / "gold"
 
 # Rutas de entrada/salida
-GOLD_INPUT = os.path.join(GOLD_ROOT, "gold_integrado.parquet")
-MODEL_OUTPUT = os.path.join(GOLD_ROOT, "model", "df_modelo.parquet")
+GOLD_INPUT = GOLD_ROOT / "gold_integrado.parquet"
+MODEL_OUTPUT = GOLD_ROOT / "model" / "df_modelo.parquet"
 
 
-def ensure_folder(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
+def ensure_folder(path: Path):
+    path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path):
-    ensure_folder(Path(path).parent)
+def save(df, path: Path):
+    ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 

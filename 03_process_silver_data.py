@@ -1,38 +1,39 @@
+from pathlib import Path
+import sys
+
 import pandas as pd
 import geopandas as gpd
 import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
-from pathlib import Path
-import os
-import sys
 
 # === CONFIGURACIÓN DE RUTAS ===
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SILVER_ROOT = os.path.join(BASE_DIR, "data", "silver")
-GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+BASE_DIR = Path(__file__).resolve().parent
+SILVER_ROOT = BASE_DIR / "data" / "silver"
+GOLD_ROOT = BASE_DIR / "data" / "gold"
 
 # Rutas de entrada (capa Silver)
-GEO_INPUT = os.path.join(SILVER_ROOT, "dane_geo", "geografia_silver.parquet")
-POLICIA_INPUT = os.path.join(SILVER_ROOT, "policia_scraping", "policia_santander.parquet")
-POBLACION_INPUT = os.path.join(SILVER_ROOT, "poblacion", "poblacion_santander.parquet")
-DIVIPOLA_INPUT = os.path.join(SILVER_ROOT, "dane_geo", "divipola_silver.parquet")
+GEO_INPUT = SILVER_ROOT / "dane_geo" / "geografia_silver.parquet"
+POLICIA_INPUT = SILVER_ROOT / "policia_scraping" / "policia_santander.parquet"
+POBLACION_INPUT = SILVER_ROOT / "poblacion" / "poblacion_santander.parquet"
+DIVIPOLA_INPUT = SILVER_ROOT / "dane_geo" / "divipola_silver.parquet"
 
 # Rutas de salida (capa Gold base)
-GEO_OUTPUT = os.path.join(GOLD_ROOT, "base", "geo_gold.parquet")
-POLICIA_OUTPUT = os.path.join(GOLD_ROOT, "base", "policia_gold.parquet")
-POBLACION_OUTPUT = os.path.join(GOLD_ROOT, "base", "poblacion_gold.parquet")
-DIVIPOLA_OUTPUT = os.path.join(GOLD_ROOT, "base", "divipola_gold.parquet")
+GEO_OUTPUT = GOLD_ROOT / "base" / "geo_gold.parquet"
+POLICIA_OUTPUT = GOLD_ROOT / "base" / "policia_gold.parquet"
+POBLACION_OUTPUT = GOLD_ROOT / "base" / "poblacion_gold.parquet"
+DIVIPOLA_OUTPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
+
 
 # Utilidades 
-def ensure_folder(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
+def ensure_folder(path: Path):
+    path.mkdir(parents=True, exist_ok=True)
 
-def save(df, path):
-    ensure_folder(Path(path).parent)
+def save(df, path: Path):
+    ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
-def check_exists(path, label=None):
-    if not os.path.exists(path):
+def check_exists(path: Path, label=None):
+    if not path.exists():
         msg = f"ERROR: No se encontró el archivo requerido:\n{path}"
         if label:
             msg += f"\n(dataset: {label})"

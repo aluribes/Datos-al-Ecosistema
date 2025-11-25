@@ -1,22 +1,23 @@
+from pathlib import Path
+
 import pandas as pd
-import os
 import re
 
 # ==========================================
 # 1. CONFIGURACIÓN DE RUTAS
 # ==========================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = Path(__file__).resolve().parent
 
 # Entrada
-INPUT_FILE = os.path.join(BASE_DIR, "data/bronze/poblacion_2018/TerriData_Dim2.txt")
+INPUT_FILE = BASE_DIR / "data" / "bronze" / "poblacion_2018" / "TerriData_Dim2.txt"
 INPUT_SEPARATOR = "|"
 DEPARTAMENTO_FILTRO = "Santander"
 
 # Salida
-OUTPUT_DIR = os.path.join(BASE_DIR, "data/silver/poblacion")
-OUTPUT_FILE = os.path.join(OUTPUT_DIR, "poblacion_santander.parquet")
+OUTPUT_DIR = BASE_DIR / "data" / "silver" / "poblacion"
+OUTPUT_FILE = OUTPUT_DIR / "poblacion_santander.parquet"
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ==========================================
 # 2. CARGAR ARCHIVO
