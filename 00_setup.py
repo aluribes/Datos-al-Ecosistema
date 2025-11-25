@@ -13,9 +13,7 @@ def create_structure():
             path = Path('data') / layer / sub
             path.mkdir(parents=True, exist_ok=True)
             print(f"Creado: {path}")
-            
-    # Crear carpeta para logs o scripts
-    Path('src').mkdir(exist_ok=True)
+
 
 if __name__ == "__main__":
     create_structure()
