@@ -8,8 +8,11 @@ from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
 
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 BASE_URL = "https://www.policia.gov.co/estadistica-delictiva"
-OUTPUT_DIR = Path("data/bronze/policia_scraping")
+OUTPUT_DIR = BASE_DIR / "data" / "bronze" / "policia_scraping"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Adjust if the site changes the number of pages

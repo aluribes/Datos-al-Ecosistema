@@ -1,32 +1,48 @@
+from pathlib import Path
+
 import pandas as pd
 import geopandas as gpd
-from pathlib import Path
-import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-gold_root = os.path.join(BASE_DIR, "data", "gold")
+# === CONFIGURACIÓN DE RUTAS ===
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+GOLD_ROOT = BASE_DIR / "data" / "gold"
+
+# Rutas de entrada (capa Gold base)
+GEO_INPUT = GOLD_ROOT / "base" / "geo_gold.parquet"
+POLICIA_INPUT = GOLD_ROOT / "base" / "policia_gold.parquet"
+POBLACION_INPUT = GOLD_ROOT / "base" / "poblacion_gold.parquet"
+DIVIPOLA_INPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
+
+# Ruta de salida
+GOLD_OUTPUT = GOLD_ROOT / "gold_integrado.parquet"
 
 
-def ensure_folder(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
+def ensure_folder(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path):
-    ensure_folder(Path(path).parent)
+def save(df: pd.DataFrame | gpd.GeoDataFrame, path: Path) -> None:
+    ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 
 # Cargar GOLD/base
-def load_gold_base():
-    geo = gpd.read_parquet(os.path.join(gold_root, "base", "geo_gold.parquet"))
-    policia = pd.read_parquet(os.path.join(gold_root, "base", "policia_gold.parquet"))
-    poblacion = pd.read_parquet(os.path.join(gold_root, "base", "poblacion_gold.parquet"))
-    divipola = pd.read_parquet(os.path.join(gold_root, "base", "divipola_gold.parquet"))
+def load_gold_base() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    geo = gpd.read_parquet(GEO_INPUT)
+    policia = pd.read_parquet(POLICIA_INPUT)
+    poblacion = pd.read_parquet(POBLACION_INPUT)
+    divipola = pd.read_parquet(DIVIPOLA_INPUT)
     return geo, policia, poblacion, divipola
 
 
 # Integración GOLD
-def integrate_gold(geo, policia, poblacion, divipola):
+def integrate_gold(
+    geo: gpd.GeoDataFrame,
+    policia: pd.DataFrame,
+    poblacion: pd.DataFrame,
+    divipola: pd.DataFrame
+) -> gpd.GeoDataFrame:
 
     print("➤ Agregando centros poblados…")
     centros = (
@@ -119,11 +135,11 @@ def integrate_gold(geo, policia, poblacion, divipola):
 
 
 # Ejecutar gold integrado y guardarlo
-def make_gold():
+def make_gold() -> None:
     geo, policia, poblacion, divipola = load_gold_base()
     df_gold = integrate_gold(geo, policia, poblacion, divipola)
 
-    save(df_gold, os.path.join(gold_root, "gold_integrado.parquet"))
+    save(df_gold, GOLD_OUTPUT)
     print("✔ gold_integrado.parquet generado con éxito.")
 
 

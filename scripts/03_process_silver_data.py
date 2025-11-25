@@ -1,26 +1,40 @@
+from pathlib import Path
+import sys
+
 import pandas as pd
 import geopandas as gpd
 import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
-from pathlib import Path
-import os
-import sys
 
-# Ruta base 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-silver_root = os.path.join(BASE_DIR, "data", "silver")
-gold_root   = os.path.join(BASE_DIR, "data", "gold")
+# === CONFIGURACIÓN DE RUTAS ===
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+SILVER_ROOT = BASE_DIR / "data" / "silver"
+GOLD_ROOT = BASE_DIR / "data" / "gold"
+
+# Rutas de entrada (capa Silver)
+GEO_INPUT = SILVER_ROOT / "dane_geo" / "geografia_silver.parquet"
+POLICIA_INPUT = SILVER_ROOT / "policia_scraping" / "policia_santander.parquet"
+POBLACION_INPUT = SILVER_ROOT / "poblacion" / "poblacion_santander.parquet"
+DIVIPOLA_INPUT = SILVER_ROOT / "dane_geo" / "divipola_silver.parquet"
+
+# Rutas de salida (capa Gold base)
+GEO_OUTPUT = GOLD_ROOT / "base" / "geo_gold.parquet"
+POLICIA_OUTPUT = GOLD_ROOT / "base" / "policia_gold.parquet"
+POBLACION_OUTPUT = GOLD_ROOT / "base" / "poblacion_gold.parquet"
+DIVIPOLA_OUTPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
+
 
 # Utilidades 
-def ensure_folder(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
+def ensure_folder(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
 
-def save(df, path):
-    ensure_folder(Path(path).parent)
+def save(df: pd.DataFrame | gpd.GeoDataFrame, path: Path) -> None:
+    ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
-def check_exists(path, label=None):
-    if not os.path.exists(path):
+def check_exists(path: Path, label: str | None = None) -> None:
+    if not path.exists():
         msg = f"ERROR: No se encontró el archivo requerido:\n{path}"
         if label:
             msg += f"\n(dataset: {label})"
@@ -31,31 +45,26 @@ def check_exists(path, label=None):
 
 # Carga única de los datasets Silver
 
-def load_silver():
+def load_silver() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     print("\n=== Verificando archivos Silver ===")
 
-    geo_path = os.path.join(silver_root, "dane_geo", "geografia_silver.parquet")
-    policia_path = os.path.join(silver_root, "policia_scraping", "policia_santander.parquet")
-    poblacion_path = os.path.join(silver_root, "poblacion", "poblacion_santander.parquet")
-    divipola_path = os.path.join(silver_root, "dane_geo", "divipola_silver.parquet")
-
     # Verificaciones previas
-    check_exists(geo_path, "geografia (geo)")
-    check_exists(policia_path, "policia scraping")
-    check_exists(poblacion_path, "poblacion santander")
-    check_exists(divipola_path, "divipola")
+    check_exists(GEO_INPUT, "geografia (geo)")
+    check_exists(POLICIA_INPUT, "policia scraping")
+    check_exists(POBLACION_INPUT, "poblacion santander")
+    check_exists(DIVIPOLA_INPUT, "divipola")
 
     print("\n=== Cargando datasets Silver ===")
-    geo = gpd.read_parquet(geo_path)
-    policia = pd.read_parquet(policia_path)
-    poblacion = pd.read_parquet(poblacion_path)
-    divipola = pd.read_parquet(divipola_path)
+    geo = gpd.read_parquet(GEO_INPUT)
+    policia = pd.read_parquet(POLICIA_INPUT)
+    poblacion = pd.read_parquet(POBLACION_INPUT)
+    divipola = pd.read_parquet(DIVIPOLA_INPUT)
 
     return geo, policia, poblacion, divipola
 
 # Limpieza de cada dataset
 
-def clean_names(df, cols=["municipio", "departamento"]):
+def clean_names(df: pd.DataFrame, cols: list[str] = ["municipio", "departamento"]) -> pd.DataFrame:
     for c in cols:
         if c in df.columns:
             df[c] = (
@@ -67,7 +76,7 @@ def clean_names(df, cols=["municipio", "departamento"]):
             )
     return df
 
-def clean_geo(geo):
+def clean_geo(geo: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     # Eliminar nulos de geometría y reparar
     geo = geo[geo.geometry.notnull()].copy()
     geo["geometry"] = geo["geometry"].buffer(0)
@@ -86,7 +95,7 @@ def clean_geo(geo):
     return geo
 
 
-def clean_policia(df):
+def clean_policia(df: pd.DataFrame) -> pd.DataFrame:
 
     df["codigo_dane"] = df["codigo_dane"].astype(str).str.strip()
 
@@ -131,14 +140,14 @@ def clean_policia(df):
 
 
 
-def clean_poblacion(df):
+def clean_poblacion(df: pd.DataFrame) -> pd.DataFrame:
     df["codigo_municipio"] = pd.to_numeric(df["codigo_municipio"], errors="coerce").astype("Int64")
     df["anio"] = pd.to_numeric(df["anio"], errors="coerce").astype("Int64")
     df = clean_names(df)
     return df
 
 
-def clean_divipola(df):
+def clean_divipola(df: pd.DataFrame) -> pd.DataFrame:
     df["codigo_municipio"] = pd.to_numeric(df["codigo_municipio"], errors="coerce").astype("Int64")
     df = clean_names(df)
     return df
@@ -148,7 +157,7 @@ def clean_divipola(df):
 
 # Ejecutar transformación completa Silver → Gold/base
 
-def prepare_silver_to_gold():
+def prepare_silver_to_gold() -> None:
 
     print("Cargando datos Silver…")
     geo, policia, poblacion, divipola = load_silver()
@@ -166,10 +175,10 @@ def prepare_silver_to_gold():
     divipola = clean_divipola(divipola)
 
     print("Guardando en data/gold/base…")
-    save(geo, os.path.join(gold_root, "base", "geo_gold.parquet"))
-    save(policia, os.path.join(gold_root, "base", "policia_gold.parquet"))
-    save(poblacion, os.path.join(gold_root, "base", "poblacion_gold.parquet"))
-    save(divipola, os.path.join(gold_root, "base", "divipola_gold.parquet"))
+    save(geo, GEO_OUTPUT)
+    save(policia, POLICIA_OUTPUT)
+    save(poblacion, POBLACION_OUTPUT)
+    save(divipola, DIVIPOLA_OUTPUT)
 
     print("✔ Limpieza y exportación completadas.")
 

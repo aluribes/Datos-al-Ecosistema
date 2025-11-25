@@ -1,6 +1,10 @@
-import os
+from pathlib import Path
 
-def create_structure():
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def create_structure() -> None:
     # Definimos las capas
     layers = ['bronze', 'silver', 'gold']
     
@@ -9,12 +13,10 @@ def create_structure():
 
     for layer in layers:
         for sub in subfolders:
-            path = os.path.join('data', layer, sub)
-            os.makedirs(path, exist_ok=True)
+            path = BASE_DIR / 'data' / layer / sub
+            path.mkdir(parents=True, exist_ok=True)
             print(f"Creado: {path}")
-            
-    # Crear carpeta para logs o scripts
-    os.makedirs('src', exist_ok=True)
+
 
 if __name__ == "__main__":
     create_structure()

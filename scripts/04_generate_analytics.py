@@ -1,40 +1,46 @@
+from pathlib import Path
+
 import pandas as pd
 import geopandas as gpd
-from pathlib import Path
-import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-gold_root = os.path.join(BASE_DIR, "data", "gold")
+# === CONFIGURACIÓN ===
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+GOLD_ROOT = BASE_DIR / "data" / "gold"
+
+# Rutas de entrada/salida
+GOLD_INPUT = GOLD_ROOT / "gold_integrado.parquet"
+ANALYTICS_OUTPUT = GOLD_ROOT / "analytics" / "gold_analytics.parquet"
+
+# Tipos de delitos para cálculo de tasas
+DELITOS_BASE = [
+    "ABIGEATO", "HURTOS", "LESIONES",
+    "VIOLENCIA INTRAFAMILIAR", "AMENAZAS",
+    "DELITOS SEXUALES", "EXTORSION", "HOMICIDIOS"
+]
 
 
-def ensure_folder(path):
-    Path(path).mkdir(parents=True, exist_ok=True)
+def ensure_folder(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
 
 
-def save(df, path):
-    ensure_folder(Path(path).parent)
+def save(df: gpd.GeoDataFrame, path: Path) -> None:
+    ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 
 
 # Load GOLD Integrado
-def load_gold_integrado():
-    path = os.path.join(gold_root, "gold_integrado.parquet")
-    print(f"✔ Cargando GOLD integrado: {path}")
-    return gpd.read_parquet(path)
+def load_gold_integrado() -> gpd.GeoDataFrame:
+    print(f"✔ Cargando GOLD integrado: {GOLD_INPUT}")
+    return gpd.read_parquet(GOLD_INPUT)
 
 
 # Generar indicadores analíticos
-def build_analytics(df):
+def build_analytics(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 
     print("➤ Calculando tasas de delito por 100.000 habitantes…")
 
-    delitos_base = [
-        "ABIGEATO", "HURTOS", "LESIONES",
-        "VIOLENCIA INTRAFAMILIAR", "AMENAZAS",
-        "DELITOS SEXUALES", "EXTORSION", "HOMICIDIOS"
-    ]
-
-    for col in delitos_base:
+    for col in DELITOS_BASE:
         if col in df.columns:
             df[f"tasa_{col.lower().replace(' ', '_')}"] = (
                 df[col] / df["poblacion_total"] * 100000
@@ -54,12 +60,12 @@ def build_analytics(df):
 
 
 # Ejecucion para generar analiticos
-def make_analytics():
+def make_analytics() -> None:
 
     df = load_gold_integrado()
     df_analytics = build_analytics(df)
 
-    save(df_analytics, os.path.join(gold_root, "analytics", "gold_analytics.parquet"))
+    save(df_analytics, ANALYTICS_OUTPUT)
     print("✔ gold_analytics.parquet generado.")
 
 

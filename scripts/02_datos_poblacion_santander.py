@@ -1,36 +1,38 @@
+from pathlib import Path
+
 import pandas as pd
-import os
 import re
 
 # ==========================================
 # 1. CONFIGURACIÓN DE RUTAS
 # ==========================================
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Entrada
+INPUT_FILE = BASE_DIR / "data" / "bronze" / "poblacion_2018" / "TerriData_Dim2.txt"
+INPUT_SEPARATOR = "|"
+DEPARTAMENTO_FILTRO = "Santander"
 
-ruta_txt = os.path.join(BASE_DIR, "data/bronze/poblacion_2018/TerriData_Dim2.txt")
-separador = "|"
+# Salida
+OUTPUT_DIR = BASE_DIR / "data" / "silver" / "poblacion"
+OUTPUT_FILE = OUTPUT_DIR / "poblacion_santander.parquet"
 
-departamento_filtrar = "Santander"
-
-carpeta_salida = os.path.join(BASE_DIR, "data/silver/poblacion")
-nombre_salida = "poblacion_santander.parquet"
-
-os.makedirs(carpeta_salida, exist_ok=True)
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ==========================================
 # 2. CARGAR ARCHIVO
 # ==========================================
 
 print("Cargando archivo TXT...")
-poblacion = pd.read_csv(ruta_txt, sep=separador, dtype=str)
+poblacion = pd.read_csv(INPUT_FILE, sep=INPUT_SEPARATOR, dtype=str)
 
 # ==========================================
 # 3. FILTRAR SANTANDER
 # ==========================================
-print(f"Filtrando datos del departamento '{departamento_filtrar}'...")
+print(f"Filtrando datos del departamento '{DEPARTAMENTO_FILTRO}'...")
 
-pob_filtrado = poblacion[poblacion["Departamento"] == departamento_filtrar].copy()
+pob_filtrado = poblacion[poblacion["Departamento"] == DEPARTAMENTO_FILTRO].copy()
 
 # ==========================================
 # 4. RENOMBRAR COLUMNAS
@@ -79,7 +81,7 @@ pob_filtrado = pob_filtrado[
 # ==========================================
 # 8. EXTRAER EDAD MÍNIMA DESDE EL TEXTO
 # ==========================================
-def extraer_edad_min(texto):
+def extraer_edad_min(texto: str) -> int | None:
     edades = re.findall(r"\d+", texto)
     return int(edades[0]) if edades else None
 
@@ -88,7 +90,7 @@ pob_filtrado["edad_min"] = pob_filtrado["edad"].apply(extraer_edad_min)
 # ==========================================
 # 9. CLASIFICAR GRUPOS DE EDAD
 # ==========================================
-def clasificar_edad(e):
+def clasificar_edad(e: int | None) -> str | None:
     if e is None:
         return None
     if e <= 11:
@@ -113,8 +115,7 @@ pob_agg = (
 # ==========================================
 # 11. EXPORTAR A PARQUET
 # ==========================================
-ruta_salida = os.path.join(carpeta_salida, nombre_salida)
-pob_agg.to_parquet(ruta_salida, index=False)
+pob_agg.to_parquet(OUTPUT_FILE, index=False)
 
 print("\nArchivo parquet generado correctamente en:")
-print(ruta_salida)
+print(OUTPUT_FILE)
