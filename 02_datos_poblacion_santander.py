@@ -5,32 +5,32 @@ import re
 # ==========================================
 # 1. CONFIGURACIÓN DE RUTAS
 # ==========================================
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-ruta_txt = os.path.join(BASE_DIR, "data/bronze/poblacion_2018/TerriData_Dim2.txt")
-separador = "|"
+# Entrada
+INPUT_FILE = os.path.join(BASE_DIR, "data/bronze/poblacion_2018/TerriData_Dim2.txt")
+INPUT_SEPARATOR = "|"
+DEPARTAMENTO_FILTRO = "Santander"
 
-departamento_filtrar = "Santander"
+# Salida
+OUTPUT_DIR = os.path.join(BASE_DIR, "data/silver/poblacion")
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "poblacion_santander.parquet")
 
-carpeta_salida = os.path.join(BASE_DIR, "data/silver/poblacion")
-nombre_salida = "poblacion_santander.parquet"
-
-os.makedirs(carpeta_salida, exist_ok=True)
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ==========================================
 # 2. CARGAR ARCHIVO
 # ==========================================
 
 print("Cargando archivo TXT...")
-poblacion = pd.read_csv(ruta_txt, sep=separador, dtype=str)
+poblacion = pd.read_csv(INPUT_FILE, sep=INPUT_SEPARATOR, dtype=str)
 
 # ==========================================
 # 3. FILTRAR SANTANDER
 # ==========================================
-print(f"Filtrando datos del departamento '{departamento_filtrar}'...")
+print(f"Filtrando datos del departamento '{DEPARTAMENTO_FILTRO}'...")
 
-pob_filtrado = poblacion[poblacion["Departamento"] == departamento_filtrar].copy()
+pob_filtrado = poblacion[poblacion["Departamento"] == DEPARTAMENTO_FILTRO].copy()
 
 # ==========================================
 # 4. RENOMBRAR COLUMNAS
@@ -113,8 +113,7 @@ pob_agg = (
 # ==========================================
 # 11. EXPORTAR A PARQUET
 # ==========================================
-ruta_salida = os.path.join(carpeta_salida, nombre_salida)
-pob_agg.to_parquet(ruta_salida, index=False)
+pob_agg.to_parquet(OUTPUT_FILE, index=False)
 
 print("\nArchivo parquet generado correctamente en:")
-print(ruta_salida)
+print(OUTPUT_FILE)

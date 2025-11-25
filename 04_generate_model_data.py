@@ -2,8 +2,13 @@ import pandas as pd
 from pathlib import Path
 import os
 
+# === CONFIGURACIÓN ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-gold_root = os.path.join(BASE_DIR, "data", "gold")
+GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+
+# Rutas de entrada/salida
+GOLD_INPUT = os.path.join(GOLD_ROOT, "gold_integrado.parquet")
+MODEL_OUTPUT = os.path.join(GOLD_ROOT, "model", "df_modelo.parquet")
 
 
 def ensure_folder(path):
@@ -17,9 +22,8 @@ def save(df, path):
 
 # Load GOLD Integrado
 def load_gold_integrado():
-    path = os.path.join(gold_root, "gold_integrado.parquet")
-    print(f"✔ Cargando GOLD integrado: {path}")
-    return pd.read_parquet(path)
+    print(f"✔ Cargando GOLD integrado: {GOLD_INPUT}")
+    return pd.read_parquet(GOLD_INPUT)
 
 
 # Seleccionar dataset para modelado
@@ -57,7 +61,7 @@ def make_model_dataset():
     df = load_gold_integrado()
     df_modelo = build_model_dataset(df)
 
-    save(df_modelo, os.path.join(gold_root, "model", "df_modelo.parquet"))
+    save(df_modelo, MODEL_OUTPUT)
     print("✔ df_modelo.parquet generado.")
 
 

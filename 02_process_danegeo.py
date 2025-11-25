@@ -3,17 +3,19 @@ import geopandas as gpd
 from pathlib import Path
 import unidecode
 
-# Configuración de rutas
+# === CONFIGURACIÓN DE RUTAS ===
+BASE_DIR = Path(__file__).resolve().parent
 
-BRONZE_DIR = Path("data") / "bronze"
-SILVER_DIR = Path("data") / "silver" / "dane_geo"
+# Rutas de entrada
+BRONZE_DIR = BASE_DIR / "data" / "bronze"
+DIVIPOLA_INPUT = BRONZE_DIR / "dane_geo" / "divipola_2010.xls"
+GEOJSON_INPUT = BRONZE_DIR / "dane_geo" / "santander_municipios.geojson"
 
-DIVIPOLA_FILE = BRONZE_DIR / "dane_geo" / "divipola_2010.xls"
-GEOJSON_FILE = BRONZE_DIR / "dane_geo" / "santander_municipios.geojson"
-
-DIVIPOLA_SILVER_PARQUET = SILVER_DIR / "divipola_silver.parquet"
-GEOGRAFIA_SILVER_PARQUET = SILVER_DIR / "geografia_silver.parquet"
-GEOGRAFIA_SILVER_GEOJSON = SILVER_DIR / "geografia_silver.geojson"
+# Rutas de salida
+SILVER_DIR = BASE_DIR / "data" / "silver" / "dane_geo"
+DIVIPOLA_OUTPUT = SILVER_DIR / "divipola_silver.parquet"
+GEOGRAFIA_OUTPUT_PARQUET = SILVER_DIR / "geografia_silver.parquet"
+GEOGRAFIA_OUTPUT_GEOJSON = SILVER_DIR / "geografia_silver.geojson"
 
 
 # Funciones de carga
@@ -133,25 +135,25 @@ def save_geografia_silver(
 
 def main() -> None:
     # 1. Carga de datos
-    divipola_df = load_divipola(DIVIPOLA_FILE)
-    geojson_santander_gdf = load_santander_geojson(GEOJSON_FILE)
+    divipola_df = load_divipola(DIVIPOLA_INPUT)
+    geojson_santander_gdf = load_santander_geojson(GEOJSON_INPUT)
 
     # 2. Transformaciones
     divipola_santander_df = transform_divipola_to_silver(divipola_df)
     geojson_santander_silver_gdf = transform_geojson_to_silver(geojson_santander_gdf)
 
     # 3. Guardado en Silver
-    save_divipola_silver(divipola_santander_df, DIVIPOLA_SILVER_PARQUET)
+    save_divipola_silver(divipola_santander_df, DIVIPOLA_OUTPUT)
     save_geografia_silver(
         geojson_santander_silver_gdf,
-        GEOGRAFIA_SILVER_PARQUET,
-        GEOGRAFIA_SILVER_GEOJSON,
+        GEOGRAFIA_OUTPUT_PARQUET,
+        GEOGRAFIA_OUTPUT_GEOJSON,
     )
 
-    print("✅ Divipola Silver guardado en:", DIVIPOLA_SILVER_PARQUET)
+    print("✅ Divipola Silver guardado en:", DIVIPOLA_OUTPUT)
     print("✅ Geografía Silver guardada en:")
-    print("   -", GEOGRAFIA_SILVER_PARQUET)
-    print("   -", GEOGRAFIA_SILVER_GEOJSON)
+    print("   -", GEOGRAFIA_OUTPUT_PARQUET)
+    print("   -", GEOGRAFIA_OUTPUT_GEOJSON)
 
 
 if __name__ == "__main__":

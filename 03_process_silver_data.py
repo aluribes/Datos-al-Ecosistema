@@ -6,10 +6,22 @@ from pathlib import Path
 import os
 import sys
 
-# Ruta base 
+# === CONFIGURACIÓN DE RUTAS ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-silver_root = os.path.join(BASE_DIR, "data", "silver")
-gold_root   = os.path.join(BASE_DIR, "data", "gold")
+SILVER_ROOT = os.path.join(BASE_DIR, "data", "silver")
+GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+
+# Rutas de entrada (capa Silver)
+GEO_INPUT = os.path.join(SILVER_ROOT, "dane_geo", "geografia_silver.parquet")
+POLICIA_INPUT = os.path.join(SILVER_ROOT, "policia_scraping", "policia_santander.parquet")
+POBLACION_INPUT = os.path.join(SILVER_ROOT, "poblacion", "poblacion_santander.parquet")
+DIVIPOLA_INPUT = os.path.join(SILVER_ROOT, "dane_geo", "divipola_silver.parquet")
+
+# Rutas de salida (capa Gold base)
+GEO_OUTPUT = os.path.join(GOLD_ROOT, "base", "geo_gold.parquet")
+POLICIA_OUTPUT = os.path.join(GOLD_ROOT, "base", "policia_gold.parquet")
+POBLACION_OUTPUT = os.path.join(GOLD_ROOT, "base", "poblacion_gold.parquet")
+DIVIPOLA_OUTPUT = os.path.join(GOLD_ROOT, "base", "divipola_gold.parquet")
 
 # Utilidades 
 def ensure_folder(path):
@@ -34,22 +46,17 @@ def check_exists(path, label=None):
 def load_silver():
     print("\n=== Verificando archivos Silver ===")
 
-    geo_path = os.path.join(silver_root, "dane_geo", "geografia_silver.parquet")
-    policia_path = os.path.join(silver_root, "policia_scraping", "policia_santander.parquet")
-    poblacion_path = os.path.join(silver_root, "poblacion", "poblacion_santander.parquet")
-    divipola_path = os.path.join(silver_root, "dane_geo", "divipola_silver.parquet")
-
     # Verificaciones previas
-    check_exists(geo_path, "geografia (geo)")
-    check_exists(policia_path, "policia scraping")
-    check_exists(poblacion_path, "poblacion santander")
-    check_exists(divipola_path, "divipola")
+    check_exists(GEO_INPUT, "geografia (geo)")
+    check_exists(POLICIA_INPUT, "policia scraping")
+    check_exists(POBLACION_INPUT, "poblacion santander")
+    check_exists(DIVIPOLA_INPUT, "divipola")
 
     print("\n=== Cargando datasets Silver ===")
-    geo = gpd.read_parquet(geo_path)
-    policia = pd.read_parquet(policia_path)
-    poblacion = pd.read_parquet(poblacion_path)
-    divipola = pd.read_parquet(divipola_path)
+    geo = gpd.read_parquet(GEO_INPUT)
+    policia = pd.read_parquet(POLICIA_INPUT)
+    poblacion = pd.read_parquet(POBLACION_INPUT)
+    divipola = pd.read_parquet(DIVIPOLA_INPUT)
 
     return geo, policia, poblacion, divipola
 
@@ -166,10 +173,10 @@ def prepare_silver_to_gold():
     divipola = clean_divipola(divipola)
 
     print("Guardando en data/gold/base…")
-    save(geo, os.path.join(gold_root, "base", "geo_gold.parquet"))
-    save(policia, os.path.join(gold_root, "base", "policia_gold.parquet"))
-    save(poblacion, os.path.join(gold_root, "base", "poblacion_gold.parquet"))
-    save(divipola, os.path.join(gold_root, "base", "divipola_gold.parquet"))
+    save(geo, GEO_OUTPUT)
+    save(policia, POLICIA_OUTPUT)
+    save(poblacion, POBLACION_OUTPUT)
+    save(divipola, DIVIPOLA_OUTPUT)
 
     print("✔ Limpieza y exportación completadas.")
 

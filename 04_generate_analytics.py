@@ -3,8 +3,20 @@ import geopandas as gpd
 from pathlib import Path
 import os
 
+# === CONFIGURACIÓN ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-gold_root = os.path.join(BASE_DIR, "data", "gold")
+GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+
+# Rutas de entrada/salida
+GOLD_INPUT = os.path.join(GOLD_ROOT, "gold_integrado.parquet")
+ANALYTICS_OUTPUT = os.path.join(GOLD_ROOT, "analytics", "gold_analytics.parquet")
+
+# Tipos de delitos para cálculo de tasas
+DELITOS_BASE = [
+    "ABIGEATO", "HURTOS", "LESIONES",
+    "VIOLENCIA INTRAFAMILIAR", "AMENAZAS",
+    "DELITOS SEXUALES", "EXTORSION", "HOMICIDIOS"
+]
 
 
 def ensure_folder(path):
@@ -18,9 +30,8 @@ def save(df, path):
 
 # Load GOLD Integrado
 def load_gold_integrado():
-    path = os.path.join(gold_root, "gold_integrado.parquet")
-    print(f"✔ Cargando GOLD integrado: {path}")
-    return gpd.read_parquet(path)
+    print(f"✔ Cargando GOLD integrado: {GOLD_INPUT}")
+    return gpd.read_parquet(GOLD_INPUT)
 
 
 # Generar indicadores analíticos
@@ -28,13 +39,7 @@ def build_analytics(df):
 
     print("➤ Calculando tasas de delito por 100.000 habitantes…")
 
-    delitos_base = [
-        "ABIGEATO", "HURTOS", "LESIONES",
-        "VIOLENCIA INTRAFAMILIAR", "AMENAZAS",
-        "DELITOS SEXUALES", "EXTORSION", "HOMICIDIOS"
-    ]
-
-    for col in delitos_base:
+    for col in DELITOS_BASE:
         if col in df.columns:
             df[f"tasa_{col.lower().replace(' ', '_')}"] = (
                 df[col] / df["poblacion_total"] * 100000
@@ -59,7 +64,7 @@ def make_analytics():
     df = load_gold_integrado()
     df_analytics = build_analytics(df)
 
-    save(df_analytics, os.path.join(gold_root, "analytics", "gold_analytics.parquet"))
+    save(df_analytics, ANALYTICS_OUTPUT)
     print("✔ gold_analytics.parquet generado.")
 
 

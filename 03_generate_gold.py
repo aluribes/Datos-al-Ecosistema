@@ -3,8 +3,18 @@ import geopandas as gpd
 from pathlib import Path
 import os
 
+# === CONFIGURACIÓN DE RUTAS ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-gold_root = os.path.join(BASE_DIR, "data", "gold")
+GOLD_ROOT = os.path.join(BASE_DIR, "data", "gold")
+
+# Rutas de entrada (capa Gold base)
+GEO_INPUT = os.path.join(GOLD_ROOT, "base", "geo_gold.parquet")
+POLICIA_INPUT = os.path.join(GOLD_ROOT, "base", "policia_gold.parquet")
+POBLACION_INPUT = os.path.join(GOLD_ROOT, "base", "poblacion_gold.parquet")
+DIVIPOLA_INPUT = os.path.join(GOLD_ROOT, "base", "divipola_gold.parquet")
+
+# Ruta de salida
+GOLD_OUTPUT = os.path.join(GOLD_ROOT, "gold_integrado.parquet")
 
 
 def ensure_folder(path):
@@ -18,10 +28,10 @@ def save(df, path):
 
 # Cargar GOLD/base
 def load_gold_base():
-    geo = gpd.read_parquet(os.path.join(gold_root, "base", "geo_gold.parquet"))
-    policia = pd.read_parquet(os.path.join(gold_root, "base", "policia_gold.parquet"))
-    poblacion = pd.read_parquet(os.path.join(gold_root, "base", "poblacion_gold.parquet"))
-    divipola = pd.read_parquet(os.path.join(gold_root, "base", "divipola_gold.parquet"))
+    geo = gpd.read_parquet(GEO_INPUT)
+    policia = pd.read_parquet(POLICIA_INPUT)
+    poblacion = pd.read_parquet(POBLACION_INPUT)
+    divipola = pd.read_parquet(DIVIPOLA_INPUT)
     return geo, policia, poblacion, divipola
 
 
@@ -123,7 +133,7 @@ def make_gold():
     geo, policia, poblacion, divipola = load_gold_base()
     df_gold = integrate_gold(geo, policia, poblacion, divipola)
 
-    save(df_gold, os.path.join(gold_root, "gold_integrado.parquet"))
+    save(df_gold, GOLD_OUTPUT)
     print("✔ gold_integrado.parquet generado con éxito.")
 
 
