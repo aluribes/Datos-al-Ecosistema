@@ -4,7 +4,8 @@ from pathlib import Path
 import unidecode
 
 # === CONFIGURACIÓN DE RUTAS ===
-BASE_DIR = Path(__file__).resolve().parent
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Rutas de entrada
 BRONZE_DIR = BASE_DIR / "data" / "bronze"

@@ -4,7 +4,8 @@ import pandas as pd
 import geopandas as gpd
 
 # === CONFIGURACIÓN ===
-BASE_DIR = Path(__file__).resolve().parent
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 GOLD_ROOT = BASE_DIR / "data" / "gold"
 
 # Rutas de entrada/salida

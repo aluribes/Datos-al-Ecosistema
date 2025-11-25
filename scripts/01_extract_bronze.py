@@ -6,9 +6,11 @@ import requests
 import urllib.parse
 
 # CONFIGURACIÓN
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 SOCRATA_TOKEN = None
 CLIENT = Socrata("www.datos.gov.co", SOCRATA_TOKEN)
-DATA_DIR = Path("data/bronze")
+DATA_DIR = BASE_DIR / "data" / "bronze"
 
 # ---------------------------------------------------------
 # 1. EXTRACCIÓN SOCRATA (DATOS.GOV.CO)

@@ -3,6 +3,9 @@ from pathlib import Path
 import requests
 import geopandas as gpd
 
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 def gen_pol() -> None:
     url = "https://raw.githubusercontent.com/caticoa3/colombia_mapa/master/co_2018_MGN_MPIO_POLITICO.geojson"
@@ -22,7 +25,7 @@ def gen_pol() -> None:
 
     print(f"Total municipios encontrados: {gdf_santander.shape[0]}")
 
-    output_dir = Path("data/bronze/dane_geo")
+    output_dir = BASE_DIR / "data" / "bronze" / "dane_geo"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     geojson_path = output_dir / "santander_municipios.geojson"

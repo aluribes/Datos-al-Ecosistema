@@ -6,7 +6,8 @@ import re
 # ==========================================
 # 1. CONFIGURACIÓN DE RUTAS
 # ==========================================
-BASE_DIR = Path(__file__).resolve().parent
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Entrada
 INPUT_FILE = BASE_DIR / "data" / "bronze" / "poblacion_2018" / "TerriData_Dim2.txt"

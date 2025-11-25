@@ -3,7 +3,8 @@ from pathlib import Path
 import pandas as pd
 
 # === CONFIGURACIÓN ===
-BASE_DIR = Path(__file__).resolve().parent
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 GOLD_ROOT = BASE_DIR / "data" / "gold"
 
 # Rutas de entrada/salida

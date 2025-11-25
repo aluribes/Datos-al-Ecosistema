@@ -7,7 +7,8 @@ import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
 
 # === CONFIGURACIÓN DE RUTAS ===
-BASE_DIR = Path(__file__).resolve().parent
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 SILVER_ROOT = BASE_DIR / "data" / "silver"
 GOLD_ROOT = BASE_DIR / "data" / "gold"
 

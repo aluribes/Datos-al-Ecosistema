@@ -3,9 +3,11 @@ from pathlib import Path
 from typing import List
 
 # Rutas y configuración
+# Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-BRONZE_POLICIA_DIR = Path("data") / "bronze" / "policia_scraping"
-SILVER_POLICIA_DIR = Path("data") / "silver" / "policia_scraping"
+BRONZE_POLICIA_DIR = BASE_DIR / "data" / "bronze" / "policia_scraping"
+SILVER_POLICIA_DIR = BASE_DIR / "data" / "silver" / "policia_scraping"
 SILVER_POLICIA_FILENAME = "policia_santander.parquet"
 
 
