@@ -113,7 +113,7 @@ pob_agg = (
     .reset_index()
 )
 
-# 8. Exportar a 
+# 8. Exportar a parquet
 print("Exportando datos agregados a archivo parquet...")
 pob_agg.to_parquet(OUTPUT_FILE, index=False)
 

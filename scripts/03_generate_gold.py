@@ -130,6 +130,9 @@ def integrate_gold(
     df["trimestre"] = df["fecha"].dt.quarter
     df["anio_mes"] = df["fecha"].dt.to_period("M").astype(str)
     df["es_fin_ano"] = (df["mes"] == 12).astype(int)
+    df["ds"] = ((df["fecha"].dt.dayofweek >= 0) & (df["fecha"].dt.dayofweek <= 4)).astype(int)
+    df["fds"] = ((df["fecha"].dt.dayofweek >= 5) & (df["fecha"].dt.dayofweek <= 6)).astype(int)
+    
 
     return df
 
