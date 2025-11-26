@@ -12,22 +12,18 @@ BRONZE          →    SILVER         →    GOLD           →    ANALYTICS/MOD
                                                                   │
                                                                   ├──→ gold_analytics.parquet ──→ Dashboard
                                                                   │
-                                                                  ├──→ REGRESIÓN (4 datasets)
-                                                                  │    ├── regression_total_crimes.parquet
-                                                                  │    ├── regression_per_crime.parquet
-                                                                  │    ├── regression_geo.parquet
-                                                                  │    └── multi_regression.parquet
+                                                                  ├──→ REGRESIÓN (3 datasets)
+                                                                  │    ├── regression_monthly_dataset.parquet
+                                                                  │    ├── regression_annual_dataset.parquet
+                                                                  │    └── regression_timeseries_dataset.parquet
                                                                   │
-                                                                  └──→ CLASIFICACIÓN (9 datasets)
-                                                                       ├── classification_riesgo_dataset.parquet
-                                                                       ├── classification_incremento_dataset.parquet
-                                                                       ├── classification_risk_monthly.parquet
-                                                                       ├── classification_crime_type.parquet
-                                                                       ├── classification_weapon_type.parquet
-                                                                       ├── classification_profile.parquet
-                                                                       ├── classification_dominant_crime.parquet
-                                                                       ├── classification_dominant_weapon.parquet
-                                                                       └── classification_geo_clusters.parquet
+                                                                  ├──→ CLASIFICACIÓN (3 datasets)
+                                                                  │    ├── classification_monthly_dataset.parquet
+                                                                  │    ├── classification_event_dataset.parquet
+                                                                  │    └── classification_dominant_dataset.parquet
+                                                                  │
+                                                                  └──→ CLUSTERING (1 dataset)
+                                                                       └── clustering_geo_dataset.parquet
 ```
 
 ---
@@ -282,47 +278,45 @@ Visualización interactiva de datos para usuarios finales.
 
 Los scripts `04_generate_*` generan datasets optimizados para Machine Learning. Ver [04_model_data.md](04_model_data.md) para documentación detallada.
 
-### Resumen de Datasets Generados
+### Resumen de Datasets Generados (7 consolidados)
 
 #### Datasets de Regresión
 
 | Script | Salida | Nivel | Descripción |
 |--------|--------|-------|-------------|
-| `04_generate_regression_total_crimes.py` | `regression_total_crimes.parquet` | Mensual | Predicción de total de delitos |
-| `04_generate_regression_per_crime.py` | `regression_per_crime.parquet` | Mensual | Predicción de tasas por tipo de delito |
-| `04_generate_regression_geo.py` | `regression_geo.parquet` | Anual | Análisis espacial agregado |
-| `04_generate_global_regression.py` | `multi_regression.parquet` | Global | Serie temporal departamental |
+| `04_generate_regression_monthly_dataset.py` | `regression_monthly_dataset.parquet` | Mensual | Predicción de total de delitos y tasas por tipo |
+| `04_generate_regression_annual_dataset.py` | `regression_annual_dataset.parquet` | Anual | Análisis espacial agregado por año |
+| `04_generate_regression_timeseries_dataset.py` | `regression_timeseries_dataset.parquet` | Global | Serie temporal departamental |
 
 #### Datasets de Clasificación
 
 | Script | Salida | Target | Descripción |
 |--------|--------|--------|-------------|
-| `04_generate_classification_datasets.py` | `classification_riesgo_dataset.parquet` | `nivel_riesgo` | BAJO/MEDIO/ALTO (percentiles) |
-| `04_generate_classification_datasets.py` | `classification_incremento_dataset.parquet` | `incremento_delitos` | Binaria 0/1 |
-| `04_generate_classification_risk.py` | `classification_risk_monthly.parquet` | `riesgo` | Alternativa con qcut |
-| `04_generate_classification_crime.py` | `classification_crime_type.parquet` | `delito` | Nivel evento |
-| `04_generate_classification_weapon.py` | `classification_weapon_type.parquet` | `armas_medios` | Nivel evento |
-| `04_generate_classification_profile.py` | `classification_profile.parquet` | `perfil` | Género + edad |
-| `04_generate_classification_cluster.py` | `classification_dominant_crime.parquet` | `delito` | Delito dominante |
-| `04_generate_classification_cluster.py` | `classification_dominant_weapon.parquet` | `armas_medios` | Arma dominante |
-| `04_generate_classification_cluster.py` | `classification_geo_clusters.parquet` | `cluster_delictivo` | Clusters KMeans |
+| `04_generate_classification_monthly_dataset.py` | `classification_monthly_dataset.parquet` | `nivel_riesgo`, `incremento_delitos` | Riesgo BAJO/MEDIO/ALTO e incremento binario |
+| `04_generate_classification_event_dataset.py` | `classification_event_dataset.parquet` | `delito`, `armas_medios`, `perfil` | Multi-target a nivel evento |
+| `04_generate_classification_dominant_dataset.py` | `classification_dominant_dataset.parquet` | `delito_dominante`, `arma_dominante` | Delito/arma más frecuente por municipio-mes |
+
+#### Dataset de Clustering
+
+| Script | Salida | Target | Descripción |
+|--------|--------|--------|-------------|
+| `04_generate_clustering_geo_dataset.py` | `clustering_geo_dataset.parquet` | `cluster_delictivo` | Clusters KMeans (k=4) de municipios |
 
 ### Ejecución Completa
 
 ```bash
 # Regresión
-python scripts/04_generate_regression_total_crimes.py
-python scripts/04_generate_regression_per_crime.py
-python scripts/04_generate_regression_geo.py
-python scripts/04_generate_global_regression.py
+python scripts/04_generate_regression_monthly_dataset.py
+python scripts/04_generate_regression_annual_dataset.py
+python scripts/04_generate_regression_timeseries_dataset.py
 
 # Clasificación
-python scripts/04_generate_classification_datasets.py
-python scripts/04_generate_classification_risk.py
-python scripts/04_generate_classification_crime.py
-python scripts/04_generate_classification_weapon.py
-python scripts/04_generate_classification_profile.py
-python scripts/04_generate_classification_cluster.py
+python scripts/04_generate_classification_monthly_dataset.py
+python scripts/04_generate_classification_event_dataset.py
+python scripts/04_generate_classification_dominant_dataset.py
+
+# Clustering
+python scripts/04_generate_clustering_geo_dataset.py
 ```
 
 ---
@@ -340,19 +334,13 @@ python scripts/04_generate_classification_cluster.py
 | Gold Base | `geo_gold.parquet` | Geografía normalizada | ✅ |
 | Gold Integrado | `gold_integrado.parquet` | Dataset mensual consolidado | ✅ |
 | Analytics | `gold_analytics.parquet` | Dataset con tasas, lags, rolling stats | ✅ |
-| Model (Regresión) | `regression_total_crimes.parquet` | Regresión total delitos (mensual) | ✅ |
-| Model (Regresión) | `regression_per_crime.parquet` | Regresión por tipo de delito | ✅ |
-| Model (Regresión) | `regression_geo.parquet` | Regresión geográfica (anual) | ✅ |
-| Model (Regresión) | `multi_regression.parquet` | Serie temporal global departamento | ✅ |
-| Model (Clasificación) | `classification_riesgo_dataset.parquet` | Nivel de riesgo (BAJO/MEDIO/ALTO) | ✅ |
-| Model (Clasificación) | `classification_incremento_dataset.parquet` | Incremento binario (0/1) | ✅ |
-| Model (Clasificación) | `classification_risk_monthly.parquet` | Riesgo mensual (alternativo) | ✅ |
-| Model (Clasificación) | `classification_crime_type.parquet` | Tipo de delito (nivel evento) | ✅ |
-| Model (Clasificación) | `classification_weapon_type.parquet` | Tipo de arma (nivel evento) | ✅ |
-| Model (Clasificación) | `classification_profile.parquet` | Perfil demográfico (nivel evento) | ✅ |
-| Model (Clasificación) | `classification_dominant_crime.parquet` | Delito dominante por municipio-mes | ✅ |
-| Model (Clasificación) | `classification_dominant_weapon.parquet` | Arma dominante por municipio-mes | ✅ |
-| Model (Clasificación) | `classification_geo_clusters.parquet` | Clusters de municipios (KMeans) | ✅ |
+| Model (Regresión) | `regression_monthly_dataset.parquet` | Regresión mensual multi-target | ✅ |
+| Model (Regresión) | `regression_annual_dataset.parquet` | Regresión anual espacial | ✅ |
+| Model (Regresión) | `regression_timeseries_dataset.parquet` | Serie temporal global | ✅ |
+| Model (Clasificación) | `classification_monthly_dataset.parquet` | Riesgo + incremento mensual | ✅ |
+| Model (Clasificación) | `classification_event_dataset.parquet` | Multi-target a nivel evento | ✅ |
+| Model (Clasificación) | `classification_dominant_dataset.parquet` | Delito/arma dominante | ✅ |
+| Model (Clustering) | `clustering_geo_dataset.parquet` | Clusters geográficos KMeans | ✅ |
 
 ### Scripts por Fase
 
@@ -367,16 +355,13 @@ python scripts/04_generate_classification_cluster.py
 | 03 Gold | `03_process_silver_data.py` | Gold base | ✅ |
 | 03 Gold | `03_generate_gold.py` | Gold integrado | ✅ |
 | 04 Analytics | `04_generate_analytics.py` | Tasas + lags + rolling | ✅ |
-| 04 Model Data | `04_generate_regression_total_crimes.py` | Regresión total delitos | ✅ |
-| 04 Model Data | `04_generate_regression_per_crime.py` | Regresión por tipo de delito | ✅ |
-| 04 Model Data | `04_generate_regression_geo.py` | Regresión geográfica anual | ✅ |
-| 04 Model Data | `04_generate_global_regression.py` | Serie temporal global | ✅ |
-| 04 Model Data | `04_generate_classification_datasets.py` | Riesgo + incremento | ✅ |
-| 04 Model Data | `04_generate_classification_risk.py` | Riesgo mensual alternativo | ✅ |
-| 04 Model Data | `04_generate_classification_crime.py` | Tipo de delito (evento) | ✅ |
-| 04 Model Data | `04_generate_classification_weapon.py` | Tipo de arma (evento) | ✅ |
-| 04 Model Data | `04_generate_classification_profile.py` | Perfil demográfico | ✅ |
-| 04 Model Data | `04_generate_classification_cluster.py` | Clusters y dominantes | ✅ |
+| 04 Model Data | `04_generate_regression_monthly_dataset.py` | Regresión mensual multi-target | ✅ |
+| 04 Model Data | `04_generate_regression_annual_dataset.py` | Regresión anual espacial | ✅ |
+| 04 Model Data | `04_generate_regression_timeseries_dataset.py` | Serie temporal global | ✅ |
+| 04 Model Data | `04_generate_classification_monthly_dataset.py` | Clasificación riesgo + incremento | ✅ |
+| 04 Model Data | `04_generate_classification_event_dataset.py` | Clasificación multi-target evento | ✅ |
+| 04 Model Data | `04_generate_classification_dominant_dataset.py` | Clasificación dominante | ✅ |
+| 04 Model Data | `04_generate_clustering_geo_dataset.py` | Clustering geográfico | ✅ |
 
 ---
 
@@ -402,26 +387,25 @@ python scripts/04_generate_classification_cluster.py
 
 ### Datasets de Regresión
 
-| Dataset | Nivel | Target | Descripción |
-|---------|-------|--------|-------------|
-| `regression_total_crimes.parquet` | Mensual | `total_delitos` | Features numéricas de analytics sin geometrías |
-| `regression_per_crime.parquet` | Mensual | Tasas por delito | Predicción multi-output por tipo de delito |
-| `regression_geo.parquet` | Anual | `total_delitos` + tasas | Agregado anual para análisis espacial |
-| `multi_regression.parquet` | Global | `total_delitos` | Serie temporal departamental agregada |
+| Dataset | Nivel | Targets | Descripción |
+|---------|-------|---------|-------------|
+| `regression_monthly_dataset.parquet` | Mensual | `total_delitos`, `tasa_*` (8) | Features numéricas de analytics, sin geometrías |
+| `regression_annual_dataset.parquet` | Anual | `total_delitos`, `tasa_*` (8) | Agregado anual para análisis espacial |
+| `regression_timeseries_dataset.parquet` | Global | `total_delitos`, `tasa_global` | Serie temporal departamental agregada |
 
 ### Datasets de Clasificación
 
+| Dataset | Nivel | Targets | Descripción |
+|---------|-------|---------|-------------|
+| `classification_monthly_dataset.parquet` | Mensual | `nivel_riesgo`, `incremento_delitos` | BAJO/MEDIO/ALTO e incremento binario 0/1 |
+| `classification_event_dataset.parquet` | Evento | `delito`, `armas_medios`, `perfil` | Multi-target con contexto municipal |
+| `classification_dominant_dataset.parquet` | Mensual | `delito_dominante`, `arma_dominante` | Delito/arma más frecuente por municipio-mes |
+
+### Dataset de Clustering
+
 | Dataset | Nivel | Target | Descripción |
 |---------|-------|--------|-------------|
-| `classification_riesgo_dataset.parquet` | Mensual | `nivel_riesgo` | BAJO/MEDIO/ALTO basado en percentiles 33/66 |
-| `classification_incremento_dataset.parquet` | Mensual | `incremento_delitos` | Binaria 0/1 si `pct_change_1 > 0` |
-| `classification_risk_monthly.parquet` | Mensual | `riesgo` | Alternativa con `pd.qcut` balanceado |
-| `classification_crime_type.parquet` | Evento | `delito` | Tipo de delito con contexto municipal |
-| `classification_weapon_type.parquet` | Evento | `armas_medios` | Tipo de arma/medio usado |
-| `classification_profile.parquet` | Evento | `perfil` | Género + edad (ej: MASCULINO_ADULTOS) |
-| `classification_dominant_crime.parquet` | Mensual | `delito` | Delito más frecuente por municipio-mes |
-| `classification_dominant_weapon.parquet` | Mensual | `armas_medios` | Arma más frecuente por municipio-mes |
-| `classification_geo_clusters.parquet` | Mensual | `cluster_delictivo` | Cluster KMeans (k=4) de municipios |
+| `clustering_geo_dataset.parquet` | Mensual | `cluster_delictivo` | Cluster KMeans (k=4) basado en perfil delictivo |
 
 ---
 
@@ -433,7 +417,7 @@ python scripts/04_generate_classification_cluster.py
 | `geopandas` | Geometrías y datos espaciales | `03_*.py`, `04_generate_*.py` |
 | `pandas` | Transformaciones de datos | Todos |
 | `numpy` | Cálculos numéricos, codificación cíclica | `04_generate_*.py` |
-| `scikit-learn` | KMeans para clustering | `04_generate_classification_cluster.py` |
+| `scikit-learn` | KMeans para clustering | `04_generate_clustering_geo_dataset.py` |
 
 ---
 
