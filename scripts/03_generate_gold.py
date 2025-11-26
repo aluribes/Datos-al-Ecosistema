@@ -130,8 +130,23 @@ def integrate_gold(
     df["trimestre"] = df["fecha"].dt.quarter
     df["anio_mes"] = df["fecha"].dt.to_period("M").astype(str)
     df["es_fin_ano"] = (df["mes"] == 12).astype(int)
-    df["ds"] = ((df["fecha"].dt.dayofweek >= 0) & (df["fecha"].dt.dayofweek <= 4)).astype(int)
-    df["fds"] = ((df["fecha"].dt.dayofweek >= 5) & (df["fecha"].dt.dayofweek <= 6)).astype(int)
+
+    # --- Conteos mensuales de días (agregados desde policia_gold) ---
+    print("➤ Agregando conteos mensuales de días…")
+
+    dias_agg = (
+        policia.groupby(["codigo_municipio", "anio", "mes"])
+        .agg(
+            n_dias_semana=("es_dia_semana", "sum"),
+            n_fines_de_semana=("es_fin_de_semana", "sum"),
+            n_festivos=("es_festivo", "sum"),
+            n_dias_laborales=("es_dia_laboral", "sum"),
+            n_fines_mes=("es_fin_mes", "sum"),
+        )
+        .reset_index()
+    )
+
+    df = df.merge(dias_agg, on=["codigo_municipio", "anio", "mes"], how="left")
     
 
     return df

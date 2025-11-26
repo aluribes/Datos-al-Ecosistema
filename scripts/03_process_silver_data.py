@@ -5,6 +5,7 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
+import holidays
 
 # === CONFIGURACIÓN DE RUTAS ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
@@ -118,8 +119,31 @@ def clean_policia(df: pd.DataFrame) -> pd.DataFrame:
         df["anio"] = df["fecha"].dt.year.astype("Int64")
         df["mes"] = df["fecha"].dt.month.astype("Int64")
         df["dia"] = df["fecha"].dt.day.astype("Int64")
-        df["ds"] = df["fecha"].dt.dayofweek
-        df["fds"] = df["ds"].isin([5, 6]).astype(int)
+
+        # --- Día de la semana y fin de semana ---
+        dia_semana = df["fecha"].dt.dayofweek
+        df["es_dia_semana"] = (dia_semana < 5).astype(int)
+        df["es_fin_de_semana"] = (dia_semana >= 5).astype(int)
+
+        # --- Fin de mes ---
+        df["es_fin_mes"] = (df["dia"] == df["fecha"].dt.days_in_month).astype(int)
+
+        # --- Festivos colombianos ---
+        anios = df["anio"].dropna().unique().tolist()
+        if anios:
+            col_holidays = holidays.Colombia(years=[int(a) for a in anios])
+            df["es_festivo"] = df["fecha"].apply(
+                lambda x: 1 if pd.notna(x) and x in col_holidays else 0
+            )
+            df["nombre_festivo"] = df["fecha"].apply(
+                lambda x: col_holidays.get(x, None) if pd.notna(x) else None
+            )
+        else:
+            df["es_festivo"] = 0
+            df["nombre_festivo"] = None
+
+        # --- Día laboral (día de semana y no festivo) ---
+        df["es_dia_laboral"] = ((df["es_dia_semana"] == 1) & (df["es_festivo"] == 0)).astype(int)
 
     # categorías
     for col in ["genero", "armas_medios", "delito", "edad_persona"]:
