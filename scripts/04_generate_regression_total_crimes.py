@@ -9,7 +9,7 @@ Genera dataset limpio para modelos de regresión:
 Entrada:
     data/gold/analytics/gold_analytics.parquet
 Salida:
-    data/gold/model/regression_dataset.parquet
+    data/gold/model/regression_total_crimes.parquet
 """
 
 from pathlib import Path
@@ -17,7 +17,7 @@ import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ANALYTICS = BASE_DIR / "data" / "gold" / "analytics" / "gold_analytics.parquet"
-OUT = BASE_DIR / "data" / "gold" / "model" / "regression_dataset.parquet"
+OUT = BASE_DIR / "data" / "gold" / "model" / "regression_total_crimes.parquet"
 
 
 def ensure_folder(p):
