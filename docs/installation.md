@@ -22,17 +22,17 @@ cd Datos-al-Ecosistema
 Se recomienda usar un entorno virtual para aislar las dependencias del proyecto.
 
 ```bash
-python3 -m venv venv
+python3 -m venv .venv
 ```
 
 Activar el entorno:
 
 ```bash
 # Linux / macOS
-source venv/bin/activate
+source .venv/bin/activate
 
 # Windows
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
 > 💡 Sabrás que el entorno está activo cuando veas `(venv)` al inicio de tu terminal.
@@ -40,13 +40,11 @@ venv\Scripts\activate
 ### 3. Instalar dependencias
 
 ```bash
-pip install -r requirements.txt
-```
+# Linux / macOS
+source setup.sh
 
-### 4. Verificar instalación
-
-```bash
-python -c "import pandas; import geopandas; print('✔ Instalación correcta')"
+# Windows
+setup
 ```
 
 ## Estructura del proyecto
