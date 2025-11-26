@@ -1,7 +1,4 @@
 """
-05_generate_regression_data.py
-==============================
-
 Genera dataset limpio para modelos de regresión:
     - Predicción de total_delitos
     - Predicción de tasas

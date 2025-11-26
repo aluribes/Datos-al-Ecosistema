@@ -1,4 +1,3 @@
-# 04_generate_analytics.py
 """
 Genera el dataset analítico enriquecido para tablero (mensual).
 Entrada:  data/gold/gold_integrado.parquet
