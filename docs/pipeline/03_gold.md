@@ -26,12 +26,24 @@ Aplica limpieza final a los datos Silver y los prepara para integración.
 - Normalización de nombres de municipios
 - Estandarización de códigos DANE
 - Conversión de tipos de datos
+- **Generación de columnas temporales y festivos** (policia_gold)
+
+### Columnas temporales generadas en `policia_gold`
+
+| Columna | Descripción |
+|---------|-------------|
+| `es_dia_semana` | 1 si es lunes-viernes, 0 si no |
+| `es_fin_de_semana` | 1 si es sábado o domingo, 0 si no |
+| `es_festivo` | 1 si es festivo colombiano, 0 si no |
+| `nombre_festivo` | Nombre del festivo o cadena vacía |
+| `es_dia_laboral` | 1 si es día hábil (no festivo ni fin de semana) |
 
 ### Librerías utilizadas
 
 - **pandas**: Manipulación de datos
 - **geopandas**: Operaciones geoespaciales
 - **shapely**: Reparación de geometrías (Polygon, MultiPolygon)
+- **holidays**: Detección de festivos colombianos
 
 ### Ejecución
 
@@ -64,7 +76,8 @@ Combina todos los datasets Gold/base en un único dataset integrado con geometr�
 3. Join de delitos con geografía (por código DANE)
 4. Join con datos de población (por código y año)
 5. Agregación de estadísticas delictivas por municipio/año
-6. Preservación de geometrías para visualización
+6. **Agregación de conteos mensuales de días** (festivos, laborales, etc.)
+7. Preservación de geometrías para visualización
 
 ### Librerías utilizadas
 
@@ -81,7 +94,7 @@ python scripts/03_generate_gold.py
 
 ```
 data/gold/
-└── gold_integrado.parquet  # Dataset unificado (~197 KB)
+└── gold_integrado.parquet  # Dataset unificado (~294 KB)
 ```
 
 ### Columnas principales del dataset integrado
@@ -91,6 +104,7 @@ data/gold/
 | `codigo_municipio` | Código DANE del municipio |
 | `municipio` | Nombre del municipio |
 | `anio` | Año de los datos |
+| `mes` | Mes de los datos |
 | `geometry` | Geometría del municipio |
 | `area_km2` | Área en kilómetros cuadrados |
 | `poblacion_total` | Población total del municipio |
@@ -99,6 +113,10 @@ data/gold/
 | `poblacion_adultos` | Población 18+ años |
 | `n_centros_poblados` | Número de centros poblados |
 | `HOMICIDIOS`, `HURTOS`, ... | Conteo por tipo de delito |
+| `n_dias_semana` | Días lunes-viernes con delitos en el mes |
+| `n_fines_de_semana` | Días sáb-dom con delitos en el mes |
+| `n_festivos` | Días festivos con delitos en el mes |
+| `n_dias_laborales` | Días hábiles con delitos en el mes |
 
 ---
 
