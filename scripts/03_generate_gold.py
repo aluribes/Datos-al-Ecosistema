@@ -141,7 +141,6 @@ def integrate_gold(
             n_fines_de_semana=("es_fin_de_semana", "sum"),
             n_festivos=("es_festivo", "sum"),
             n_dias_laborales=("es_dia_laboral", "sum"),
-            n_fines_mes=("es_fin_mes", "sum"),
         )
         .reset_index()
     )

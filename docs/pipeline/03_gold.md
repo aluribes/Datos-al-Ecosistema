@@ -34,7 +34,6 @@ Aplica limpieza final a los datos Silver y los prepara para integración.
 |---------|-------------|
 | `es_dia_semana` | 1 si es lunes-viernes, 0 si no |
 | `es_fin_de_semana` | 1 si es sábado o domingo, 0 si no |
-| `es_fin_mes` | 1 si es último día del mes, 0 si no |
 | `es_festivo` | 1 si es festivo colombiano, 0 si no |
 | `nombre_festivo` | Nombre del festivo o cadena vacía |
 | `es_dia_laboral` | 1 si es día hábil (no festivo ni fin de semana) |
@@ -118,7 +117,6 @@ data/gold/
 | `n_fines_de_semana` | Días sáb-dom con delitos en el mes |
 | `n_festivos` | Días festivos con delitos en el mes |
 | `n_dias_laborales` | Días hábiles con delitos en el mes |
-| `n_fines_mes` | Delitos ocurridos en fin de mes |
 
 ---
 
