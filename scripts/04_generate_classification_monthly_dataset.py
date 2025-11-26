@@ -1,16 +1,23 @@
 """
-04_generate_classification_datasets.py
-======================================
+04_generate_classification_monthly_dataset.py
+==============================================
 
-Genera datasets para modelos de clasificación:
-    1. nivel_riesgo: BAJO / MEDIO / ALTO basado en percentiles de total_delitos
-    2. incremento_delitos: 0 / 1 si aumentaron vs mes anterior
+Genera dataset consolidado para modelos de clasificación a nivel mensual.
 
 Entrada:
     data/gold/analytics/gold_analytics.parquet
+
 Salida:
-    data/gold/model/classification_riesgo_dataset.parquet
-    data/gold/model/classification_incremento_dataset.parquet
+    data/gold/model/classification_monthly_dataset.parquet
+
+Targets disponibles:
+    - nivel_riesgo: BAJO / MEDIO / ALTO (basado en percentiles de total_delitos)
+    - incremento_delitos: 0 / 1 (si aumentaron vs mes anterior)
+
+Este dataset consolida lo que antes eran:
+    - classification_riesgo_dataset.parquet
+    - classification_incremento_dataset.parquet
+    - classification_risk_monthly.parquet (eliminado por redundancia)
 """
 
 from pathlib import Path
@@ -18,17 +25,18 @@ import pandas as pd
 import numpy as np
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-ANALYTICS = BASE_DIR / "data" / "gold" / "analytics" / "gold_analytics.parquet"
-OUT_RIESGO = BASE_DIR / "data" / "gold" / "model" / "classification_riesgo_dataset.parquet"
-OUT_INCREMENTO = BASE_DIR / "data" / "gold" / "model" / "classification_incremento_dataset.parquet"
+GOLD_DIR = BASE_DIR / "data" / "gold"
+
+INPUT_FILE = GOLD_DIR / "analytics" / "gold_analytics.parquet"
+OUTPUT_FILE = GOLD_DIR / "model" / "classification_monthly_dataset.parquet"
 
 # Columnas a eliminar (no numéricas / no útiles para ML)
 DROP_COLS = ["geometry", "municipio", "departamento", "fecha_proper", "anio_mes"]
 
 
-def ensure_folder(p: Path) -> None:
+def ensure_folder(path: Path) -> None:
     """Crea directorio si no existe."""
-    p.mkdir(parents=True, exist_ok=True)
+    path.mkdir(parents=True, exist_ok=True)
 
 
 def create_nivel_riesgo(series: pd.Series) -> pd.Series:
@@ -76,27 +84,29 @@ def create_incremento_delitos(df: pd.DataFrame) -> pd.Series:
     Returns:
         Serie binaria (0/1) indicando incremento
     """
-    return (df["pct_change_1"] > 0).astype(int)
+    return (df["pct_change_1"] > 0).astype("Int64")
 
 
-def make_classification_riesgo_dataset() -> None:
+def make_classification_monthly_dataset() -> None:
     """
-    Genera dataset para clasificación de nivel de riesgo (multiclase).
+    Genera dataset consolidado para clasificación mensual.
     
-    Target: nivel_riesgo (BAJO/MEDIO/ALTO)
+    Targets:
+        - nivel_riesgo (BAJO/MEDIO/ALTO): Clasificación multiclase
+        - incremento_delitos (0/1): Clasificación binaria
     """
     print("=" * 60)
-    print("DATASET 1: Clasificación por Nivel de Riesgo")
+    print("CLASSIFICATION MONTHLY DATASET")
     print("=" * 60)
     
     print("\nCargando gold_analytics.parquet...")
-    df = pd.read_parquet(ANALYTICS)
+    df = pd.read_parquet(INPUT_FILE)
     
-    # Crear variable target
-    print("Creando variable target: nivel_riesgo...")
+    # Crear target: nivel_riesgo
+    print("Creando target: nivel_riesgo...")
     df["nivel_riesgo"] = create_nivel_riesgo(df["total_delitos"])
     
-    # Mostrar distribución y percentiles
+    # Mostrar distribución de nivel_riesgo
     p33 = df["total_delitos"].quantile(0.33)
     p66 = df["total_delitos"].quantile(0.66)
     print(f"\n  Percentiles de total_delitos:")
@@ -109,42 +119,11 @@ def make_classification_riesgo_dataset() -> None:
         pct = (df["nivel_riesgo"] == nivel).mean()
         print(f"    - {nivel}: {count:,} ({pct:.1%})")
     
-    # Eliminar columnas no numéricas
-    df = df.drop(columns=DROP_COLS, errors="ignore")
-    
-    # Guardar dataset
-    ensure_folder(OUT_RIESGO.parent)
-    df.to_parquet(OUT_RIESGO, index=False)
-    
-    print(f"\n✔ Dataset generado: {OUT_RIESGO}")
-    print(f"  - Filas: {len(df):,}")
-    print(f"  - Columnas: {len(df.columns)}")
-
-
-def make_classification_incremento_dataset() -> None:
-    """
-    Genera dataset para clasificación binaria de incremento de delitos.
-    
-    Target: incremento_delitos (0/1)
-    """
-    print("\n" + "=" * 60)
-    print("DATASET 2: Clasificación Binaria (Incremento)")
-    print("=" * 60)
-    
-    print("\nCargando gold_analytics.parquet...")
-    df = pd.read_parquet(ANALYTICS)
-    
-    # Crear variable target
-    print("Creando variable target: incremento_delitos...")
+    # Crear target: incremento_delitos
+    print("\nCreando target: incremento_delitos...")
     df["incremento_delitos"] = create_incremento_delitos(df)
     
-    # Eliminar filas donde no se puede calcular el incremento (primer mes)
-    rows_before = len(df)
-    df = df.dropna(subset=["pct_change_1"])
-    rows_after = len(df)
-    print(f"  - Filas eliminadas (sin mes anterior): {rows_before - rows_after:,}")
-    
-    # Mostrar distribución
+    # Mostrar distribución de incremento_delitos
     print("\n  Distribución de incremento_delitos:")
     for clase in [0, 1]:
         count = (df["incremento_delitos"] == clase).sum()
@@ -152,26 +131,22 @@ def make_classification_incremento_dataset() -> None:
         label = "Sin incremento" if clase == 0 else "Con incremento"
         print(f"    - {clase} ({label}): {count:,} ({pct:.1%})")
     
+    # Contar NaN en incremento (primer mes de cada municipio)
+    nan_count = df["incremento_delitos"].isna().sum()
+    print(f"    - NaN (primer mes): {nan_count:,}")
+    
     # Eliminar columnas no numéricas
     df = df.drop(columns=DROP_COLS, errors="ignore")
     
     # Guardar dataset
-    ensure_folder(OUT_INCREMENTO.parent)
-    df.to_parquet(OUT_INCREMENTO, index=False)
+    ensure_folder(OUTPUT_FILE.parent)
+    df.to_parquet(OUTPUT_FILE, index=False)
     
-    print(f"\n✔ Dataset generado: {OUT_INCREMENTO}")
+    print(f"\n✔ Dataset generado: {OUTPUT_FILE}")
     print(f"  - Filas: {len(df):,}")
     print(f"  - Columnas: {len(df.columns)}")
-
-
-def main() -> None:
-    """Genera ambos datasets de clasificación."""
-    make_classification_riesgo_dataset()
-    make_classification_incremento_dataset()
-    print("\n" + "=" * 60)
-    print("✔ Ambos datasets de clasificación generados exitosamente")
-    print("=" * 60)
+    print(f"  - Targets: nivel_riesgo, incremento_delitos")
 
 
 if __name__ == "__main__":
-    main()
+    make_classification_monthly_dataset()
