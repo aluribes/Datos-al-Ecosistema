@@ -9,7 +9,6 @@ La capa Gold contiene los datos integrados y listos para análisis o modelado. A
 | `03_process_silver_data.py` | Silver: todos | Gold/base: datasets limpios |
 | `03_generate_gold.py` | Gold/base | Gold: dataset integrado |
 | `04_generate_analytics.py` | Gold integrado | Gold/analytics: indicadores |
-| `04_generate_model_data.py` | Gold integrado | Gold/model: dataset para ML |
 
 ---
 
@@ -160,33 +159,6 @@ data/gold/analytics/
 
 ---
 
-## 4. Dataset para Modelado
-
-**Script:** `scripts/04_generate_model_data.py`
-
-Genera un dataset optimizado para entrenamiento de modelos de Machine Learning.
-
-### Características
-
-- Selección de columnas relevantes para predicción
-- Eliminación de geometrías (reduce tamaño)
-- Formato tabular listo para scikit-learn, XGBoost, etc.
-
-### Ejecución
-
-```bash
-python scripts/04_generate_model_data.py
-```
-
-### Salida
-
-```
-data/gold/model/
-└── df_modelo.parquet  # Dataset para ML (~106 KB)
-```
-
----
-
 ## Resumen de salidas Gold
 
 ```
@@ -198,8 +170,6 @@ data/gold/
 │   └── divipola_gold.parquet
 ├── analytics/
 │   └── gold_analytics.parquet   # Con tasas e indicadores
-├── model/
-│   └── df_modelo.parquet        # Listo para ML
 └── gold_integrado.parquet       # Dataset principal
 ```
 
@@ -213,11 +183,10 @@ Para ejecutar todo el proceso Gold en orden:
 python scripts/03_process_silver_data.py
 python scripts/03_generate_gold.py
 python scripts/04_generate_analytics.py
-python scripts/04_generate_model_data.py
 ```
 
 ---
 
 ## Siguiente paso
 
-Con el dataset de modelado listo, el siguiente paso es implementar modelos predictivos. Consulta [04_model.md](04_model.md) para más detalles sobre el enfoque de modelado.
+Con el dataset analítico listo, el siguiente paso es generar los datasets para Machine Learning. Consulta [04_model_data.md](04_model_data.md) para más detalles sobre los datasets de regresión y clasificación.
