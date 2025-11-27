@@ -35,7 +35,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-> 💡 Sabrás que el entorno está activo cuando veas `(venv)` al inicio de tu terminal.
+> 💡 Sabrás que el entorno está activo cuando veas `(.venv)` al inicio de tu terminal.
 
 ### 3. Instalar dependencias
 

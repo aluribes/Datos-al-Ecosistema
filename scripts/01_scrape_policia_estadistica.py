@@ -27,17 +27,17 @@ BASE_URL = "https://www.policia.gov.co/estadistica-delictiva"
 OUTPUT_DIR = BASE_DIR / "data" / "bronze" / "policia_scraping"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Adjust if the site changes the number of pages
+# Adjusta si cambia el número de páginas del sitio
 FIRST_PAGE = 0
-LAST_PAGE = 28  # inclusive, based on your inspection
+LAST_PAGE = 30  # Inclusivo, basado en inspección previa
 
 
 def slugify(text: str) -> str:
     """
-    Convert a crime name to a safe string for filenames:
-    - Remove accents
-    - Keep only letters / numbers
-    - Replace groups of non-alnum with underscore
+    Convierte el nombre de un delito en una cadena segura para nombres de archivo:
+    - Remueve acentos
+    - Conserva solo letras y números
+    - Reemplaza grupos de caracteres no alfanuméricos con guion bajo (_)
     """
     text = unicodedata.normalize("NFKD", text)
     text = "".join(c for c in text if not unicodedata.combining(c))
@@ -47,7 +47,7 @@ def slugify(text: str) -> str:
 
 def get_page_html(session: requests.Session, page_number: int) -> str:
     """
-    Fetch HTML for the given page number using the ?page= parameter.
+    Obtiene el HTML para la página dada usando el parámetro ?page=.
     """
     params = {}
     if page_number > 0:
@@ -60,16 +60,16 @@ def get_page_html(session: requests.Session, page_number: int) -> str:
 
 def parse_table_rows(html: str):
     """
-    Return a list of (crime, year, download_url) tuples for one page.
+    Retorna una lista de tuplas (delito, año, download_url) para una página.
     """
     soup = BeautifulSoup(html, "html.parser")
 
-    # Main container where the table lives
+    # Container principal donde vive la tabla
     container = soup.find("div", class_="table-responsive")
     if container:
         table = container.find("table")
     else:
-        # Fallback: first table on page if class changes
+        # Como alternativa, usar la primera tabla de la página si cambia la clase.
         table = soup.find("table")
 
     if not table:
@@ -86,7 +86,7 @@ def parse_table_rows(html: str):
         crime = tds[0].get_text(strip=True)
         year = tds[1].get_text(strip=True)
 
-        # Prefer <a class="file-link"> but fall back to any <a>
+        # Preferible <a class="file-link">, pero usa cualquier <a> como alternativa.
         link_tag = tds[2].find("a", class_="file-link") or tds[2].find("a")
         if not link_tag or not link_tag.get("href"):
             continue
@@ -101,19 +101,18 @@ def parse_table_rows(html: str):
 
 def download_file(session: requests.Session, crime: str, year: str, url: str) -> Path:
     """
-    Download the Excel file and save it with the requested naming convention:
-    {YEAR}_{CRIME}_{LinkLastPart}
+    Descarga el archivo de Excel y lo guarda con la convención de nombres solicitada: {AÑO}_{DELITO}_{ÚltimaParteDelEnlace}
     """
     crime_slug = slugify(crime)
 
-    # Remove querystring in case the URL has ?...
+    # Elimina la cadena de consulta (querystring) en caso de que la URL contenga ?….
     last_part = Path(url.split("?", 1)[0]).name
 
     filename = f"{year}_{crime_slug}_{last_part}"
     dest_path = OUTPUT_DIR / filename
 
     if dest_path.exists():
-        print(f"[SKIP] Already exists: {dest_path}")
+        print(f"[SKIP] Ya existe: {dest_path}")
         return dest_path
 
     print(f"[DL] {year} | {crime} -> {url}")
@@ -121,13 +120,13 @@ def download_file(session: requests.Session, crime: str, year: str, url: str) ->
     resp.raise_for_status()
 
     dest_path.write_bytes(resp.content)
-    print(f"[OK ] Saved: {dest_path}")
+    print(f"[OK ] Guardado: {dest_path}")
     return dest_path
 
 
-def main():
+def main() -> None:
+    """Función principal del script."""
     session = requests.Session()
-    # A simple user-agent header so we look like a normal browser
     session.headers.update(
         {
             "User-Agent": (
@@ -141,12 +140,12 @@ def main():
     total_files = 0
 
     for page in range(FIRST_PAGE, LAST_PAGE + 1):
-        print(f"\n=== Processing page {page} ===")
+        print(f"\n=== Procesando página {page} ===")
         html = get_page_html(session, page)
         rows = parse_table_rows(html)
 
         if not rows:
-            print("No rows on this page – stopping early.")
+            print("No existen filas en esta página – detención temprana.")
             break
 
         for crime, year, url in rows:
@@ -154,12 +153,12 @@ def main():
                 download_file(session, crime, year, url)
                 total_files += 1
             except Exception as e:
-                print(f"[ERR] Failed for {crime} {year} {url}: {e}")
+                print(f"[ERR] Error por {crime} {year} {url}: {e}")
 
         # Be polite with the server
         time.sleep(1)
 
-    print(f"\nDone. Total files downloaded: {total_files}")
+    print(f"\nCompletado. Total de archivos descargados: {total_files}")
 
 
 if __name__ == "__main__":
