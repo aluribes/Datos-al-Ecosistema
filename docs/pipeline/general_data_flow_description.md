@@ -7,23 +7,27 @@ Este documento describe el flujo completo de transformación de datos desde la e
 ## Resumen del Pipeline
 
 ```
-BRONZE          →    SILVER         →    GOLD           →    ANALYTICS/MODEL DATA
-01_* scripts         02_* scripts        03_* scripts        04_* scripts
-                                                                  │
-                                                                  ├──→ gold_analytics.parquet ──→ Dashboard
-                                                                  │
-                                                                  ├──→ REGRESIÓN (3 datasets)
-                                                                  │    ├── regression_monthly_dataset.parquet
-                                                                  │    ├── regression_annual_dataset.parquet
-                                                                  │    └── regression_timeseries_dataset.parquet
-                                                                  │
-                                                                  ├──→ CLASIFICACIÓN (3 datasets)
-                                                                  │    ├── classification_monthly_dataset.parquet
-                                                                  │    ├── classification_event_dataset.parquet
-                                                                  │    └── classification_dominant_dataset.parquet
-                                                                  │
-                                                                  └──→ CLUSTERING (1 dataset)
-                                                                       └── clustering_geo_dataset.parquet
+BRONZE          →    SILVER         →    GOLD           →    ANALYTICS/MODEL DATA    →    MODELS
+01_* scripts         02_* scripts        03_* scripts        04_* scripts                  05_* scripts
+                                                                  │                              │
+                                                                  ├──→ gold_analytics.parquet    │
+                                                                  │         ↓                    │
+                                                                  │    Dashboard                 │
+                                                                  │                              │
+                                                                  ├──→ REGRESIÓN (3 datasets)    │
+                                                                  │    ├── regression_monthly ───┼──→ crime_rate_model.joblib
+                                                                  │    ├── regression_annual     │
+                                                                  │    └── regression_timeseries │
+                                                                  │                              │
+                                                                  ├──→ CLASIFICACIÓN (3 datasets)│
+                                                                  │    ├── classification_monthly│
+                                                                  │    ├── classification_event  │
+                                                                  │    └── classification_dominant
+                                                                  │                              │
+                                                                  └──→ CLUSTERING (1 dataset)    │
+                                                                       └── clustering_geo        │
+                                                                                                  ↓
+                                                                                           FastAPI / Dashboard
 ```
 
 ---
@@ -341,6 +345,8 @@ python scripts/04_generate_clustering_geo_dataset.py
 | Model (Clasificación) | `classification_event_dataset.parquet` | Multi-target a nivel evento | ✅ |
 | Model (Clasificación) | `classification_dominant_dataset.parquet` | Delito/arma dominante | ✅ |
 | Model (Clustering) | `clustering_geo_dataset.parquet` | Clusters geográficos KMeans | ✅ |
+| Models | `crime_rate_model.joblib` | Modelo LightGBM entrenado | ✅ |
+| Models | `crime_rate_model_metadata.json` | Métricas y configuración | ✅ |
 
 ### Scripts por Fase
 
@@ -362,6 +368,8 @@ python scripts/04_generate_clustering_geo_dataset.py
 | 04 Model Data | `04_generate_classification_event_dataset.py` | Clasificación multi-target evento | ✅ |
 | 04 Model Data | `04_generate_classification_dominant_dataset.py` | Clasificación dominante | ✅ |
 | 04 Model Data | `04_generate_clustering_geo_dataset.py` | Clustering geográfico | ✅ |
+| 05 Models | `05_train_crime_rate_model.py` | Entrenamiento LightGBM | ✅ |
+| 05 Models | `05_test_crime_model.py` | Prueba y predictor | ✅ |
 
 ---
 
@@ -409,6 +417,51 @@ python scripts/04_generate_clustering_geo_dataset.py
 
 ---
 
+## 🤖 Fase 7: Entrenamiento de Modelos
+
+### Script: `05_train_crime_rate_model.py`
+
+Entrena un modelo LightGBM para predecir delitos por municipio.
+
+| Entrada | Salida | Descripción |
+|---------|--------|-------------|
+| `regression_monthly_dataset.parquet` | `models/crime_rate_model.joblib` | Modelo serializado |
+| | `models/crime_rate_model_features.json` | Lista de features |
+| | `models/crime_rate_model_metadata.json` | Métricas y config |
+
+### Métricas del Modelo
+
+| Métrica | Valor | Interpretación |
+|---------|-------|----------------|
+| **R²** | 0.9314 | 93% de varianza explicada |
+| **RMSE** | 29.58 | Error cuadrático medio |
+| **MAE** | 5.54 | Error absoluto ~5.5 delitos |
+| **MAPE** | 8.02% | Error porcentual promedio |
+
+### Velocidad de Inferencia
+
+| Operación | Tiempo |
+|-----------|--------|
+| Predicción única | ~1.1 ms |
+| Batch 100 predicciones | ~1.4 ms |
+| Todos los municipios (87) | ~0.6 s |
+
+### Script: `05_test_crime_model.py`
+
+Prueba el modelo y expone la clase `CrimeRatePredictor` para uso en producción.
+
+```python
+from scripts.predict_crime import CrimeRatePredictor
+
+predictor = CrimeRatePredictor()
+result = predictor.predict_for_municipio(68001, 2025, 12)
+# {"prediccion_delitos": 877, "promedio_historico": 319.7, ...}
+```
+
+Ver [05_model_training.md](05_model_training.md) para documentación detallada.
+
+---
+
 ## 🔧 Dependencias Clave
 
 | Librería | Uso | Scripts |
@@ -417,7 +470,9 @@ python scripts/04_generate_clustering_geo_dataset.py
 | `geopandas` | Geometrías y datos espaciales | `03_*.py`, `04_generate_*.py` |
 | `pandas` | Transformaciones de datos | Todos |
 | `numpy` | Cálculos numéricos, codificación cíclica | `04_generate_*.py` |
-| `scikit-learn` | KMeans para clustering | `04_generate_clustering_geo_dataset.py` |
+| `scikit-learn` | KMeans, métricas de evaluación | `04_generate_clustering_geo_dataset.py`, `05_*.py` |
+| `lightgbm` | Modelo de predicción | `05_train_crime_rate_model.py` |
+| `joblib` | Serialización de modelos | `05_*.py` |
 
 ---
 
