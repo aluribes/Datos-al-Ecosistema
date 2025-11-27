@@ -19,7 +19,8 @@ Datos-al-Ecosistema/
 │   └── *_metadata.json  # Métricas y configuración
 ├── scripts/             # Pipeline de procesamiento
 ├── utils/               # Utilidades compartidas
-└── docs/                # Documentación
+├── docs/                # Documentación
+└── app.py               # Aplicación principal
 ```
 
 ---

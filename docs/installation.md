@@ -57,7 +57,11 @@ Datos-al-Ecosistema/
 ├── scripts/              # Pipeline de procesamiento
 ├── utils/                # Utilidades compartidas
 ├── docs/                 # Documentación
-└── requirements.txt      # Dependencias
+├── requirements.txt      # Dependencias
+├── setup.bat             # Configuración en Windows
+├── setup.sh              # Configuración en Linux o MacOS
+└── app.py                # Aplicación principal
+
 ```
 
 ## Siguiente paso
