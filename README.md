@@ -1,4 +1,4 @@
-# 📊 Datos al Ecosistema - Reto Intermedio: Seguridad en Santander
+# 📊 Datos al Ecosistema - Reto Avanzado: Seguridad en Santander
 
 Este repositorio contiene el desarrollo de la solución para el reto **"Datos al Ecosistema"**, enfocado en el análisis y modelado de datos de seguridad y convivencia en el departamento de Santander.
 

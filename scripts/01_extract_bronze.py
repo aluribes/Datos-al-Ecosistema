@@ -4,19 +4,15 @@
 
 Extrae datos crudos de múltiples fuentes para la capa Bronze.
 
-Fuentes:
-    - Socrata API (datos.gov.co)
-    - DANE (Divipola)
-    - Policía Nacional (Excel 2025)
+Entrada:
+    No requiere archivos de entrada (consulta APIs externas).
 
 Salida:
     data/bronze/socrata_api/*.json
     data/bronze/dane_geo/divipola_2010.xls
-    data/bronze/policia_scraping/*.xlsx
 """
 
 from pathlib import Path
-import urllib.parse
 
 import pandas as pd
 import requests
@@ -25,110 +21,93 @@ from sodapy import Socrata
 # === CONFIGURACIÓN ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
-SOCRATA_TOKEN = None
-CLIENT = Socrata("www.datos.gov.co", SOCRATA_TOKEN)
 DATA_DIR = BASE_DIR / "data" / "bronze"
+
+SOCRATA_DOMAIN = "www.datos.gov.co"
+SOCRATA_TOKEN: str | None = None
+CLIENT = Socrata(SOCRATA_DOMAIN, SOCRATA_TOKEN)
+
+
+def ensure_folder(path: Path) -> None:
+    """Crea directorio si no existe."""
+    path.mkdir(parents=True, exist_ok=True)
+
 
 # ---------------------------------------------------------
 # 1. EXTRACCIÓN SOCRATA (DATOS.GOV.CO)
 # ---------------------------------------------------------
 def extract_socrata() -> None:
-    print("--- Iniciando extracción Socrata ---")
-    datasets = {
+    """Extrae datasets desde Socrata y los guarda en formato JSON."""
+    print("➤ Iniciando extracción Socrata...")
+
+    datasets: dict[str, str] = {
         "delitos_sexuales": "fpe5-yrmw",
         "violencia_intrafamiliar": "vuyt-mqpw",
         "hurto_modalidades": "d4fr-sbn2",
         "bucaramanga_delictiva_150": "x46e-abhz",
         "bucaramanga_delitos_40": "75fz-q98y",
-        "delitos_informaticos": "4v6r-wu98"
+        "delitos_informaticos": "4v6r-wu98",
     }
-    
-    for name, id_code in datasets.items():
-        print(f"Descargando: {name} ({id_code})...")
+
+    output_dir = DATA_DIR / "socrata_api"
+    ensure_folder(output_dir)
+
+    for name, dataset_id in datasets.items():
+        print(f"  ➤ Descargando: {name} ({dataset_id})...")
         try:
-            results = CLIENT.get(id_code)
-            
+            results = CLIENT.get(dataset_id)
             df = pd.DataFrame.from_records(results)
-            if not df.empty:
-                # Guardamos en JSON para preservar estructura raw
-                path = DATA_DIR / "socrata_api" / f"{name}.json"
-                df.to_json(path, orient='records')
-                print(f"Guardado en {path}")
-            else:
-                print(f"Advertencia: {name} retornó vacío con el filtro.")
-        except Exception as e:
-            print(f"Error en {name}: {e}")
+
+            if df.empty:
+                print(f"  ⚠️ Advertencia: {name} retornó vacío.")
+                continue
+
+            output_path = output_dir / f"{name}.json"
+            df.to_json(output_path, orient="records")
+            print(f"  ✔ Guardado en: {output_path}")
+        except Exception as exc:  # noqa: BLE001
+            print(f"  ❌ Error en {name}: {exc}")
+
 
 # ---------------------------------------------------------
 # 2. EXTRACCIÓN DANE (EXCEL DIRECTO)
 # ---------------------------------------------------------
 def extract_dane() -> None:
-    print("\n--- Iniciando extracción DANE ---")
-    url = "https://geoportal.dane.gov.co/descargas/metadatos/historicos/archivos/Listado_2010.xls"
-    path = DATA_DIR / "dane_geo" / "divipola_2010.xls"
-    
+    """Descarga el archivo DIVIPOLA 2010 desde el DANE."""
+    print("\n➤ Iniciando extracción DANE...")
+
+    url = (
+        "https://geoportal.dane.gov.co/descargas/metadatos/historicos/"
+        "archivos/Listado_2010.xls"
+    )
+    output_dir = DATA_DIR / "dane_geo"
+    ensure_folder(output_dir)
+
+    output_path = output_dir / "divipola_2010.xls"
+
     try:
-        response = requests.get(url, verify=False) # verify=False a veces necesario en gobierno
-        with open(path, 'wb') as f:
-            f.write(response.content)
-        print(f"DANE Divipola guardado en {path}")
-    except Exception as e:
-        print(f"Error DANE: {e}")
+        # verify=False a veces necesario en sitios de gobierno con certificados incompletos
+        response = requests.get(url, verify=False, timeout=60)  # noqa: S501
+        response.raise_for_status()
 
-# ---------------------------------------------------------
-# 3. SCRAPING POLICÍA NACIONAL (2025)
-# ---------------------------------------------------------
-def extract_policia_scraping() -> None:
-    print("\n--- Iniciando Scraping Policía Nacional ---")
-    base_url = "https://www.policia.gov.co"
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        output_path.write_bytes(response.content)
+        print(f"  ✔ DANE DIVIPOLA guardado en: {output_path}")
+    except Exception as exc:  # noqa: BLE001
+        print(f"  ❌ Error en descarga DANE: {exc}")
 
-    # Lógica Especial 2025 (Links de Office Viewer)
-    # Decodificamos el parámetro 'src'
-    print("Procesando archivos 2025...")
-    links_2025_viewer = [
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FDelitos%2520sexuales_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520a%2520residencias_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FViolencia%2520intrafamiliar_7.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520a%2520comercio_7.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FLesiones%2520personales_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FExtorsi%25C3%25B3n_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520a%2520cabezas%2520de%2520ganado_7.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520pirater%25C3%25ADa%2520terrestre_5.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520a%2520entidades%2520Financieras_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHomicidio%2520Intencional_5.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FAmenazas_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FSecuestro_7.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FLesiones%2520en%2520accidente%2520de%2520tr%25C3%25A1nsito_6.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520a%2520personas_8.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHomicidios%2520en%2520accidente%2520de%2520tr%25C3%25A1nsito_6.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FTerrorismo_7.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520a%2520motocicletas_5.xlsx&wdOrigin=BROWSELINK",
-        "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.policia.gov.co%2Fsites%2Fdefault%2Ffiles%2Fdelitos-impacto%2FHurto%2520automotores_5.xlsx&wdOrigin=BROWSELINK"
-    ]
-    
-    for viewer_url in links_2025_viewer:
-        try:
-            parsed = urllib.parse.urlparse(viewer_url)
-            params = urllib.parse.parse_qs(parsed.query)
-            if 'src' in params:
-                real_url = params['src'][0] # URL real del Excel
-                file_name = "2025_" + Path(real_url).name
-                
-                save_path = DATA_DIR / "policia_scraping" / file_name
-                
-                r = requests.get(real_url, headers=headers)
-                with open(save_path, 'wb') as f:
-                    f.write(r.content)
-                print(f"Descargado 2025: {file_name}")
-        except Exception as e:
-            print(f"Error link 2025: {e}")
 
 def main() -> None:
-    """Ejecuta todas las extracciones de datos Bronze."""
+    """Ejecuta todas las extracciones de datos Bronze (Socrata + DANE)."""
+    print("=" * 60)
+    print("01 - EXTRACCIÓN CAPA BRONZE (SOCRATA + DANE)")
+    print("=" * 60)
+
     extract_socrata()
     extract_dane()
-    extract_policia_scraping()
+
+    print("=" * 60)
+    print("✔ Extracción Bronze completada")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
