@@ -1,11 +1,28 @@
-from pathlib import Path
+"""
+01_extract_bronze.py
+====================
 
-import pandas as pd
-from sodapy import Socrata
-import requests
+Extrae datos crudos de múltiples fuentes para la capa Bronze.
+
+Fuentes:
+    - Socrata API (datos.gov.co)
+    - DANE (Divipola)
+    - Policía Nacional (Excel 2025)
+
+Salida:
+    data/bronze/socrata_api/*.json
+    data/bronze/dane_geo/divipola_2010.xls
+    data/bronze/policia_scraping/*.xlsx
+"""
+
+from pathlib import Path
 import urllib.parse
 
-# CONFIGURACIÓN
+import pandas as pd
+import requests
+from sodapy import Socrata
+
+# === CONFIGURACIÓN ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 SOCRATA_TOKEN = None
@@ -107,7 +124,12 @@ def extract_policia_scraping() -> None:
         except Exception as e:
             print(f"Error link 2025: {e}")
 
-if __name__ == "__main__":
+def main() -> None:
+    """Ejecuta todas las extracciones de datos Bronze."""
     extract_socrata()
     extract_dane()
     extract_policia_scraping()
+
+
+if __name__ == "__main__":
+    main()

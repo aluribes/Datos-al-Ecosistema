@@ -42,10 +42,13 @@ OUTPUT_FILE = GOLD_DIR / "analytics" / "gold_analytics.parquet"
 
 # Utilidades
 
-def ensure_folder(path: Path):
+def ensure_folder(path: Path) -> None:
+    """Crea directorio si no existe."""
     path.mkdir(parents=True, exist_ok=True)
 
-def save(df: gpd.GeoDataFrame, path: Path):
+
+def save(df: gpd.GeoDataFrame, path: Path) -> None:
+    """Guarda GeoDataFrame en formato parquet."""
     ensure_folder(path.parent)
     df.to_parquet(path, index=False)
 

@@ -1,6 +1,22 @@
-import pandas as pd
-import geopandas as gpd
+"""
+02_process_danegeo.py
+=====================
+
+Procesa datos geográficos de DANE para la capa Silver.
+
+Entrada:
+    data/bronze/dane_geo/divipola_2010.xls
+    data/bronze/dane_geo/santander_municipios.geojson
+
+Salida:
+    data/silver/dane_geo/divipola_silver.parquet
+    data/silver/dane_geo/geografia_silver.parquet
+"""
+
 from pathlib import Path
+
+import geopandas as gpd
+import pandas as pd
 import unidecode
 
 # === CONFIGURACIÓN DE RUTAS ===

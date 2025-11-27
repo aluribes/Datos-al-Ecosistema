@@ -1,4 +1,16 @@
-import os
+"""
+01_scrape_policia_estadistica.py
+=================================
+
+Realiza scraping de estadísticas delictivas desde la Policía Nacional.
+
+Fuente:
+    https://www.policia.gov.co/estadistica-delictiva
+
+Salida:
+    data/bronze/policia_scraping/*.xlsx (~241 archivos)
+"""
+
 import re
 import time
 import unicodedata
@@ -95,7 +107,7 @@ def download_file(session: requests.Session, crime: str, year: str, url: str) ->
     crime_slug = slugify(crime)
 
     # Remove querystring in case the URL has ?...
-    last_part = os.path.basename(url.split("?", 1)[0])
+    last_part = Path(url.split("?", 1)[0]).name
 
     filename = f"{year}_{crime_slug}_{last_part}"
     dest_path = OUTPUT_DIR / filename
