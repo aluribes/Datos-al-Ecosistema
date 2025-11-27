@@ -30,8 +30,6 @@ Para abordar el reto, hemos diseñado un plan de trabajo general compuesto por 6
 5.  Desarrollo del Chatbot.
 6.  Documentación, validación y entrega.
 
-**Este repositorio se centra específicamente en el desarrollo de los pasos 1 y 2**: la construcción de un **Data Lake** robusto (desde la ingesta hasta la capa Oro) y la preparación de la infraestructura, pipelines y modelos de datos para análisis y modelado.
-
 <a id="estructura-general"></a>
 ## 📂 Estructura General
 
@@ -54,6 +52,9 @@ Nuestro flujo de trabajo se divide en:
     *   **Policía Nacional**: Estadísticas delictivas (Web Scraping y descargas).
     *   **Datos Abiertos (Socrata)**: Datasets gubernamentales.
     *   **DANE**: Información geográfica y de división política (Divipola).
+    *   **Plan Departamental de Desarrollo**: Información histórica relacionada con metas y presupuestos.
 2.  **Procesamiento y Limpieza (Capa Silver)**: Estandarización, limpieza y estructuración de los datos para asegurar su calidad.
 3.  **Modelado y Enriquecimiento (Capa Gold - *En progreso*)**: Integración geoespacial (Policía + DANE) y agregación de datos para Dashboards.
-4.  **Modelado Predictivo (*Próximamente*)**: Desarrollo de modelos de regresión (volumen delictivo) y clasificación (tipo de delito).
+4.  **Modelado Predictivo (*En progreso*)**: Desarrollo de modelos de regresión (volumen delictivo) y clasificación (tipo de delito).
+5.  **Desarrollo de chatbot comunitario (*En progreso*)**: Desarrollo de chatbot donde las personas obtengan explicación de las estadísticas, información relacionada con el Plan Departamental de Desarrollo y Rutas de atención.
+6.  **Desarrollo Web (*En progreso*)**: Desarrollo de página web que integre el Dashboard, los modelos predictivos y el Chatbot comunitario.

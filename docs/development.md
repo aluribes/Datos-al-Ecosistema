@@ -267,7 +267,7 @@ def save_output(df: pd.DataFrame | gpd.GeoDataFrame, path: Path) -> None:
 
 ## Logging y mensajes
 
-Usar `print()` con emojis para indicar estado:
+Usar `print()` para indicar estado:
 
 ```python
 print("✔ Archivo cargado correctamente")
