@@ -1,0 +1,79 @@
+{
+  "model_type": "LightGBM",
+  "target": "total_delitos",
+  "n_features": 40,
+  "metrics": {
+    "rmse": 29.579860243301148,
+    "mae": 5.536185376696954,
+    "r2": 0.9314437149713023,
+    "mape": 8.019802264415752,
+    "speed": {
+      "single_prediction_ms": 1.1082464699575212,
+      "batch_100_ms": 1.3872876500317943,
+      "full_dataset_ms": 28.195234001032077,
+      "predictions_per_second": 324274.6628620044
+    }
+  },
+  "lgbm_params": {
+    "objective": "regression",
+    "metric": "rmse",
+    "boosting_type": "gbdt",
+    "learning_rate": 0.05,
+    "num_leaves": 31,
+    "max_depth": -1,
+    "min_child_samples": 20,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 5,
+    "n_estimators": 500,
+    "early_stopping_rounds": 50,
+    "verbose": -1,
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "best_iteration": 456,
+  "trained_at": "2025-11-26T19:04:22.599115",
+  "dataset": "/home/byverbel/challenges/Datos-al-Ecosistema/data/gold/model/regression_monthly_dataset.parquet",
+  "top_features": [
+    {
+      "feature": "n_dias_semana",
+      "importance": 1286
+    },
+    {
+      "feature": "roll_std_3",
+      "importance": 1195
+    },
+    {
+      "feature": "roll_mean_3",
+      "importance": 1123
+    },
+    {
+      "feature": "n_fines_de_semana",
+      "importance": 1103
+    },
+    {
+      "feature": "lag_1",
+      "importance": 952
+    },
+    {
+      "feature": "pct_change_1",
+      "importance": 917
+    },
+    {
+      "feature": "n_dias_laborales",
+      "importance": 844
+    },
+    {
+      "feature": "lag_3",
+      "importance": 806
+    },
+    {
+      "feature": "pct_change_3",
+      "importance": 690
+    },
+    {
+      "feature": "lag_12",
+      "importance": 643
+    }
+  ]
+}
