@@ -1,13 +1,27 @@
+"""
+01_generate_polygon_santander.py
+=================================
+
+Descarga el GeoJSON de municipios de Santander desde GitHub.
+
+Fuente:
+    https://github.com/caticoa3/colombia_mapa
+
+Salida:
+    data/bronze/dane_geo/santander_municipios.geojson
+"""
+
 from pathlib import Path
 
-import requests
 import geopandas as gpd
+import requests
 
+# === CONFIGURACIÓN ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def gen_pol() -> None:
+def generate_santander_polygon() -> None:
     url = "https://raw.githubusercontent.com/caticoa3/colombia_mapa/master/co_2018_MGN_MPIO_POLITICO.geojson"
 
     # Descargar archivo
@@ -35,5 +49,10 @@ def gen_pol() -> None:
 
     print("Proceso completado con éxito.")
 
+def main() -> None:
+    """Función principal del script."""
+    generate_santander_polygon()
+
+
 if __name__ == "__main__":
-    gen_pol()
+    main()

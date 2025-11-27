@@ -10,6 +10,13 @@ Datos-al-Ecosistema/
 │   ├── bronze/          # Datos crudos
 │   ├── silver/          # Datos limpios
 │   └── gold/            # Datos integrados
+│       ├── base/        # Datasets base limpios
+│       ├── analytics/   # Dataset analítico enriquecido
+│       └── model/       # Datasets preparados para ML
+├── models/              # Modelos entrenados
+│   ├── *.joblib         # Modelos serializados
+│   ├── *_features.json  # Features requeridas
+│   └── *_metadata.json  # Métricas y configuración
 ├── scripts/             # Pipeline de procesamiento
 ├── utils/               # Utilidades compartidas
 └── docs/                # Documentación
@@ -48,6 +55,7 @@ Los scripts siguen el patrón `NN_descripcion.py`:
 | `02_` | Silver | `02_process_policia.py` |
 | `03_` | Gold | `03_generate_gold.py` |
 | `04_` | Model/Analytics | `04_generate_analytics.py` |
+| `05_` | ML Training | `05_train_crime_rate_model.py` |
 
 ---
 
@@ -56,6 +64,19 @@ Los scripts siguen el patrón `NN_descripcion.py`:
 Cada script debe seguir esta estructura:
 
 ```python
+"""
+NN_nombre_script.py
+====================
+
+Descripción breve del script.
+
+Entrada:
+    data/silver/archivo_entrada.parquet
+
+Salida:
+    data/gold/archivo_salida.parquet
+"""
+
 from pathlib import Path
 
 import pandas as pd
@@ -72,6 +93,11 @@ INPUT_FILE = DATA_DIR / "silver" / "archivo.parquet"
 OUTPUT_FILE = DATA_DIR / "gold" / "resultado.parquet"
 
 
+def ensure_folder(path: Path) -> None:
+    """Crea directorio si no existe."""
+    path.mkdir(parents=True, exist_ok=True)
+
+
 def load_data() -> pd.DataFrame:
     """Carga los datos de entrada."""
     ...
@@ -84,9 +110,17 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     """Función principal del script."""
+    print("=" * 60)
+    print("NOMBRE DEL PROCESO")
+    print("=" * 60)
+    
     df = load_data()
     df = process_data(df)
+    
+    ensure_folder(OUTPUT_FILE.parent)
     df.to_parquet(OUTPUT_FILE, index=False)
+    
+    print(f"✔ Archivo generado: {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
@@ -95,10 +129,55 @@ if __name__ == "__main__":
 
 ### Secciones obligatorias
 
-1. **Imports**: Ordenados (stdlib, terceros, locales)
-2. **Configuración**: Constantes y rutas al inicio
-3. **Funciones**: Lógica modularizada
-4. **Main**: Punto de entrada con `if __name__ == "__main__"`
+1. **Docstring de módulo**: Descripción, entrada y salida
+2. **Imports**: Ordenados (stdlib, terceros, locales)
+3. **Configuración**: Constantes y rutas al inicio
+4. **Funciones utilitarias**: `ensure_folder()` para crear directorios
+5. **Funciones de negocio**: Lógica modularizada
+6. **Main**: Punto de entrada con `if __name__ == "__main__"`
+
+### Docstring de módulo
+
+Todos los scripts deben tener un docstring al inicio con:
+
+```python
+"""
+NN_nombre_script.py
+====================
+
+Descripción de lo que hace el script.
+
+Entrada:
+    ruta/al/archivo/entrada.parquet
+
+Salida:
+    ruta/al/archivo/salida.parquet
+
+Notas adicionales (opcional):
+    - Detalles de implementación
+    - Uso desde línea de comandos
+"""
+```
+
+### Función `ensure_folder`
+
+Usar esta función estándar para crear directorios:
+
+```python
+def ensure_folder(path: Path) -> None:
+    """Crea directorio si no existe."""
+    path.mkdir(parents=True, exist_ok=True)
+```
+
+### Separadores visuales
+
+Para scripts largos, usar separadores de 60 caracteres:
+
+```python
+print("=" * 60)
+print("NOMBRE DEL PROCESO")
+print("=" * 60)
+```
 
 ---
 
