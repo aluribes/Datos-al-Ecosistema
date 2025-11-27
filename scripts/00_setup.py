@@ -1,5 +1,18 @@
+"""
+00_setup.py
+===========
+
+Crea la estructura de carpetas del proyecto.
+
+Salida:
+    data/bronze/  - Datos crudos
+    data/silver/  - Datos limpios
+    data/gold/    - Datos integrados
+"""
+
 from pathlib import Path
 
+# === CONFIGURACIÓN ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 

@@ -1,6 +1,19 @@
-import pandas as pd
+"""
+02_process_policia.py
+=====================
+
+Procesa datos de la Policía Nacional para la capa Silver.
+
+Entrada:
+    data/bronze/policia_scraping/*.xlsx
+
+Salida:
+    data/silver/policia_scraping/policia_santander.parquet
+"""
+
 from pathlib import Path
-from typing import List
+
+import pandas as pd
 
 # Rutas y configuración
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
