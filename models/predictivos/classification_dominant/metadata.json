@@ -1,0 +1,74 @@
+{
+  "model_name": "classification_dominant",
+  "model_type": "MultiOutputClassifier",
+  "base_estimator": "XGBClassifier",
+  "created_at": "2025-11-28T14:30:06.557571",
+  "features": [
+    "anio",
+    "mes",
+    "codigo_municipio",
+    "count_delito",
+    "count_arma",
+    "mes_sin",
+    "mes_cos",
+    "count_delito_lag1",
+    "count_delito_lag2",
+    "count_delito_lag3",
+    "count_arma_lag1",
+    "count_arma_lag2",
+    "count_arma_lag3",
+    "count_delito_ma3",
+    "count_arma_ma3"
+  ],
+  "targets": [
+    "delito_dominante",
+    "arma_dominante"
+  ],
+  "target_classes": {
+    "delito_dominante": [
+      "ABIGEATO",
+      "AMENAZAS",
+      "DELITOS SEXUALES",
+      "EXTORSION",
+      "HOMICIDIOS",
+      "HURTOS",
+      "LESIONES",
+      "VIOLENCIA INTRAFAMILIAR"
+    ],
+    "arma_dominante": [
+      "ACIDO",
+      "ARMA BLANCA / CORTOPUNZANTE",
+      "ARMA DE FUEGO",
+      "CONTUNDENTES",
+      "NO REPORTADO",
+      "OTROS",
+      "SIN EMPLEO DE ARMAS",
+      "VEHICULO"
+    ]
+  },
+  "best_params": {
+    "colsample_bytree": 0.9100531293444458,
+    "gamma": 0.46974947078209456,
+    "learning_rate": 0.27844820512829466,
+    "max_depth": 10,
+    "min_child_weight": 7,
+    "n_estimators": 298,
+    "subsample": 0.9844688097397396
+  },
+  "metrics": {
+    "delito_dominante": {
+      "accuracy": 0.4984035759897829,
+      "f1_weighted": 0.43807302458178254
+    },
+    "arma_dominante": {
+      "accuracy": 0.6922094508301405,
+      "f1_weighted": 0.6892569470382852
+    },
+    "promedio": {
+      "f1_weighted": 0.5636649858100339
+    }
+  },
+  "train_samples": 13311,
+  "test_samples": 3132,
+  "year_split": 2023
+}

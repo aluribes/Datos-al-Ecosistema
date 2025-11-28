@@ -1,0 +1,58 @@
+{
+  "generado": "2025-11-28T15:53:27.129932",
+  "total": 343861,
+  "n_tipos": 8,
+  "delito_mas_comun": {
+    "nombre": "LESIONES",
+    "cantidad": 122348,
+    "porcentaje": 35.58
+  },
+  "delito_menos_comun": {
+    "nombre": "ABIGEATO",
+    "cantidad": 1287,
+    "porcentaje": 0.37
+  },
+  "distribucion": [
+    {
+      "delito": "LESIONES",
+      "cantidad": 122348,
+      "porcentaje": 35.58
+    },
+    {
+      "delito": "HURTOS",
+      "cantidad": 104201,
+      "porcentaje": 30.3
+    },
+    {
+      "delito": "VIOLENCIA INTRAFAMILIAR",
+      "cantidad": 55049,
+      "porcentaje": 16.01
+    },
+    {
+      "delito": "AMENAZAS",
+      "cantidad": 32123,
+      "porcentaje": 9.34
+    },
+    {
+      "delito": "DELITOS SEXUALES",
+      "cantidad": 16561,
+      "porcentaje": 4.82
+    },
+    {
+      "delito": "HOMICIDIOS",
+      "cantidad": 9340,
+      "porcentaje": 2.72
+    },
+    {
+      "delito": "EXTORSION",
+      "cantidad": 2952,
+      "porcentaje": 0.86
+    },
+    {
+      "delito": "ABIGEATO",
+      "cantidad": 1287,
+      "porcentaje": 0.37
+    }
+  ],
+  "ratio_desbalance": 95.1
+}

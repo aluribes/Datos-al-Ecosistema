@@ -1,0 +1,1742 @@
+{
+  "68001": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 183490,
+      "promedio_mensual": 965.74,
+      "maximo_mensual": 1769
+    },
+    "tendencia": {
+      "variacion_anual_pct": 22.59,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 623881,
+    "densidad_poblacional": 4079.9
+  },
+  "68013": {
+    "total_registros": 72,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 80.56,
+      "MEDIO": 19.44,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 127,
+      "promedio_mensual": 1.76,
+      "maximo_mensual": 6
+    },
+    "tendencia": {
+      "variacion_anual_pct": 66.67,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 1958,
+    "densidad_poblacional": 26.03
+  },
+  "68020": {
+    "total_registros": 126,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 69.05,
+      "MEDIO": 29.37,
+      "ALTO": 1.59
+    },
+    "delitos": {
+      "total": 281,
+      "promedio_mensual": 2.23,
+      "maximo_mensual": 10
+    },
+    "tendencia": {
+      "variacion_anual_pct": 154.55,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4352,
+    "densidad_poblacional": 26.18
+  },
+  "68051": {
+    "total_registros": 185,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 15.14,
+      "MEDIO": 63.24,
+      "ALTO": 21.62
+    },
+    "delitos": {
+      "total": 1101,
+      "promedio_mensual": 5.95,
+      "maximo_mensual": 27
+    },
+    "tendencia": {
+      "variacion_anual_pct": 44.58,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 8787,
+    "densidad_poblacional": 51.75
+  },
+  "68077": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 9090,
+      "promedio_mensual": 47.84,
+      "maximo_mensual": 134
+    },
+    "tendencia": {
+      "variacion_anual_pct": 39.23,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 33341,
+    "densidad_poblacional": 714.48
+  },
+  "68079": {
+    "total_registros": 177,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 38.42,
+      "MEDIO": 46.89,
+      "ALTO": 14.69
+    },
+    "delitos": {
+      "total": 742,
+      "promedio_mensual": 4.19,
+      "maximo_mensual": 15
+    },
+    "tendencia": {
+      "variacion_anual_pct": 37.7,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 11242,
+    "densidad_poblacional": 81.89
+  },
+  "68081": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 65038,
+      "promedio_mensual": 342.31,
+      "maximo_mensual": 741
+    },
+    "tendencia": {
+      "variacion_anual_pct": 12.04,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 217742,
+    "densidad_poblacional": 164.11
+  },
+  "68092": {
+    "total_registros": 170,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 27.65,
+      "MEDIO": 62.35,
+      "ALTO": 10.0
+    },
+    "delitos": {
+      "total": 744,
+      "promedio_mensual": 4.38,
+      "maximo_mensual": 26
+    },
+    "tendencia": {
+      "variacion_anual_pct": 64.1,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 6313,
+    "densidad_poblacional": 14.64
+  },
+  "68101": {
+    "total_registros": 180,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 25.56,
+      "MEDIO": 56.11,
+      "ALTO": 18.33
+    },
+    "delitos": {
+      "total": 837,
+      "promedio_mensual": 4.65,
+      "maximo_mensual": 17
+    },
+    "tendencia": {
+      "variacion_anual_pct": 72.5,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 12000,
+    "densidad_poblacional": 11.88
+  },
+  "68121": {
+    "total_registros": 92,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 81.52,
+      "MEDIO": 18.48,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 166,
+      "promedio_mensual": 1.8,
+      "maximo_mensual": 7
+    },
+    "tendencia": {
+      "variacion_anual_pct": -27.27,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 2046,
+    "densidad_poblacional": 31.2
+  },
+  "68132": {
+    "total_registros": 120,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 64.17,
+      "MEDIO": 35.0,
+      "ALTO": 0.83
+    },
+    "delitos": {
+      "total": 287,
+      "promedio_mensual": 2.39,
+      "maximo_mensual": 14
+    },
+    "tendencia": {
+      "variacion_anual_pct": 92.86,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2275,
+    "densidad_poblacional": 50.54
+  },
+  "68147": {
+    "total_registros": 170,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 40.0,
+      "MEDIO": 51.76,
+      "ALTO": 8.24
+    },
+    "delitos": {
+      "total": 652,
+      "promedio_mensual": 3.84,
+      "maximo_mensual": 21
+    },
+    "tendencia": {
+      "variacion_anual_pct": 36.59,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5777,
+    "densidad_poblacional": 67.74
+  },
+  "68152": {
+    "total_registros": 89,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 73.03,
+      "MEDIO": 26.97,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 178,
+      "promedio_mensual": 2.0,
+      "maximo_mensual": 7
+    },
+    "tendencia": {
+      "variacion_anual_pct": 137.5,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4494,
+    "densidad_poblacional": 17.35
+  },
+  "68160": {
+    "total_registros": 48,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 85.42,
+      "MEDIO": 14.58,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 80,
+      "promedio_mensual": 1.67,
+      "maximo_mensual": 4
+    },
+    "tendencia": {
+      "variacion_anual_pct": 0.0,
+      "direccion": "estable"
+    },
+    "poblacion_total": 2133,
+    "densidad_poblacional": 19.76
+  },
+  "68162": {
+    "total_registros": 156,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 52.56,
+      "MEDIO": 40.38,
+      "ALTO": 7.05
+    },
+    "delitos": {
+      "total": 514,
+      "promedio_mensual": 3.29,
+      "maximo_mensual": 18
+    },
+    "tendencia": {
+      "variacion_anual_pct": 25.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 7159,
+    "densidad_poblacional": 17.0
+  },
+  "68167": {
+    "total_registros": 190,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 6.84,
+      "MEDIO": 49.47,
+      "ALTO": 43.68
+    },
+    "delitos": {
+      "total": 1452,
+      "promedio_mensual": 7.64,
+      "maximo_mensual": 22
+    },
+    "tendencia": {
+      "variacion_anual_pct": 38.57,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 12924,
+    "densidad_poblacional": 30.83
+  },
+  "68169": {
+    "total_registros": 133,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 69.92,
+      "MEDIO": 26.32,
+      "ALTO": 3.76
+    },
+    "delitos": {
+      "total": 320,
+      "promedio_mensual": 2.41,
+      "maximo_mensual": 11
+    },
+    "tendencia": {
+      "variacion_anual_pct": -35.71,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 3040,
+    "densidad_poblacional": 23.99
+  },
+  "68176": {
+    "total_registros": 115,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 57.39,
+      "MEDIO": 40.0,
+      "ALTO": 2.61
+    },
+    "delitos": {
+      "total": 293,
+      "promedio_mensual": 2.55,
+      "maximo_mensual": 10
+    },
+    "tendencia": {
+      "variacion_anual_pct": 65.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3030,
+    "densidad_poblacional": 17.49
+  },
+  "68179": {
+    "total_registros": 110,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 70.0,
+      "MEDIO": 28.18,
+      "ALTO": 1.82
+    },
+    "delitos": {
+      "total": 248,
+      "promedio_mensual": 2.25,
+      "maximo_mensual": 11
+    },
+    "tendencia": {
+      "variacion_anual_pct": 37.5,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5399,
+    "densidad_poblacional": 56.87
+  },
+  "68190": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 6780,
+      "promedio_mensual": 35.68,
+      "maximo_mensual": 89
+    },
+    "tendencia": {
+      "variacion_anual_pct": 56.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 35979,
+    "densidad_poblacional": 11.33
+  },
+  "68207": {
+    "total_registros": 135,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 52.59,
+      "MEDIO": 44.44,
+      "ALTO": 2.96
+    },
+    "delitos": {
+      "total": 373,
+      "promedio_mensual": 2.76,
+      "maximo_mensual": 8
+    },
+    "tendencia": {
+      "variacion_anual_pct": -24.0,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 6086,
+    "densidad_poblacional": 18.05
+  },
+  "68209": {
+    "total_registros": 138,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 59.42,
+      "MEDIO": 39.86,
+      "ALTO": 0.72
+    },
+    "delitos": {
+      "total": 336,
+      "promedio_mensual": 2.43,
+      "maximo_mensual": 8
+    },
+    "tendencia": {
+      "variacion_anual_pct": 37.5,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3272,
+    "densidad_poblacional": 45.81
+  },
+  "68211": {
+    "total_registros": 144,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 62.5,
+      "MEDIO": 34.03,
+      "ALTO": 3.47
+    },
+    "delitos": {
+      "total": 382,
+      "promedio_mensual": 2.65,
+      "maximo_mensual": 11
+    },
+    "tendencia": {
+      "variacion_anual_pct": -39.39,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 3896,
+    "densidad_poblacional": 28.4
+  },
+  "68217": {
+    "total_registros": 161,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 44.72,
+      "MEDIO": 49.69,
+      "ALTO": 5.59
+    },
+    "delitos": {
+      "total": 527,
+      "promedio_mensual": 3.27,
+      "maximo_mensual": 12
+    },
+    "tendencia": {
+      "variacion_anual_pct": 52.17,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5334,
+    "densidad_poblacional": 9.24
+  },
+  "68229": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 6.84,
+      "MEDIO": 44.74,
+      "ALTO": 48.42
+    },
+    "delitos": {
+      "total": 1538,
+      "promedio_mensual": 8.09,
+      "maximo_mensual": 27
+    },
+    "tendencia": {
+      "variacion_anual_pct": -16.22,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 13398,
+    "densidad_poblacional": 54.86
+  },
+  "68235": {
+    "total_registros": 181,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 17.13,
+      "MEDIO": 49.72,
+      "ALTO": 33.15
+    },
+    "delitos": {
+      "total": 1160,
+      "promedio_mensual": 6.41,
+      "maximo_mensual": 28
+    },
+    "tendencia": {
+      "variacion_anual_pct": 35.44,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 22758,
+    "densidad_poblacional": 24.63
+  },
+  "68245": {
+    "total_registros": 88,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 86.36,
+      "MEDIO": 12.5,
+      "ALTO": 1.14
+    },
+    "delitos": {
+      "total": 150,
+      "promedio_mensual": 1.7,
+      "maximo_mensual": 10
+    },
+    "tendencia": {
+      "variacion_anual_pct": -30.0,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 2291,
+    "densidad_poblacional": 24.64
+  },
+  "68250": {
+    "total_registros": 139,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 56.12,
+      "MEDIO": 38.13,
+      "ALTO": 5.76
+    },
+    "delitos": {
+      "total": 409,
+      "promedio_mensual": 2.94,
+      "maximo_mensual": 13
+    },
+    "tendencia": {
+      "variacion_anual_pct": 188.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5443,
+    "densidad_poblacional": 13.67
+  },
+  "68255": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 3.16,
+      "MEDIO": 38.42,
+      "ALTO": 58.42
+    },
+    "delitos": {
+      "total": 1800,
+      "promedio_mensual": 9.47,
+      "maximo_mensual": 25
+    },
+    "tendencia": {
+      "variacion_anual_pct": 29.41,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 14313,
+    "densidad_poblacional": 31.46
+  },
+  "68264": {
+    "total_registros": 77,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 77.92,
+      "MEDIO": 22.08,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 134,
+      "promedio_mensual": 1.74,
+      "maximo_mensual": 5
+    },
+    "tendencia": {
+      "variacion_anual_pct": 133.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2756,
+    "densidad_poblacional": 6.88
+  },
+  "68266": {
+    "total_registros": 104,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 75.0,
+      "MEDIO": 25.0,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 217,
+      "promedio_mensual": 2.09,
+      "maximo_mensual": 7
+    },
+    "tendencia": {
+      "variacion_anual_pct": 58.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3677,
+    "densidad_poblacional": 49.15
+  },
+  "68271": {
+    "total_registros": 159,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 46.54,
+      "MEDIO": 48.43,
+      "ALTO": 5.03
+    },
+    "delitos": {
+      "total": 534,
+      "promedio_mensual": 3.36,
+      "maximo_mensual": 15
+    },
+    "tendencia": {
+      "variacion_anual_pct": 58.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 6127,
+    "densidad_poblacional": 34.69
+  },
+  "68276": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 53005,
+      "promedio_mensual": 278.97,
+      "maximo_mensual": 538
+    },
+    "tendencia": {
+      "variacion_anual_pct": 45.29,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 342373,
+    "densidad_poblacional": 3412.55
+  },
+  "68296": {
+    "total_registros": 112,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 72.32,
+      "MEDIO": 23.21,
+      "ALTO": 4.46
+    },
+    "delitos": {
+      "total": 268,
+      "promedio_mensual": 2.39,
+      "maximo_mensual": 16
+    },
+    "tendencia": {
+      "variacion_anual_pct": 106.25,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3059,
+    "densidad_poblacional": 15.16
+  },
+  "68298": {
+    "total_registros": 162,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 41.98,
+      "MEDIO": 48.77,
+      "ALTO": 9.26
+    },
+    "delitos": {
+      "total": 584,
+      "promedio_mensual": 3.6,
+      "maximo_mensual": 20
+    },
+    "tendencia": {
+      "variacion_anual_pct": 118.42,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4251,
+    "densidad_poblacional": 6.99
+  },
+  "68307": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 39282,
+      "promedio_mensual": 206.75,
+      "maximo_mensual": 444
+    },
+    "tendencia": {
+      "variacion_anual_pct": 27.38,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 176745,
+    "densidad_poblacional": 358.49
+  },
+  "68318": {
+    "total_registros": 149,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 53.69,
+      "MEDIO": 41.61,
+      "ALTO": 4.7
+    },
+    "delitos": {
+      "total": 444,
+      "promedio_mensual": 2.98,
+      "maximo_mensual": 16
+    },
+    "tendencia": {
+      "variacion_anual_pct": 0.0,
+      "direccion": "estable"
+    },
+    "poblacion_total": 6339,
+    "densidad_poblacional": 20.96
+  },
+  "68320": {
+    "total_registros": 173,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 35.26,
+      "MEDIO": 55.49,
+      "ALTO": 9.25
+    },
+    "delitos": {
+      "total": 661,
+      "promedio_mensual": 3.82,
+      "maximo_mensual": 14
+    },
+    "tendencia": {
+      "variacion_anual_pct": 103.57,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4782,
+    "densidad_poblacional": 32.68
+  },
+  "68322": {
+    "total_registros": 113,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 80.53,
+      "MEDIO": 18.58,
+      "ALTO": 0.88
+    },
+    "delitos": {
+      "total": 218,
+      "promedio_mensual": 1.93,
+      "maximo_mensual": 9
+    },
+    "tendencia": {
+      "variacion_anual_pct": 0.0,
+      "direccion": "estable"
+    },
+    "poblacion_total": 2533,
+    "densidad_poblacional": 37.64
+  },
+  "68324": {
+    "total_registros": 148,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 56.76,
+      "MEDIO": 41.89,
+      "ALTO": 1.35
+    },
+    "delitos": {
+      "total": 374,
+      "promedio_mensual": 2.53,
+      "maximo_mensual": 10
+    },
+    "tendencia": {
+      "variacion_anual_pct": 73.68,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4484,
+    "densidad_poblacional": 53.51
+  },
+  "68327": {
+    "total_registros": 178,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 25.28,
+      "MEDIO": 57.3,
+      "ALTO": 17.42
+    },
+    "delitos": {
+      "total": 857,
+      "promedio_mensual": 4.81,
+      "maximo_mensual": 16
+    },
+    "tendencia": {
+      "variacion_anual_pct": -1.59,
+      "direccion": "estable"
+    },
+    "poblacion_total": 5441,
+    "densidad_poblacional": 180.42
+  },
+  "68344": {
+    "total_registros": 104,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 67.31,
+      "MEDIO": 30.77,
+      "ALTO": 1.92
+    },
+    "delitos": {
+      "total": 229,
+      "promedio_mensual": 2.2,
+      "maximo_mensual": 9
+    },
+    "tendencia": {
+      "variacion_anual_pct": 20.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2443,
+    "densidad_poblacional": 14.45
+  },
+  "68368": {
+    "total_registros": 121,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 69.42,
+      "MEDIO": 28.93,
+      "ALTO": 1.65
+    },
+    "delitos": {
+      "total": 243,
+      "promedio_mensual": 2.01,
+      "maximo_mensual": 8
+    },
+    "tendencia": {
+      "variacion_anual_pct": 312.5,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3469,
+    "densidad_poblacional": 38.72
+  },
+  "68370": {
+    "total_registros": 29,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 86.21,
+      "MEDIO": 13.79,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 55,
+      "promedio_mensual": 1.9,
+      "maximo_mensual": 7
+    },
+    "tendencia": {
+      "variacion_anual_pct": 0,
+      "direccion": "estable"
+    },
+    "poblacion_total": 1413,
+    "densidad_poblacional": 35.41
+  },
+  "68377": {
+    "total_registros": 161,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 47.2,
+      "MEDIO": 48.45,
+      "ALTO": 4.35
+    },
+    "delitos": {
+      "total": 489,
+      "promedio_mensual": 3.04,
+      "maximo_mensual": 13
+    },
+    "tendencia": {
+      "variacion_anual_pct": -23.08,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 6727,
+    "densidad_poblacional": 20.07
+  },
+  "68385": {
+    "total_registros": 190,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 10.53,
+      "MEDIO": 56.84,
+      "ALTO": 32.63
+    },
+    "delitos": {
+      "total": 1364,
+      "promedio_mensual": 7.18,
+      "maximo_mensual": 39
+    },
+    "tendencia": {
+      "variacion_anual_pct": 28.1,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 10782,
+    "densidad_poblacional": 18.27
+  },
+  "68397": {
+    "total_registros": 143,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 58.74,
+      "MEDIO": 37.76,
+      "ALTO": 3.5
+    },
+    "delitos": {
+      "total": 371,
+      "promedio_mensual": 2.59,
+      "maximo_mensual": 11
+    },
+    "tendencia": {
+      "variacion_anual_pct": 141.67,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5267,
+    "densidad_poblacional": 18.52
+  },
+  "68406": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.53,
+      "ALTO": 99.47
+    },
+    "delitos": {
+      "total": 6632,
+      "promedio_mensual": 34.91,
+      "maximo_mensual": 100
+    },
+    "tendencia": {
+      "variacion_anual_pct": 48.44,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 46375,
+    "densidad_poblacional": 84.25
+  },
+  "68418": {
+    "total_registros": 186,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 19.35,
+      "MEDIO": 47.85,
+      "ALTO": 32.8
+    },
+    "delitos": {
+      "total": 1162,
+      "promedio_mensual": 6.25,
+      "maximo_mensual": 24
+    },
+    "tendencia": {
+      "variacion_anual_pct": 7.69,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 15608,
+    "densidad_poblacional": 53.8
+  },
+  "68425": {
+    "total_registros": 82,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 85.37,
+      "MEDIO": 13.41,
+      "ALTO": 1.22
+    },
+    "delitos": {
+      "total": 144,
+      "promedio_mensual": 1.76,
+      "maximo_mensual": 8
+    },
+    "tendencia": {
+      "variacion_anual_pct": -33.33,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 2289,
+    "densidad_poblacional": 22.24
+  },
+  "68432": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.53,
+      "MEDIO": 11.05,
+      "ALTO": 88.42
+    },
+    "delitos": {
+      "total": 2878,
+      "promedio_mensual": 15.15,
+      "maximo_mensual": 49
+    },
+    "tendencia": {
+      "variacion_anual_pct": 55.97,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 21866,
+    "densidad_poblacional": 382.4
+  },
+  "68444": {
+    "total_registros": 165,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 46.06,
+      "MEDIO": 47.27,
+      "ALTO": 6.67
+    },
+    "delitos": {
+      "total": 563,
+      "promedio_mensual": 3.41,
+      "maximo_mensual": 23
+    },
+    "tendencia": {
+      "variacion_anual_pct": 76.47,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5377,
+    "densidad_poblacional": 22.81
+  },
+  "68464": {
+    "total_registros": 185,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 7.57,
+      "MEDIO": 60.0,
+      "ALTO": 32.43
+    },
+    "delitos": {
+      "total": 1296,
+      "promedio_mensual": 7.01,
+      "maximo_mensual": 30
+    },
+    "tendencia": {
+      "variacion_anual_pct": 31.68,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 10966,
+    "densidad_poblacional": 22.66
+  },
+  "68468": {
+    "total_registros": 105,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 87.62,
+      "MEDIO": 11.43,
+      "ALTO": 0.95
+    },
+    "delitos": {
+      "total": 177,
+      "promedio_mensual": 1.69,
+      "maximo_mensual": 8
+    },
+    "tendencia": {
+      "variacion_anual_pct": 133.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4355,
+    "densidad_poblacional": 24.13
+  },
+  "68498": {
+    "total_registros": 156,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 51.28,
+      "MEDIO": 44.87,
+      "ALTO": 3.85
+    },
+    "delitos": {
+      "total": 465,
+      "promedio_mensual": 2.98,
+      "maximo_mensual": 18
+    },
+    "tendencia": {
+      "variacion_anual_pct": 108.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 6252,
+    "densidad_poblacional": 83.11
+  },
+  "68500": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 3.68,
+      "MEDIO": 41.58,
+      "ALTO": 54.74
+    },
+    "delitos": {
+      "total": 1777,
+      "promedio_mensual": 9.35,
+      "maximo_mensual": 32
+    },
+    "tendencia": {
+      "variacion_anual_pct": 91.74,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 11194,
+    "densidad_poblacional": 39.13
+  },
+  "68502": {
+    "total_registros": 141,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 56.74,
+      "MEDIO": 42.55,
+      "ALTO": 0.71
+    },
+    "delitos": {
+      "total": 377,
+      "promedio_mensual": 2.67,
+      "maximo_mensual": 12
+    },
+    "tendencia": {
+      "variacion_anual_pct": -24.24,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 4329,
+    "densidad_poblacional": 8.85
+  },
+  "68522": {
+    "total_registros": 70,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 81.43,
+      "MEDIO": 18.57,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 117,
+      "promedio_mensual": 1.67,
+      "maximo_mensual": 4
+    },
+    "tendencia": {
+      "variacion_anual_pct": 500.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 1501,
+    "densidad_poblacional": 76.21
+  },
+  "68524": {
+    "total_registros": 138,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 60.87,
+      "MEDIO": 37.68,
+      "ALTO": 1.45
+    },
+    "delitos": {
+      "total": 371,
+      "promedio_mensual": 2.69,
+      "maximo_mensual": 12
+    },
+    "tendencia": {
+      "variacion_anual_pct": 61.9,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2688,
+    "densidad_poblacional": 45.92
+  },
+  "68533": {
+    "total_registros": 149,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 49.66,
+      "MEDIO": 46.31,
+      "ALTO": 4.03
+    },
+    "delitos": {
+      "total": 475,
+      "promedio_mensual": 3.19,
+      "maximo_mensual": 14
+    },
+    "tendencia": {
+      "variacion_anual_pct": 159.09,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4947,
+    "densidad_poblacional": 67.78
+  },
+  "68547": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 33644,
+      "promedio_mensual": 177.07,
+      "maximo_mensual": 370
+    },
+    "tendencia": {
+      "variacion_anual_pct": 38.16,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 193440,
+    "densidad_poblacional": 399.2
+  },
+  "68549": {
+    "total_registros": 171,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 35.67,
+      "MEDIO": 56.14,
+      "ALTO": 8.19
+    },
+    "delitos": {
+      "total": 658,
+      "promedio_mensual": 3.85,
+      "maximo_mensual": 23
+    },
+    "tendencia": {
+      "variacion_anual_pct": 20.69,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 5544,
+    "densidad_poblacional": 99.83
+  },
+  "68572": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 1.05,
+      "MEDIO": 16.32,
+      "ALTO": 82.63
+    },
+    "delitos": {
+      "total": 2543,
+      "promedio_mensual": 13.38,
+      "maximo_mensual": 34
+    },
+    "tendencia": {
+      "variacion_anual_pct": 56.67,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 15716,
+    "densidad_poblacional": 62.44
+  },
+  "68573": {
+    "total_registros": 172,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 20.93,
+      "MEDIO": 48.26,
+      "ALTO": 30.81
+    },
+    "delitos": {
+      "total": 1226,
+      "promedio_mensual": 7.13,
+      "maximo_mensual": 61
+    },
+    "tendencia": {
+      "variacion_anual_pct": 92.36,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 8003,
+    "densidad_poblacional": 10.5
+  },
+  "68575": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 3.68,
+      "MEDIO": 16.84,
+      "ALTO": 79.47
+    },
+    "delitos": {
+      "total": 4396,
+      "promedio_mensual": 23.14,
+      "maximo_mensual": 68
+    },
+    "tendencia": {
+      "variacion_anual_pct": 19.95,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 36165,
+    "densidad_poblacional": 23.98
+  },
+  "68615": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 3.16,
+      "ALTO": 96.84
+    },
+    "delitos": {
+      "total": 3483,
+      "promedio_mensual": 18.33,
+      "maximo_mensual": 39
+    },
+    "tendencia": {
+      "variacion_anual_pct": 31.08,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 27283,
+    "densidad_poblacional": 23.35
+  },
+  "68655": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 7418,
+      "promedio_mensual": 39.04,
+      "maximo_mensual": 93
+    },
+    "tendencia": {
+      "variacion_anual_pct": 24.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 35145,
+    "densidad_poblacional": 25.05
+  },
+  "68669": {
+    "total_registros": 163,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 46.01,
+      "MEDIO": 48.47,
+      "ALTO": 5.52
+    },
+    "delitos": {
+      "total": 508,
+      "promedio_mensual": 3.12,
+      "maximo_mensual": 11
+    },
+    "tendencia": {
+      "variacion_anual_pct": 8.33,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 9227,
+    "densidad_poblacional": 32.77
+  },
+  "68673": {
+    "total_registros": 82,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 82.93,
+      "MEDIO": 17.07,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 140,
+      "promedio_mensual": 1.71,
+      "maximo_mensual": 6
+    },
+    "tendencia": {
+      "variacion_anual_pct": 100.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3089,
+    "densidad_poblacional": 52.26
+  },
+  "68679": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.0,
+      "ALTO": 100.0
+    },
+    "delitos": {
+      "total": 11528,
+      "promedio_mensual": 60.67,
+      "maximo_mensual": 117
+    },
+    "tendencia": {
+      "variacion_anual_pct": 22.8,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 64138,
+    "densidad_poblacional": 436.68
+  },
+  "68682": {
+    "total_registros": 105,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 76.19,
+      "MEDIO": 23.81,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 207,
+      "promedio_mensual": 1.97,
+      "maximo_mensual": 7
+    },
+    "tendencia": {
+      "variacion_anual_pct": 85.71,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2325,
+    "densidad_poblacional": 16.24
+  },
+  "68684": {
+    "total_registros": 153,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 57.52,
+      "MEDIO": 37.25,
+      "ALTO": 5.23
+    },
+    "delitos": {
+      "total": 454,
+      "promedio_mensual": 2.97,
+      "maximo_mensual": 15
+    },
+    "tendencia": {
+      "variacion_anual_pct": 436.36,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 4489,
+    "densidad_poblacional": 59.61
+  },
+  "68686": {
+    "total_registros": 62,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 90.32,
+      "MEDIO": 9.68,
+      "ALTO": 0.0
+    },
+    "delitos": {
+      "total": 93,
+      "promedio_mensual": 1.5,
+      "maximo_mensual": 4
+    },
+    "tendencia": {
+      "variacion_anual_pct": -14.29,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 2711,
+    "densidad_poblacional": 38.07
+  },
+  "68689": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 1.05,
+      "ALTO": 98.95
+    },
+    "delitos": {
+      "total": 4015,
+      "promedio_mensual": 21.13,
+      "maximo_mensual": 54
+    },
+    "tendencia": {
+      "variacion_anual_pct": 15.19,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 37031,
+    "densidad_poblacional": 33.17
+  },
+  "68705": {
+    "total_registros": 86,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 79.07,
+      "MEDIO": 18.6,
+      "ALTO": 2.33
+    },
+    "delitos": {
+      "total": 160,
+      "promedio_mensual": 1.86,
+      "maximo_mensual": 9
+    },
+    "tendencia": {
+      "variacion_anual_pct": 40.0,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2532,
+    "densidad_poblacional": 11.45
+  },
+  "68720": {
+    "total_registros": 134,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 64.18,
+      "MEDIO": 34.33,
+      "ALTO": 1.49
+    },
+    "delitos": {
+      "total": 330,
+      "promedio_mensual": 2.46,
+      "maximo_mensual": 17
+    },
+    "tendencia": {
+      "variacion_anual_pct": 85.71,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 3601,
+    "densidad_poblacional": 9.63
+  },
+  "68745": {
+    "total_registros": 183,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 15.3,
+      "MEDIO": 62.3,
+      "ALTO": 22.4
+    },
+    "delitos": {
+      "total": 1040,
+      "promedio_mensual": 5.68,
+      "maximo_mensual": 25
+    },
+    "tendencia": {
+      "variacion_anual_pct": 66.67,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 10882,
+    "densidad_poblacional": 12.03
+  },
+  "68755": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 0.53,
+      "ALTO": 99.47
+    },
+    "delitos": {
+      "total": 6349,
+      "promedio_mensual": 33.42,
+      "maximo_mensual": 74
+    },
+    "tendencia": {
+      "variacion_anual_pct": 31.12,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 36199,
+    "densidad_poblacional": 283.19
+  },
+  "68770": {
+    "total_registros": 190,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 8.42,
+      "MEDIO": 52.11,
+      "ALTO": 39.47
+    },
+    "delitos": {
+      "total": 1409,
+      "promedio_mensual": 7.42,
+      "maximo_mensual": 31
+    },
+    "tendencia": {
+      "variacion_anual_pct": 47.06,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 10783,
+    "densidad_poblacional": 37.81
+  },
+  "68773": {
+    "total_registros": 146,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 66.44,
+      "MEDIO": 31.51,
+      "ALTO": 2.05
+    },
+    "delitos": {
+      "total": 359,
+      "promedio_mensual": 2.46,
+      "maximo_mensual": 14
+    },
+    "tendencia": {
+      "variacion_anual_pct": -45.45,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 7643,
+    "densidad_poblacional": 14.63
+  },
+  "68780": {
+    "total_registros": 132,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 59.85,
+      "MEDIO": 36.36,
+      "ALTO": 3.79
+    },
+    "delitos": {
+      "total": 355,
+      "promedio_mensual": 2.69,
+      "maximo_mensual": 16
+    },
+    "tendencia": {
+      "variacion_anual_pct": -22.86,
+      "direccion": "decremento"
+    },
+    "poblacion_total": 4167,
+    "densidad_poblacional": 11.48
+  },
+  "68820": {
+    "total_registros": 178,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 25.28,
+      "MEDIO": 50.56,
+      "ALTO": 24.16
+    },
+    "delitos": {
+      "total": 991,
+      "promedio_mensual": 5.57,
+      "maximo_mensual": 22
+    },
+    "tendencia": {
+      "variacion_anual_pct": 108.7,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 7718,
+    "densidad_poblacional": 23.34
+  },
+  "68855": {
+    "total_registros": 173,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 30.06,
+      "MEDIO": 57.8,
+      "ALTO": 12.14
+    },
+    "delitos": {
+      "total": 725,
+      "promedio_mensual": 4.19,
+      "maximo_mensual": 16
+    },
+    "tendencia": {
+      "variacion_anual_pct": 28.95,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 6444,
+    "densidad_poblacional": 79.44
+  },
+  "68861": {
+    "total_registros": 190,
+    "nivel_predominante": "ALTO",
+    "distribucion_riesgo": {
+      "BAJO": 0.0,
+      "MEDIO": 4.21,
+      "ALTO": 95.79
+    },
+    "delitos": {
+      "total": 3870,
+      "promedio_mensual": 20.37,
+      "maximo_mensual": 56
+    },
+    "tendencia": {
+      "variacion_anual_pct": 5.93,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 26504,
+    "densidad_poblacional": 59.2
+  },
+  "68867": {
+    "total_registros": 104,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 69.23,
+      "MEDIO": 25.96,
+      "ALTO": 4.81
+    },
+    "delitos": {
+      "total": 265,
+      "promedio_mensual": 2.55,
+      "maximo_mensual": 15
+    },
+    "tendencia": {
+      "variacion_anual_pct": 136.36,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 2388,
+    "densidad_poblacional": 25.84
+  },
+  "68872": {
+    "total_registros": 167,
+    "nivel_predominante": "BAJO",
+    "distribucion_riesgo": {
+      "BAJO": 47.9,
+      "MEDIO": 44.91,
+      "ALTO": 7.19
+    },
+    "delitos": {
+      "total": 561,
+      "promedio_mensual": 3.36,
+      "maximo_mensual": 16
+    },
+    "tendencia": {
+      "variacion_anual_pct": 77.42,
+      "direccion": "incremento"
+    },
+    "poblacion_total": 8875,
+    "densidad_poblacional": 90.93
+  },
+  "68895": {
+    "total_registros": 164,
+    "nivel_predominante": "MEDIO",
+    "distribucion_riesgo": {
+      "BAJO": 40.24,
+      "MEDIO": 49.39,
+      "ALTO": 10.37
+    },
+    "delitos": {
+      "total": 615,
+      "promedio_mensual": 3.75,
+      "maximo_mensual": 14
+    },
+    "tendencia": {
+      "variacion_anual_pct": 2.7,
+      "direccion": "estable"
+    },
+    "poblacion_total": 10094,
+    "densidad_poblacional": 27.7
+  }
+}

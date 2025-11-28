@@ -1,0 +1,40 @@
+{
+  "fecha_entrenamiento": "2025-11-28 16:29:55",
+  "dataset": "classification_monthly_dataset.parquet",
+  "n_muestras_train_riesgo": 10178,
+  "n_muestras_test_riesgo": 2545,
+  "n_muestras_train_incr": 10178,
+  "n_muestras_test_incr": 2545,
+  "n_features": 42,
+  "modelos": {
+    "nivel_riesgo": {
+      "tipo": "RandomForestClassifier",
+      "clases": [
+        "ALTO",
+        "BAJO",
+        "MEDIO"
+      ],
+      "metricas": {
+        "accuracy": 1.0,
+        "f1_macro": 1.0
+      },
+      "hiperparametros_optimizados": null
+    },
+    "incremento": {
+      "tipo": "RandomForestClassifier",
+      "clases": [
+        "No incrementó",
+        "Incrementó"
+      ],
+      "metricas": {
+        "accuracy": 1.0,
+        "f1": 1.0
+      },
+      "hiperparametros_optimizados": null
+    }
+  },
+  "descripcion": {
+    "nivel_riesgo": "Clasifica municipios en BAJO, MEDIO o ALTO riesgo basado en patrones temporales de delitos",
+    "incremento": "Predice si el mes siguiente tendrá más delitos que el actual (incremento > 0)"
+  }
+}

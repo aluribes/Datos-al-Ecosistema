@@ -1,0 +1,103 @@
+{
+  "modelo": "XGBoost MultiOutputClassifier",
+  "nombre": "classification_event",
+  "descripcion": "Clasificación Multi-Output de Delito y Perfil por evento",
+  "creado": "2025-11-28T15:34:51.840785",
+  "targets": {
+    "delito": [
+      "ABIGEATO",
+      "AMENAZAS",
+      "DELITOS SEXUALES",
+      "EXTORSION",
+      "HOMICIDIOS",
+      "HURTOS",
+      "LESIONES",
+      "VIOLENCIA INTRAFAMILIAR"
+    ],
+    "perfil": [
+      "FEMENINO_ADOLESCENTES",
+      "FEMENINO_ADULTOS",
+      "FEMENINO_MENORES",
+      "MASCULINO_ADOLESCENTES",
+      "MASCULINO_ADULTOS",
+      "MASCULINO_MENORES",
+      "NO REPORTA_ADOLESCENTES",
+      "NO REPORTA_ADULTOS",
+      "NO REPORTA_MENORES"
+    ]
+  },
+  "features": [
+    "anio",
+    "mes",
+    "dia",
+    "trimestre",
+    "es_dia_semana",
+    "es_fin_de_semana",
+    "es_fin_mes",
+    "es_festivo",
+    "es_dia_laboral",
+    "mes_sin",
+    "mes_cos",
+    "edad_persona",
+    "codigo_municipio",
+    "area_km2",
+    "densidad_poblacional",
+    "poblacion_total",
+    "n_centros_poblados",
+    "centros_por_km2",
+    "proporcion_menores",
+    "proporcion_adultos",
+    "proporcion_adolescentes",
+    "ABIGEATO",
+    "AMENAZAS",
+    "DELITOS SEXUALES",
+    "EXTORSION",
+    "HOMICIDIOS",
+    "HURTOS",
+    "LESIONES",
+    "VIOLENCIA INTRAFAMILIAR"
+  ],
+  "features_categoricas": {
+    "edad_persona": {
+      "clases": [
+        "ADOLESCENTES",
+        "ADULTOS",
+        "MENORES"
+      ],
+      "encoding": {
+        "ADOLESCENTES": 0,
+        "ADULTOS": 1,
+        "MENORES": 2
+      }
+    }
+  },
+  "n_features": 29,
+  "hiperparametros": {
+    "estimator__subsample": 0.9,
+    "estimator__n_estimators": 100,
+    "estimator__min_child_weight": 1,
+    "estimator__max_depth": 5,
+    "estimator__learning_rate": 0.05,
+    "estimator__colsample_bytree": 1.0
+  },
+  "metricas": {
+    "accuracy_delito": 0.4714,
+    "accuracy_perfil": 0.555,
+    "f1_delito": 0.4178,
+    "f1_perfil": 0.5197,
+    "f1_promedio": 0.4688
+  },
+  "datos": {
+    "total_eventos": 343861,
+    "train_size": 275088,
+    "test_size": 68773,
+    "periodo": "2010 - 2025"
+  },
+  "archivos": [
+    "xgb_multioutput_event.joblib",
+    "label_encoder_delito.joblib",
+    "label_encoder_perfil.joblib",
+    "label_encoder_edad.joblib",
+    "scaler.joblib"
+  ]
+}
