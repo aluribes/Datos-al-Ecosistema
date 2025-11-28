@@ -352,8 +352,8 @@ def transform_bucaramanga_150(df: pd.DataFrame) -> pd.DataFrame:
     rename_map = {}
 
     # año_num puede tener tilde o no según la fuente
-    if "año_num" in df.columns:
-        rename_map["año_num"] = "anio"
+    if "a_o_num" in df.columns:
+        rename_map["a_o_num"] = "anio"
     if "ano_num" in df.columns:
         rename_map["ano_num"] = "anio"
 
@@ -429,18 +429,23 @@ def transform_bucaramanga_150(df: pd.DataFrame) -> pd.DataFrame:
         df["fecha"] = normalize_date(df, "fecha")
 
     if "hora" in df.columns:
-        # Intentar parsear la hora; valores inválidos -> null
-        hora_str = (
+        # Normalizar a strings HH:MM:SS, valores inválidos -> <NA>
+        hora_raw = (
             df["hora"]
             .astype(str)
             .str.strip()
             .replace({"": pd.NA, "NaT": pd.NA, "nan": pd.NA})
         )
+
         dt = pd.to_datetime(
-            "1970-01-01 " + hora_str.astype(str),
+            "1970-01-01 " + hora_raw.astype(str),
             errors="coerce",
         )
-        df["hora"] = dt.dt.time
+
+        hora_out = dt.dt.strftime("%H:%M:%S")
+        # Donde la conversión falló, dejamos como <NA>
+        hora_out = hora_out.where(dt.notna(), pd.NA)
+        df["hora"] = hora_out.astype("string")
 
     return df
 
