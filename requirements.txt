@@ -29,5 +29,18 @@ beautifulsoup4==4.14.2
 # --- Procesamiento de texto ---
 Unidecode==1.4.0
 
+# --- Visualización ---
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# --- Machine Learning ---
+scikit-learn>=1.4.0
+
+# --- Series temporales ---
+statsmodels>=0.14.0
+
+# --- Fechas y festivos ---
+holidays>=0.40
+
 # --- Web application ---
 streamlit==1.43.0
