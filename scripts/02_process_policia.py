@@ -16,160 +16,228 @@ from typing import List
 
 import pandas as pd
 
-# Rutas y configuración
+# === CONFIGURACIÓN ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-BRONZE_POLICIA_DIR = BASE_DIR / "data" / "bronze" / "policia_scraping"
-SILVER_POLICIA_DIR = BASE_DIR / "data" / "silver" / "policia_scraping"
-SILVER_POLICIA_FILENAME = "policia_santander.parquet"
+BRONZE_POLICE_DIR = BASE_DIR / "data" / "bronze" / "policia_scraping"
+SILVER_POLICE_DIR = BASE_DIR / "data" / "silver" / "policia_scraping"
+SILVER_POLICE_FILENAME = "policia_santander.parquet"
+
+DEPARTMENT_CODE = "68"
+DEPARTMENT_NAME = "SANTANDER"
 
 
-# Funciones auxiliares
+# =========================================================
+# Utilidades generales
+# =========================================================
 
-def detectar_fila_encabezado(
-    preview_df: pd.DataFrame,
+def ensure_folder(path: Path) -> None:
+    """Crea directorio si no existe."""
+    path.mkdir(parents=True, exist_ok=True)
+
+
+def check_exists(path: Path, label: str | None = None) -> None:
+    """Verifica que un archivo exista antes de procesarlo."""
+    if not path.exists():
+        msg = f"❌ ERROR: No se encontró el archivo requerido:\n{path}"
+        if label is not None:
+            msg += f"\n(dataset: {label})"
+        print(msg)
+        raise FileNotFoundError(msg)
+    print(f"✔ Archivo encontrado: {path}")
+
+
+def normalize_cod_muni(value) -> str:
+    """
+    Normaliza el código de municipio a 5 dígitos.
+
+    Ejemplos:
+        "68755000" -> "68755"
+        "68001" -> "68001"
+        68755 -> "68755"
+    """
+    if pd.isna(value):
+        return "00000"
+
+    # Convertir a string y limpiar
+    code = str(value).strip()
+
+    # Remover decimales si existen (ej: "68755.0")
+    if "." in code:
+        code = code.split(".")[0]
+
+    # Si tiene más de 5 dígitos, tomar los primeros 5
+    if len(code) > 5:
+        code = code[:5]
+
+    # Asegurar que tenga 5 dígitos (padding con ceros a la izquierda)
+    return code.zfill(5)
+
+
+def normalize_date(df: pd.DataFrame, date_col: str) -> pd.Series:
+    """
+    Normaliza fechas manejando múltiples formatos.
+
+    Formatos soportados:
+        - DD/MM/YYYY (ej: 10/10/2012)
+        - YYYY-MM-DDTHH:MM:SS.sss (ej: 2003-01-03T00:00:00.000)
+    """
+    return pd.to_datetime(df[date_col], format="mixed", dayfirst=True, errors="coerce")
+
+
+# =========================================================
+# Lectura y unificación de archivos de Policía
+# =========================================================
+
+def detect_header_row(
+    df: pd.DataFrame,
     min_idx: int = 9,
-    max_idx: int = 12
+    max_idx: int = 12,
 ) -> int:
     """
-    Detecta la fila de encabezado en un DataFrame de previsualización,
+    Detecta la fila de encabezado en un DataFrame,
     asumiendo que los posibles encabezados están entre min_idx y max_idx (0-based),
     escogiendo la fila con más valores no nulos.
     """
-    max_idx = min(max_idx, len(preview_df) - 1)
+    max_idx = min(max_idx, len(df) - 1)
     min_idx = max(min_idx, 0)
 
     if min_idx > max_idx:
         return 0
 
-    mejor_fila = min_idx
-    mejor_conteo = -1
+    best_row = min_idx
+    best_count = -1
 
     for i in range(min_idx, max_idx + 1):
-        row = preview_df.iloc[i]
-        conteo_no_nulos = row.notna().sum()
-        if conteo_no_nulos > mejor_conteo:
-            mejor_conteo = conteo_no_nulos
-            mejor_fila = i
+        count_not_null = df.iloc[i].notna().sum()
+        if count_not_null > best_count:
+            best_count = count_not_null
+            best_row = i
 
-    return mejor_fila
+    return best_row
 
 
-def leer_archivo_policia(path: Path) -> pd.DataFrame:
+def load_police_file(path: Path) -> pd.DataFrame:
     """
     Lee un archivo Excel de la policía (xls/xlsx), detectando la fila de encabezados
     entre los índices 9 y 12, limpiando filas vacías y añadiendo metadatos:
-    - anio
-    - delito_archivo
-    - archivo_origen
+        - anio
+        - delito_archivo
+        - archivo_origen
     """
-    print(f"\nProcesando: {path.name} ...")
+    print(f"\n➤ Procesando archivo: {path.name}")
 
-    # 1) Previsualizar el archivo sin encabezado
-    preview = pd.read_excel(path, header=None, nrows=20)
-
-    # 2) Detectar la fila de encabezado
-    header_row = detectar_fila_encabezado(preview, min_idx=9, max_idx=12)
-    print(f"  -> Fila de encabezado detectada (index): {header_row}")
-
-    # 3) Leer el archivo completo sin encabezado
+    # 1) Leer todo el archivo una sola vez (optimización)
     raw = pd.read_excel(path, header=None)
 
-    # 4) Separar encabezados y datos
+    # 2) Detectar la fila de encabezado en el DataFrame completo
+    header_row = detect_header_row(raw, min_idx=9, max_idx=12)
+    print(f"   • Fila de encabezado detectada (index): {header_row}")
+
+    # 3) Separar encabezados y datos
     header = raw.iloc[header_row]
-    df_archivo = raw.iloc[header_row + 1 :].copy()
+    df_file = raw.iloc[header_row + 1 :].copy()
 
-    # 5) Asignar encabezados
-    df_archivo.columns = header
+    # 4) Asignar encabezados
+    df_file.columns = header
 
-    # 6) Eliminar columnas cuyo encabezado sea NaN
-    df_archivo = df_archivo.loc[:, df_archivo.columns.notna()]
+    # 5) Eliminar columnas cuyo encabezado sea NaN
+    df_file = df_file.loc[:, df_file.columns.notna()]
 
-    # 7) Eliminar filas completamente vacías
-    df_archivo = df_archivo.dropna(how="all")
+    # 6) Eliminar filas completamente vacías
+    df_file = df_file.dropna(how="all")
 
-    # 8) Normalizar nombres de columnas
-    df_archivo.columns = df_archivo.columns.astype(str).str.strip()
+    # 7) Normalizar nombres de columnas
+    df_file.columns = df_file.columns.astype(str).str.strip()
 
-    # 9) Extraer metadatos desde el nombre de archivo
+    # 8) Extraer metadatos desde el nombre de archivo
     stem = path.stem  # nombre sin extensión
-    partes = stem.split("_")
+    parts = stem.split("_")
 
     # Año: primer token de 4 dígitos
-    anio = None
-    for p in partes:
-        if p.isdigit() and len(p) == 4:
-            anio = int(p)
+    year = None
+    for token in parts:
+        if token.isdigit() and len(token) == 4:
+            year = int(token)
             break
 
     # Delito (desde nombre del archivo): primer token no numérico
-    delito_archivo = None
-    for p in partes:
-        if not p.isdigit():
-            delito_archivo = p
+    file_crime = None
+    for token in parts:
+        if not token.isdigit():
+            file_crime = token
             break
 
-    df_archivo["anio"] = anio
-    df_archivo["delito_archivo"] = delito_archivo
-    df_archivo["archivo_origen"] = path.name
+    df_file["anio"] = year
+    df_file["delito_archivo"] = file_crime
+    df_file["archivo_origen"] = path.name
 
-    return df_archivo
+    return df_file
 
 
-def unificar_archivos_policia(bronze_dir: Path) -> pd.DataFrame:
+def unify_police_files(bronze_dir: Path) -> pd.DataFrame:
     """
     Une todos los archivos .xls y .xlsx de la carpeta de policía scraping
     en un único DataFrame.
     """
-    archivos: List[Path] = sorted(
-        list(bronze_dir.glob("*.xlsx")) +
-        list(bronze_dir.glob("*.xls"))
+    check_exists(bronze_dir, label="Carpeta Bronze Policía")
+
+    files: List[Path] = sorted(
+        list(bronze_dir.glob("*.xlsx")) + list(bronze_dir.glob("*.xls")),
     )
 
-    print(f"Encontrados {len(archivos)} archivos de policía (xls + xlsx).")
+    print(f"\nEncontrados {len(files)} archivos de policía (xls + xlsx).")
 
-    dfs = []
-    for path in archivos:
+    dataframes: list[pd.DataFrame] = []
+    for path in files:
         try:
-            df_archivo = leer_archivo_policia(path)
-            dfs.append(df_archivo)
-        except Exception as e:
-            print(f"⚠️ Error procesando {path.name}: {e}")
+            df_file = load_police_file(path)
+            dataframes.append(df_file)
+        except Exception as exc:  # noqa: BLE001
+            print(f"⚠️ Error procesando {path.name}: {exc}")
 
-    if not dfs:
-        print("No se logró cargar ningún archivo de policía.")
+    if not dataframes:
+        print("❌ No se logró cargar ningún archivo de policía.")
         return pd.DataFrame()
 
-    df_unificado = pd.concat(dfs, ignore_index=True, sort=False)
-    print("\nUnificación completa.")
-    print(f"Filas totales: {len(df_unificado)}")
+    df_unified = pd.concat(dataframes, ignore_index=True, sort=False)
+    print("\n✔ Unificación completa.")
+    print(f"   Filas totales unificadas: {len(df_unified):,}")
 
-    return df_unificado
+    return df_unified
 
 
-def combinar_columnas(df: pd.DataFrame, columnas_origen: List[str], nombre_destino: str) -> pd.DataFrame:
+# =========================================================
+# Limpieza y normalización de columnas
+# =========================================================
+
+def combine_columns(
+    df: pd.DataFrame,
+    source_columns: List[str],
+    target_name: str,
+) -> pd.DataFrame:
     """
     Combina varias columnas similares en una sola, tomando el primer valor no nulo.
     Solo usa las columnas que existan en el DataFrame.
     """
-    cols_existentes = [c for c in columnas_origen if c in df.columns]
-    if not cols_existentes:
+    existing_cols = [col for col in source_columns if col in df.columns]
+    if not existing_cols:
         return df
 
-    df[nombre_destino] = df[cols_existentes].bfill(axis=1).iloc[:, 0]
+    df[target_name] = df[existing_cols].bfill(axis=1).iloc[:, 0]
     return df
 
 
-def crear_df_limpio_desde_unificado(df_unificado: pd.DataFrame) -> pd.DataFrame:
+def build_clean_dataframe(df_unified: pd.DataFrame) -> pd.DataFrame:
     """
-    A partir de df_policia_unificado, crea df_policia_unificado_limpio con
+    A partir de df_unified, crea un DataFrame limpio con
     columnas homogéneas y nombres estandarizados.
     """
-    df = df_unificado.copy()
+    df = df_unified.copy()
 
     # Definición de grupos de columnas equivalentes
-    edad_cols = [
+    age_cols = [
         "*AGRUPA EDAD PERSONA",
         "*AGRUPA EDAD PERSONA*",
         "*AGRUPA_EDAD_PERSONA",
@@ -178,63 +246,65 @@ def crear_df_limpio_desde_unificado(df_unificado: pd.DataFrame) -> pd.DataFrame:
         "GRUPO ETARIO",
     ]
 
-    armas_cols = [
+    weapon_cols = [
         "ARMA MEDIO",
         "ARMAS MEDIO",
         "ARMAS MEDIOS",
         "ARMAS_MEDIOS",
     ]
 
-    codigo_dane_cols = [
+    dane_code_cols = [
         "CODIGO DANE",
         "CODIGO_DANE",
     ]
 
-    delito_cols = [
+    crime_cols = [
         "DELITO",
         "DELITOS",
     ]
 
-    departamento_cols = [
+    department_cols = [
         "DEPARTAMENTO",
         "Departamento",
     ]
 
-    fecha_cols = [
+    date_cols = [
         "FECHA",
         "FECHA  HECHO",
         "FECHA HECHO",
     ]
 
-    municipio_cols = [
+    city_cols = [
         "MUNICICPIO",
         "MUNICIPIO",
         "MUNICIPO",
         "Municipio",
     ]
 
-    descripcion_col = "DESCRIPCION CONDUCTA"
-    genero_col = "GENERO"
-    cantidad_col = "CANTIDAD"
+    description_col = "DESCRIPCION CONDUCTA"
+    gender_col = "GENERO"
+    quantity_col = "CANTIDAD"
 
     # Combinar columnas en nuevas columnas limpias
-    df = combinar_columnas(df, edad_cols, "edad_persona")
-    df = combinar_columnas(df, armas_cols, "armas_medios")
-    df = combinar_columnas(df, codigo_dane_cols, "codigo_dane")
-    df = combinar_columnas(df, delito_cols, "delito")
-    df = combinar_columnas(df, departamento_cols, "departamento")
-    df = combinar_columnas(df, fecha_cols, "fecha")
-    df = combinar_columnas(df, municipio_cols, "municipio")
+    df = combine_columns(df, age_cols, "edad_persona")
+    df = combine_columns(df, weapon_cols, "armas_medios")
+    df = combine_columns(df, dane_code_cols, "codigo_dane")
+    df = combine_columns(df, crime_cols, "delito")
+    df = combine_columns(df, department_cols, "departamento")
+    df = combine_columns(df, date_cols, "fecha")
+    df = combine_columns(df, city_cols, "municipio")
 
-    if descripcion_col in df.columns:
-        df["descripcion_conducta"] = df[descripcion_col]
-    if genero_col in df.columns:
-        df["genero"] = df[genero_col]
-    if cantidad_col in df.columns:
-        df["cantidad"] = df[cantidad_col]
+    if description_col in df.columns:
+        df["descripcion_conducta"] = df[description_col]
+
+    if gender_col in df.columns:
+        df["genero"] = df[gender_col]
+
+    if quantity_col in df.columns:
+        df["cantidad"] = df[quantity_col]
 
     # Columnas finales que nos interesa conservar
-    columnas_finales = [
+    final_columns = [
         "departamento",
         "municipio",
         "codigo_dane",
@@ -250,30 +320,30 @@ def crear_df_limpio_desde_unificado(df_unificado: pd.DataFrame) -> pd.DataFrame:
         "archivo_origen",
     ]
 
-    columnas_finales_existentes = [c for c in columnas_finales if c in df.columns]
-    df_limpio = df[columnas_finales_existentes].copy()
+    existing_final_columns = [col for col in final_columns if col in df.columns]
+    df_clean = df[existing_final_columns].copy()
 
     # Normalizar departamento a mayúsculas
-    if "departamento" in df_limpio.columns:
-        df_limpio["departamento"] = (
-            df_limpio["departamento"].astype(str).str.strip().str.upper()
+    if "departamento" in df_clean.columns:
+        df_clean["departamento"] = (
+            df_clean["departamento"].astype(str).str.strip().str.upper()
         )
 
-    return df_limpio
+    return df_clean
 
 
-def limpiar_y_filtrar_santander(df_limpio: pd.DataFrame) -> pd.DataFrame:
+def clean_and_filter_santander(df_clean: pd.DataFrame) -> pd.DataFrame:
     """
-    Aplica todas las transformaciones de limpieza sobre df_limpio y
+    Aplica todas las transformaciones de limpieza sobre df_clean y
     devuelve df_policia_santander listo para exportar.
     """
-    df = df_limpio.copy()
+    df = df_clean.copy()
 
     # Filtrar solo SANTANDER
-    df = df[df["departamento"] == "SANTANDER"].copy()
+    df = df[df["departamento"] == DEPARTMENT_NAME].copy()
 
     # Correcciones a delito_archivo
-    reemplazos_delito_archivo = {
+    replacements_file_crime = {
         "Delitos%20sexuales": "Delitos sexuales",
         "Extorsi%C3%B3n": "Extorsion",
         "Homicidio%20Intencional": "Homicidios",
@@ -296,7 +366,7 @@ def limpiar_y_filtrar_santander(df_limpio: pd.DataFrame) -> pd.DataFrame:
     }
 
     if "delito_archivo" in df.columns:
-        df["delito_archivo"] = df["delito_archivo"].replace(reemplazos_delito_archivo)
+        df["delito_archivo"] = df["delito_archivo"].replace(replacements_file_crime)
 
     # Limpiar municipio y delito (si existen)
     if "municipio" in df.columns:
@@ -320,7 +390,7 @@ def limpiar_y_filtrar_santander(df_limpio: pd.DataFrame) -> pd.DataFrame:
             .str.upper()
         )
 
-        valores_no_reportado = [
+        no_report_age_values = [
             "",
             "-",
             "NO REPORTA",
@@ -328,8 +398,9 @@ def limpiar_y_filtrar_santander(df_limpio: pd.DataFrame) -> pd.DataFrame:
             "NO RESPORTADO",
         ]
 
-        df["edad_persona"] = (
-            df["edad_persona"].replace(valores_no_reportado, "NO REPORTADO")
+        df["edad_persona"] = df["edad_persona"].replace(
+            no_report_age_values,
+            "NO REPORTADO",
         )
         df["edad_persona"] = df["edad_persona"].fillna("NO REPORTADO")
 
@@ -343,23 +414,24 @@ def limpiar_y_filtrar_santander(df_limpio: pd.DataFrame) -> pd.DataFrame:
     # Limpiar armas_medios
     if "armas_medios" in df.columns:
         df["armas_medios"] = df["armas_medios"].where(df["armas_medios"].notna())
-        mask_notna_armas = df["armas_medios"].notna()
-        df.loc[mask_notna_armas, "armas_medios"] = (
-            df.loc[mask_notna_armas, "armas_medios"]
+        mask_notna_weapon = df["armas_medios"].notna()
+        df.loc[mask_notna_weapon, "armas_medios"] = (
+            df.loc[mask_notna_weapon, "armas_medios"]
             .astype(str)
             .str.strip()
             .str.upper()
         )
 
-        valores_no_reportado_armas = [
+        no_report_weapon_values = [
             "-",
             "NO REPORTA",
             "NO REPORTADO",
             "NO RESPORTADO",
         ]
 
-        df["armas_medios"] = (
-            df["armas_medios"].replace(valores_no_reportado_armas, "NO REPORTADO")
+        df["armas_medios"] = df["armas_medios"].replace(
+            no_report_weapon_values,
+            "NO REPORTADO",
         )
         df["armas_medios"] = df["armas_medios"].fillna("NO REPORTADO")
 
@@ -389,64 +461,91 @@ def limpiar_y_filtrar_santander(df_limpio: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def preparar_para_exportar(df_policia_santander: pd.DataFrame) -> pd.DataFrame:
+def prepare_for_export(df_police_santander: pd.DataFrame) -> pd.DataFrame:
     """
     Convierte tipos problemáticos antes de exportar:
-    - fecha a datetime (dayfirst)
-    - codigo_dane a string (si existe)
+        - fecha a datetime (usando normalize_date)
+        - codigo_dane a string
+        - agrega codigo_departamento = "68"
+        - agrega codigo_municipio normalizado desde codigo_dane
     """
-    df = df_policia_santander.copy()
+    df = df_police_santander.copy()
 
+    # Normalizar fecha
     if "fecha" in df.columns:
-        df["fecha"] = pd.to_datetime(
-            df["fecha"],
-            errors="coerce",
-            dayfirst=True,
-        )
+        df["fecha"] = normalize_date(df, "fecha")
 
+    # Normalizar códigos DANE / municipio / departamento
     if "codigo_dane" in df.columns:
         df["codigo_dane"] = df["codigo_dane"].astype(str).str.strip()
+        df["codigo_municipio"] = df["codigo_dane"].apply(normalize_cod_muni)
+    else:
+        df["codigo_municipio"] = "00000"
+
+    # Agregar código de departamento (Santander)
+    df["codigo_departamento"] = DEPARTMENT_CODE
 
     return df
 
 
-def exportar_a_parquet(df_policia_santander: pd.DataFrame, silver_dir: Path, filename: str) -> None:
+def export_to_parquet(
+    df_police_santander: pd.DataFrame,
+    silver_dir: Path,
+    filename: str,
+) -> None:
     """
-    Exporta df_policia_santander a un archivo Parquet en la ruta Silver.
+    Exporta df_police_santander a un archivo Parquet en la ruta Silver.
     """
-    silver_dir.mkdir(parents=True, exist_ok=True)
+    ensure_folder(silver_dir)
     output_path = silver_dir / filename
 
-    df_policia_santander.to_parquet(
+    df_police_santander.to_parquet(
         output_path,
         engine="fastparquet",
         index=False,
     )
 
-    print(f"Archivo guardado en: {output_path}")
+    print(f"\n✅ Archivo guardado en: {output_path}")
+    print(f"   Registros: {len(df_police_santander):,}")
+    print(f"   Columnas: {df_police_santander.columns.tolist()}")
 
 
+# =========================================================
 # main
+# =========================================================
 
 def main() -> None:
-    # 1) Unificar todos los archivos de policía (Bronze)
-    df_unificado = unificar_archivos_policia(BRONZE_POLICIA_DIR)
+    """Función principal del script."""
+    print("=" * 60)
+    print("02 - PROCESAMIENTO POLICÍA (BRONZE → SILVER)")
+    print("=" * 60)
 
-    if df_unificado.empty:
-        print("No hay datos para procesar.")
+    # 1) Unificar todos los archivos de policía (Bronze)
+    df_unified = unify_police_files(BRONZE_POLICE_DIR)
+
+    if df_unified.empty:
+        print("❌ No hay datos para procesar.")
         return
 
     # 2) Crear dataframe limpio con columnas homogéneas
-    df_limpio = crear_df_limpio_desde_unificado(df_unificado)
+    df_clean = build_clean_dataframe(df_unified)
 
     # 3) Limpiar y filtrar para Santander
-    df_policia_santander = limpiar_y_filtrar_santander(df_limpio)
+    df_police_santander = clean_and_filter_santander(df_clean)
 
-    # 4) Ajustar tipos para exportar (fecha, codigo_dane)
-    df_policia_santander = preparar_para_exportar(df_policia_santander)
+    # 4) Ajustar tipos y códigos para exportar
+    df_police_santander = prepare_for_export(df_police_santander)
 
     # 5) Exportar a Silver
-    exportar_a_parquet(df_policia_santander, SILVER_POLICIA_DIR, SILVER_POLICIA_FILENAME)
+    export_to_parquet(
+        df_police_santander,
+        SILVER_POLICE_DIR,
+        SILVER_POLICE_FILENAME,
+    )
+
+    print("=" * 60)
+    print("✔ Proceso Policía → Silver completado")
+    print("=" * 60)
 
 
 if __name__ == "__main__":

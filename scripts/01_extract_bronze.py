@@ -20,6 +20,11 @@ Datasets Socrata:
     - AMENAZAS: meew-mguv
     - DELITOS_SEXUALES: fpe5-yrmw
     - VIOLENCIA_INTRAFAMILIAR: vuyt-mqpw
+
+Adicionales (Bucaramanga y Cibercrimen):
+    - BUCARAMANGA_DELITIVA_150: x46e-abhz
+    - BUCARAMANGA_DELITOS_40: 75fz-q98y
+    - DELITOS_INFORMATICOS: 4v6r-wu98
 """
 
 from pathlib import Path
@@ -45,6 +50,9 @@ DATASETS: dict[str, str] = {
     "amenazas": "meew-mguv",
     "delitos_sexuales": "fpe5-yrmw",
     "violencia_intrafamiliar": "vuyt-mqpw",
+    "bucaramanga_delictiva_150": "x46e-abhz",
+    "bucaramanga_delitos_40": "75fz-q98y",
+    "delitos_informaticos": "4v6r-wu98",
 }
 
 # Código departamento Santander
