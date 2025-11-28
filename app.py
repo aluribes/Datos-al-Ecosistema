@@ -536,24 +536,55 @@ Ejemplos de preguntas:
 
 
 # ============================================================
-# 5. TAB 3 - Modelo predictivo (baseline)
+# 5. MODELOS PREDICTIVOS / ANALÍTICA AVANZADA
 # ============================================================
+
+# Carpeta donde vas a guardar los datasets de modelado
+# (ajusta la ruta si los tienes en otro lado)
+MODEL_DIR = Path("data/model")
+
+
+@st.cache_data(show_spinner=True)
+def load_model_datasets() -> dict:
+    """
+    Carga los datasets de modelado (si existen).
+    No rompe la app si alguno todavía no está creado.
+    """
+    files = {
+        "classification_dominant": "classification_dominant_dataset.parquet",
+        "classification_event": "classification_event_dataset.parquet",
+        "classification_monthly": "classification_monthly_dataset.parquet",
+        "clustering_geo": "clustering_geo_dataset.parquet",
+        "regression_annual": "regression_annual_dataset.parquet",
+        "regression_monthly": "regression_monthly_dataset.parquet",
+        "regression_timeseries": "regression_timeseries_dataset.parquet",
+    }
+
+    datasets: dict[str, pd.DataFrame | None] = {}
+    for key, fname in files.items():
+        path = MODEL_DIR / fname
+        if path.exists():
+            datasets[key] = pd.read_parquet(path)
+        else:
+            datasets[key] = None
+    return datasets
+
 
 def simple_baseline_prediction(
     df: pd.DataFrame,
     municipio: str,
     delito: str,
     target_year: int,
-) -> Tuple[float | None, str | pd.DataFrame]:
+) -> tuple[float | None, str | pd.DataFrame]:
     """
     Baseline muy simple:
-        - Toma los últimos 3 años disponibles antes del año objetivo
-        - Calcula la predicción como el promedio de casos de esos años.
+        - Usa el dataset integrado (no los datasets de modelado).
+        - Toma los últimos 3 años antes del año objetivo.
+        - Predicción = promedio de casos de esos 3 años.
     """
-    df = normalize_columns(df)
+    df = df.copy()
 
     df_f = df[(df["municipio"] == municipio) & (df["delito"] == delito)].copy()
-
     if df_f.empty:
         return None, "No hay datos históricos para ese municipio y delito."
 
@@ -574,56 +605,251 @@ def simple_baseline_prediction(
 
 
 def prediction_tab(df_integrated: pd.DataFrame) -> None:
-    """Pestaña para el modelo predictivo baseline."""
-    st.subheader("🔮 Modelo predictivo (baseline histórico)")
+    """
+    Pestaña de modelos predictivos, organizada en dos bloques:
+
+    1. Explorador de datasets de modelado (clasificación, regresión, clustering,
+       series de tiempo). Aquí se cargan y se muestran los datasets que
+       utilizarán tus futuros modelos.
+
+    2. Baseline histórico simple (ya funcional) que calcula un pronóstico
+       usando el dataset integrado actual.
+    """
+    st.subheader("🔮 Módulos predictivos y datasets de modelado")
+
+    # ----------------------------------------------
+    # 5.1 Explorador de datasets de modelado
+    # ----------------------------------------------
+    ml_data = load_model_datasets()
 
     st.markdown(
         """
-Este módulo usa un modelo **muy simple** como ejemplo:  
-calcula la predicción como el **promedio de los últimos 3 años**
-para el municipio y delito seleccionados.
+Esta sección organiza los datasets de modelado que vas a usar:
 
-En la versión final puedes reemplazar esta lógica por un modelo real
-(entrenado con tus tablas `gold_analytics` o similares).
+- **Clasificación** (dominante, evento a evento, riesgo mensual)
+- **Regresión** (anual, mensual)
+- **Series de tiempo** (forecast puro)
+- **Clustering geoespacial**
+
+Por ahora actúa como **explorador y documentación viva** de tus datasets.
+Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 """
     )
 
-    df = normalize_columns(df_integrated)
+    module = st.radio(
+        "Selecciona el módulo a explorar",
+        [
+            "Clasificación – Delito / arma dominante (dominant_dataset)",
+            "Clasificación – Evento a evento (event_dataset)",
+            "Clasificación – Riesgo mensual (monthly_dataset)",
+            "Regresión – Tendencia anual (annual_dataset)",
+            "Regresión – Forecast mensual (monthly_dataset)",
+            "Series de tiempo – Forecast puro (timeseries_dataset)",
+            "Clustering geoespacial-delictivo (geo_dataset)",
+        ],
+        index=4,  # por defecto: regresión mensual
+    )
 
-    municipalities = sorted(df["municipio"].dropna().unique())
-    crimes = sorted(df["delito"].dropna().unique())
+    # Helper para mostrar info básica de un dataset
+    def show_dataset_info(df: pd.DataFrame | None, nombre_archivo: str, descripcion: str) -> None:
+        st.markdown(f"**Archivo:** `{nombre_archivo}`")
+        st.markdown(descripcion)
+
+        if df is None:
+            st.warning("⚠️ Aún no encontré este archivo en la carpeta `data/model`. "
+                       "Cuando lo generes, se cargará automáticamente.")
+            return
+
+        st.info(f"Filas: **{len(df):,}** – Columnas: **{len(df.columns)}**")
+        with st.expander("Ver columnas disponibles"):
+            st.write(list(df.columns))
+
+        with st.expander("Vista previa (primeras filas)"):
+            st.dataframe(df.head(50))
+
+    # Según el módulo seleccionado, mostramos el dataset correspondiente
+    if module.startswith("Clasificación – Delito / arma dominante"):
+        show_dataset_info(
+            ml_data["classification_dominant"],
+            "classification_dominant_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Predicción del **delito dominante** por municipio–año–mes.
+- Predicción del **arma/medio dominante**.
+- Análisis de municipios que cambian de delito dominante en el tiempo.
+
+**Preguntas que responde:**
+
+- ¿Cuál será el delito más frecuente el próximo mes?
+- ¿Qué arma/medio será más usado?
+- ¿Qué municipios cambian su patrón dominante?
+""",
+        )
+
+    elif module.startswith("Clasificación – Evento a evento"):
+        show_dataset_info(
+            ml_data["classification_event"],
+            "classification_event_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Clasificación multiclase a nivel de **evento delictivo**.
+- Predicción del tipo de delito y/o perfil (agresor, víctima).
+- Probabilidad de ocurrencia según contexto (fecha, municipio, demografía).
+
+**Preguntas que responde:**
+
+- ¿Qué tipo de delito es más probable en cierto contexto?
+- ¿El perfil asociado se puede predecir?
+- ¿Qué factores temporales influyen en cada delito?
+""",
+        )
+
+    elif module.startswith("Clasificación – Riesgo mensual"):
+        show_dataset_info(
+            ml_data["classification_monthly"],
+            "classification_monthly_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Clasificación de **riesgo mensual** (Bajo / Medio / Alto) por municipio.
+- Clasificación binaria (incremento / no incremento).
+
+**Preguntas que responde:**
+
+- ¿Qué municipios están en riesgo alto el próximo mes?
+- ¿En qué municipios aumentarán los delitos?
+- ¿Qué variables explican mejor el riesgo mensual?
+
+**Utilidad:** Semáforos delictivos y alertas tempranas para el tablero.
+""",
+        )
+
+    elif module.startswith("Regresión – Tendencia anual"):
+        show_dataset_info(
+            ml_data["regression_annual"],
+            "regression_annual_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Modelos de **regresión anual** por municipio.
+- Predicción de delitos anuales y tendencias a largo plazo.
+
+**Preguntas que responde:**
+
+- ¿Cuál será la cantidad de delitos el próximo año?
+- ¿Qué municipios tienen tendencias ascendentes o descendentes?
+- ¿Qué factores influyen en la variación anual?
+
+**Utilidad:** Planeación estratégica e informes institucionales.
+""",
+        )
+
+    elif module.startswith("Regresión – Forecast mensual"):
+        show_dataset_info(
+            ml_data["regression_monthly"],
+            "regression_monthly_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Regresión mensual pura con lags, ventanas móviles y estacionalidad.
+- Predicción del número **exacto** de delitos el próximo mes.
+
+**Preguntas que responde:**
+
+- ¿Cuántos delitos habrá el siguiente mes?
+- ¿Cómo varía el volumen a lo largo del año?
+- ¿Qué variables explican mejor la fluctuación mensual?
+
+**Utilidad:** Forecast detallado para el tablero y alertas numéricas.
+""",
+        )
+
+    elif module.startswith("Series de tiempo – Forecast puro"):
+        show_dataset_info(
+            ml_data["regression_timeseries"],
+            "regression_timeseries_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Modelos clásicos de series de tiempo (ARIMA, Prophet, LSTMs, etc.).
+- Forecast mes a mes con foco total en la dinámica temporal.
+
+**Preguntas que responde:**
+
+- ¿Cómo evolucionarán los delitos mes a mes?
+- ¿Existen patrones estacionales fuertes?
+- ¿Qué municipios presentan mayor periodicidad?
+
+**Utilidad:** Forecast robusto orientado al tiempo.
+""",
+        )
+
+    elif module.startswith("Clustering geoespacial-delictivo"):
+        show_dataset_info(
+            ml_data["clustering_geo"],
+            "clustering_geo_dataset.parquet",
+            """
+**Uso previsto:**
+
+- Clustering geoespacial–delictivo (KMeans, HDBSCAN, etc.).
+- Agrupación de municipios según perfil delictivo, demografía y geografía.
+
+**Preguntas que responde:**
+
+- ¿Qué municipios se parecen entre sí en su comportamiento?
+- ¿Qué grupos presentan mayor concentración de delitos?
+- ¿Existen patrones urbano–rural?
+
+**Utilidad:** Políticas diferenciadas por tipo de municipio y mapas de clusters.
+""",
+        )
+
+    st.markdown("---")
+    st.subheader("🧪 Baseline histórico rápido (demo de predicción)")
+
+    # ----------------------------------------------
+    # 5.2 Baseline histórico (sigue usando df_integrated)
+    # ----------------------------------------------
+    df = df_integrated.copy()
+
+    municipios = sorted(df["municipio"].dropna().unique())
+    delitos = sorted(df["delito"].dropna().unique())
 
     col1, col2 = st.columns(2)
-
     with col1:
-        muni_sel = st.selectbox("Municipio", municipalities)
-
+        muni_sel = st.selectbox("Municipio", municipios)
     with col2:
-        crime_sel = st.selectbox("Tipo de delito", crimes)
+        delito_sel = st.selectbox("Tipo de delito", delitos)
 
     year_min = int(df["anio"].min())
     year_max = int(df["anio"].max())
 
     target_year = st.number_input(
-        "Año a predecir",
+        "Año a predecir (baseline)",
         min_value=year_max + 1,
         max_value=year_max + 10,
         value=year_max + 1,
         step=1,
     )
 
-    if st.button("Calcular predicción", type="primary"):
+    if st.button("Calcular predicción baseline", type="primary"):
         pred, detail = simple_baseline_prediction(
-            df, muni_sel, crime_sel, target_year
+            df,
+            municipio=muni_sel,
+            delito=delito_sel,
+            target_year=target_year,
         )
         if pred is None:
             st.warning(str(detail))
         else:
             st.success(
-                f"Predicción para **{muni_sel}**, delito **{crime_sel}** en el año **{target_year}**:"
+                f"Predicción baseline para **{muni_sel}**, delito **{delito_sel}** "
+                f"en el año **{target_year}**"
             )
-            st.metric("Casos estimados (baseline)", f"{pred:,.0f}")
-            st.markdown("**Histórico usado para la predicción:**")
+            st.metric("Casos estimados (promedio últimos 3 años)", f"{pred:,.0f}")
+            st.markdown("**Histórico usado para el cálculo:**")
             st.dataframe(detail.tail(5))
 
 
