@@ -17,6 +17,7 @@ shapely==2.1.2
 openpyxl==3.1.5          # Excel .xlsx
 xlrd==2.0.2              # Excel .xls (legacy)
 pyarrow==22.0.0          # Parquet
+rarfile==4.2             # Archivos RAR comprimidos
 
 # --- HTTP y APIs ---
 requests==2.32.5
