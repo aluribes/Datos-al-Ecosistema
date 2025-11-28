@@ -1,0 +1,12 @@
+{
+  "pregunta_cluster_municipio": "Usa asignacion_municipios.json con el código del municipio",
+  "pregunta_municipios_similares": "Busca en perfiles_clusters.json el cluster del municipio y retorna los demás",
+  "pregunta_cluster_mas_peligroso": {
+    "cluster": 2,
+    "tasa_promedio": 16322.11
+  },
+  "pregunta_cluster_mas_seguro": {
+    "cluster": 0,
+    "tasa_promedio": 5874.98
+  }
+}

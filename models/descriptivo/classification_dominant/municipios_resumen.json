@@ -1,0 +1,1742 @@
+{
+  "68001": {
+    "codigo_municipio": 68001,
+    "ranking_departamental": 1,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 49283,
+    "promedio_mensual": 256.68,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 298.91,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 2653.87,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 3,
+    "descripcion_chatbot": "El municipio con código 68001 ocupa el puesto #1 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+298.9%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+2653.9%)."
+  },
+  "68013": {
+    "codigo_municipio": 68013,
+    "ranking_departamental": 81,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 94,
+    "promedio_mensual": 0.49,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 114.29,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -94.74,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68013 ocupa el puesto #81 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+114.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-94.7%)."
+  },
+  "68020": {
+    "codigo_municipio": 68020,
+    "ranking_departamental": 66,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 168,
+    "promedio_mensual": 0.88,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 60.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -90.56,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68020 ocupa el puesto #66 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+60.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-90.6%)."
+  },
+  "68051": {
+    "codigo_municipio": 68051,
+    "ranking_departamental": 24,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 603,
+    "promedio_mensual": 3.14,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 78.57,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -66.31,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68051 ocupa el puesto #24 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está aumentando (+78.6%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-66.3%)."
+  },
+  "68077": {
+    "codigo_municipio": 68077,
+    "ranking_departamental": 7,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 3617,
+    "promedio_mensual": 18.84,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 87.82,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 102.13,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 6,
+    "descripcion_chatbot": "El municipio con código 68077 ocupa el puesto #7 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+87.8%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+102.1%)."
+  },
+  "68079": {
+    "codigo_municipio": 68079,
+    "ranking_departamental": 34,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 374,
+    "promedio_mensual": 1.95,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 45.16,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -79.08,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68079 ocupa el puesto #34 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+45.2%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-79.1%)."
+  },
+  "68081": {
+    "codigo_municipio": 68081,
+    "ranking_departamental": 3,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 16945,
+    "promedio_mensual": 88.26,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 58.53,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 846.93,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 5,
+    "descripcion_chatbot": "El municipio con código 68081 ocupa el puesto #3 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+58.5%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+846.9%)."
+  },
+  "68092": {
+    "codigo_municipio": 68092,
+    "ranking_departamental": 33,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 382,
+    "promedio_mensual": 1.99,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 100.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -78.65,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68092 ocupa el puesto #33 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+100.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-78.7%)."
+  },
+  "68101": {
+    "codigo_municipio": 68101,
+    "ranking_departamental": 32,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 403,
+    "promedio_mensual": 2.1,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 47.62,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -77.47,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68101 ocupa el puesto #32 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+47.6%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-77.5%)."
+  },
+  "68121": {
+    "codigo_municipio": 68121,
+    "ranking_departamental": 77,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 111,
+    "promedio_mensual": 0.58,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -14.29,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -93.78,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68121 ocupa el puesto #77 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está disminuyendo (-14.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-93.8%)."
+  },
+  "68132": {
+    "codigo_municipio": 68132,
+    "ranking_departamental": 65,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 173,
+    "promedio_mensual": 0.9,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 120.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -90.34,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68132 ocupa el puesto #65 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+120.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-90.3%)."
+  },
+  "68147": {
+    "codigo_municipio": 68147,
+    "ranking_departamental": 37,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 353,
+    "promedio_mensual": 1.84,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 135.29,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -80.26,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68147 ocupa el puesto #37 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está aumentando (+135.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-80.3%)."
+  },
+  "68152": {
+    "codigo_municipio": 68152,
+    "ranking_departamental": 76,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 123,
+    "promedio_mensual": 0.64,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 275.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -93.13,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68152 ocupa el puesto #76 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+275.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-93.1%)."
+  },
+  "68160": {
+    "codigo_municipio": 68160,
+    "ranking_departamental": 86,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 61,
+    "promedio_mensual": 0.32,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 0.0,
+      "direccion": "estable"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -96.57,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68160 ocupa el puesto #86 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está estable (+0.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-96.6%)."
+  },
+  "68162": {
+    "codigo_municipio": 68162,
+    "ranking_departamental": 44,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 302,
+    "promedio_mensual": 1.57,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 73.91,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -83.16,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68162 ocupa el puesto #44 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+73.9%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-83.2%)."
+  },
+  "68167": {
+    "codigo_municipio": 68167,
+    "ranking_departamental": 21,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 716,
+    "promedio_mensual": 3.73,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jun",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 77.78,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -59.98,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68167 ocupa el puesto #21 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jun. Respecto al año anterior, la criminalidad está aumentando (+77.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-60.0%)."
+  },
+  "68169": {
+    "codigo_municipio": 68169,
+    "ranking_departamental": 62,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 199,
+    "promedio_mensual": 1.04,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 7.14,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -88.84,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68169 ocupa el puesto #62 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+7.1%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-88.8%)."
+  },
+  "68176": {
+    "codigo_municipio": 68176,
+    "ranking_departamental": 67,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 164,
+    "promedio_mensual": 0.85,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 80.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -90.88,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68176 ocupa el puesto #67 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está aumentando (+80.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-90.9%)."
+  },
+  "68179": {
+    "codigo_municipio": 68179,
+    "ranking_departamental": 64,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 177,
+    "promedio_mensual": 0.92,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 68.75,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -90.13,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68179 ocupa el puesto #64 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+68.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-90.1%)."
+  },
+  "68190": {
+    "codigo_municipio": 68190,
+    "ranking_departamental": 10,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 2644,
+    "promedio_mensual": 13.77,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 89.43,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 47.74,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 6,
+    "descripcion_chatbot": "El municipio con código 68190 ocupa el puesto #10 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+89.4%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+47.7%)."
+  },
+  "68207": {
+    "codigo_municipio": 68207,
+    "ranking_departamental": 55,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 232,
+    "promedio_mensual": 1.21,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Dic",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -6.67,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -87.02,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68207 ocupa el puesto #55 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Dic. Respecto al año anterior, la criminalidad está disminuyendo (-6.7%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-87.0%)."
+  },
+  "68209": {
+    "codigo_municipio": 68209,
+    "ranking_departamental": 61,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 201,
+    "promedio_mensual": 1.05,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 0.0,
+      "direccion": "estable"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -88.73,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68209 ocupa el puesto #61 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está estable (+0.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-88.7%)."
+  },
+  "68211": {
+    "codigo_municipio": 68211,
+    "ranking_departamental": 57,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 225,
+    "promedio_mensual": 1.17,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -31.58,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -87.45,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68211 ocupa el puesto #57 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está disminuyendo (-31.6%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-87.5%)."
+  },
+  "68217": {
+    "codigo_municipio": 68217,
+    "ranking_departamental": 42,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 306,
+    "promedio_mensual": 1.59,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 47.06,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -82.94,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68217 ocupa el puesto #42 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+47.1%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-82.9%)."
+  },
+  "68229": {
+    "codigo_municipio": 68229,
+    "ranking_departamental": 20,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 748,
+    "promedio_mensual": 3.9,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -5.77,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -58.16,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68229 ocupa el puesto #20 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está disminuyendo (-5.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-58.2%)."
+  },
+  "68235": {
+    "codigo_municipio": 68235,
+    "ranking_departamental": 29,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 484,
+    "promedio_mensual": 2.52,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 34.21,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -72.96,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68235 ocupa el puesto #29 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está aumentando (+34.2%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-73.0%)."
+  },
+  "68245": {
+    "codigo_municipio": 68245,
+    "ranking_departamental": 80,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 105,
+    "promedio_mensual": 0.55,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -44.44,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -94.1,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68245 ocupa el puesto #80 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está disminuyendo (-44.4%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-94.1%)."
+  },
+  "68250": {
+    "codigo_municipio": 68250,
+    "ranking_departamental": 54,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 234,
+    "promedio_mensual": 1.22,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 171.43,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -86.91,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68250 ocupa el puesto #54 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+171.4%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-86.9%)."
+  },
+  "68255": {
+    "codigo_municipio": 68255,
+    "ranking_departamental": 18,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 823,
+    "promedio_mensual": 4.29,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 46.51,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -53.97,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68255 ocupa el puesto #18 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+46.5%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-54.0%)."
+  },
+  "68264": {
+    "codigo_municipio": 68264,
+    "ranking_departamental": 82,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 94,
+    "promedio_mensual": 0.49,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 160.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -94.74,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68264 ocupa el puesto #82 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+160.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-94.7%)."
+  },
+  "68266": {
+    "codigo_municipio": 68266,
+    "ranking_departamental": 71,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 142,
+    "promedio_mensual": 0.74,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 25.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -92.06,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68266 ocupa el puesto #71 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+25.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-92.1%)."
+  },
+  "68271": {
+    "codigo_municipio": 68271,
+    "ranking_departamental": 46,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 290,
+    "promedio_mensual": 1.51,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 66.67,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -83.8,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68271 ocupa el puesto #46 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+66.7%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-83.8%)."
+  },
+  "68276": {
+    "codigo_municipio": 68276,
+    "ranking_departamental": 2,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 17679,
+    "promedio_mensual": 92.08,
+    "delito_mas_frecuente": "HURTOS",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 87.85,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 887.91,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 4,
+    "descripcion_chatbot": "El municipio con código 68276 ocupa el puesto #2 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es HURTOS, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+87.8%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+887.9%)."
+  },
+  "68296": {
+    "codigo_municipio": 68296,
+    "ranking_departamental": 69,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 161,
+    "promedio_mensual": 0.84,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Abr",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 81.82,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -90.99,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68296 ocupa el puesto #69 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Abr. Respecto al año anterior, la criminalidad está aumentando (+81.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-91.0%)."
+  },
+  "68298": {
+    "codigo_municipio": 68298,
+    "ranking_departamental": 41,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 315,
+    "promedio_mensual": 1.64,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 119.05,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -82.4,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68298 ocupa el puesto #41 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es ABIGEATO, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+119.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-82.4%)."
+  },
+  "68307": {
+    "codigo_municipio": 68307,
+    "ranking_departamental": 4,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 12218,
+    "promedio_mensual": 63.64,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 62.59,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 582.78,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 4,
+    "descripcion_chatbot": "El municipio con código 68307 ocupa el puesto #4 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+62.6%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+582.8%)."
+  },
+  "68318": {
+    "codigo_municipio": 68318,
+    "ranking_departamental": 50,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 264,
+    "promedio_mensual": 1.38,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 40.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -85.19,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68318 ocupa el puesto #50 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con ACIDO. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+40.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-85.2%)."
+  },
+  "68320": {
+    "codigo_municipio": 68320,
+    "ranking_departamental": 39,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 330,
+    "promedio_mensual": 1.72,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 47.37,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -81.55,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68320 ocupa el puesto #39 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+47.4%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-81.5%)."
+  },
+  "68322": {
+    "codigo_municipio": 68322,
+    "ranking_departamental": 73,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 140,
+    "promedio_mensual": 0.73,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 10.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -92.17,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68322 ocupa el puesto #73 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+10.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-92.2%)."
+  },
+  "68324": {
+    "codigo_municipio": 68324,
+    "ranking_departamental": 56,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 227,
+    "promedio_mensual": 1.18,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 145.45,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -87.34,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68324 ocupa el puesto #56 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está aumentando (+145.4%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-87.3%)."
+  },
+  "68327": {
+    "codigo_municipio": 68327,
+    "ranking_departamental": 31,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 446,
+    "promedio_mensual": 2.32,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 70.37,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -75.11,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68327 ocupa el puesto #31 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está aumentando (+70.4%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-75.1%)."
+  },
+  "68344": {
+    "codigo_municipio": 68344,
+    "ranking_departamental": 72,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 141,
+    "promedio_mensual": 0.73,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 42.86,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -92.17,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68344 ocupa el puesto #72 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está aumentando (+42.9%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-92.2%)."
+  },
+  "68368": {
+    "codigo_municipio": 68368,
+    "ranking_departamental": 70,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 158,
+    "promedio_mensual": 0.82,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 200.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -91.2,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68368 ocupa el puesto #70 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está aumentando (+200.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-91.2%)."
+  },
+  "68370": {
+    "codigo_municipio": 68370,
+    "ranking_departamental": 87,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 42,
+    "promedio_mensual": 0.22,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 0,
+      "direccion": "estable"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -97.64,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68370 ocupa el puesto #87 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está estable (+0.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-97.6%)."
+  },
+  "68377": {
+    "codigo_municipio": 68377,
+    "ranking_departamental": 51,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 260,
+    "promedio_mensual": 1.35,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -6.25,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -85.52,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68377 ocupa el puesto #51 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está disminuyendo (-6.2%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-85.5%)."
+  },
+  "68385": {
+    "codigo_municipio": 68385,
+    "ranking_departamental": 25,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 579,
+    "promedio_mensual": 3.02,
+    "delito_mas_frecuente": "AMENAZAS",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 117.65,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -67.6,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68385 ocupa el puesto #25 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es AMENAZAS, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+117.7%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-67.6%)."
+  },
+  "68397": {
+    "codigo_municipio": 68397,
+    "ranking_departamental": 52,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 242,
+    "promedio_mensual": 1.26,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 200.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -86.48,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68397 ocupa el puesto #52 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+200.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-86.5%)."
+  },
+  "68406": {
+    "codigo_municipio": 68406,
+    "ranking_departamental": 8,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 2741,
+    "promedio_mensual": 14.28,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 50.29,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 53.21,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 5,
+    "descripcion_chatbot": "El municipio con código 68406 ocupa el puesto #8 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+50.3%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+53.2%)."
+  },
+  "68418": {
+    "codigo_municipio": 68418,
+    "ranking_departamental": 27,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 550,
+    "promedio_mensual": 2.86,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Abr",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 48.48,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -69.32,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68418 ocupa el puesto #27 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Abr. Respecto al año anterior, la criminalidad está aumentando (+48.5%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-69.3%)."
+  },
+  "68425": {
+    "codigo_municipio": 68425,
+    "ranking_departamental": 78,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 110,
+    "promedio_mensual": 0.57,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -33.33,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -93.88,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68425 ocupa el puesto #78 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está disminuyendo (-33.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-93.9%)."
+  },
+  "68432": {
+    "codigo_municipio": 68432,
+    "ranking_departamental": 16,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 1379,
+    "promedio_mensual": 7.18,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 110.2,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -22.97,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68432 ocupa el puesto #16 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+110.2%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-23.0%)."
+  },
+  "68444": {
+    "codigo_municipio": 68444,
+    "ranking_departamental": 45,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 301,
+    "promedio_mensual": 1.57,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 50.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -83.16,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68444 ocupa el puesto #45 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+50.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-83.2%)."
+  },
+  "68464": {
+    "codigo_municipio": 68464,
+    "ranking_departamental": 23,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 620,
+    "promedio_mensual": 3.23,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 89.47,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -65.35,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68464 ocupa el puesto #23 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+89.5%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-65.3%)."
+  },
+  "68468": {
+    "codigo_municipio": 68468,
+    "ranking_departamental": 75,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 136,
+    "promedio_mensual": 0.71,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 200.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -92.38,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68468 ocupa el puesto #75 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+200.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-92.4%)."
+  },
+  "68498": {
+    "codigo_municipio": 68498,
+    "ranking_departamental": 47,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 285,
+    "promedio_mensual": 1.48,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 75.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -84.12,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68498 ocupa el puesto #47 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está aumentando (+75.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-84.1%)."
+  },
+  "68500": {
+    "codigo_municipio": 68500,
+    "ranking_departamental": 19,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 786,
+    "promedio_mensual": 4.09,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 123.81,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -56.12,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68500 ocupa el puesto #19 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+123.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-56.1%)."
+  },
+  "68502": {
+    "codigo_municipio": 68502,
+    "ranking_departamental": 53,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 234,
+    "promedio_mensual": 1.22,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -14.29,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -86.91,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68502 ocupa el puesto #53 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está disminuyendo (-14.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-86.9%)."
+  },
+  "68522": {
+    "codigo_municipio": 68522,
+    "ranking_departamental": 84,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 81,
+    "promedio_mensual": 0.42,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 500.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -95.49,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68522 ocupa el puesto #84 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+500.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-95.5%)."
+  },
+  "68524": {
+    "codigo_municipio": 68524,
+    "ranking_departamental": 58,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 213,
+    "promedio_mensual": 1.11,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 43.75,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -88.09,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68524 ocupa el puesto #58 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+43.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-88.1%)."
+  },
+  "68533": {
+    "codigo_municipio": 68533,
+    "ranking_departamental": 48,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 284,
+    "promedio_mensual": 1.48,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "May",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 266.67,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -84.12,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68533 ocupa el puesto #48 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es May. Respecto al año anterior, la criminalidad está aumentando (+266.7%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-84.1%)."
+  },
+  "68547": {
+    "codigo_municipio": 68547,
+    "ranking_departamental": 5,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 11881,
+    "promedio_mensual": 61.88,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 57.03,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 563.9,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 4,
+    "descripcion_chatbot": "El municipio con código 68547 ocupa el puesto #5 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+57.0%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+563.9%)."
+  },
+  "68549": {
+    "codigo_municipio": 68549,
+    "ranking_departamental": 36,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 355,
+    "promedio_mensual": 1.85,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Jun",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 5.26,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -80.15,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68549 ocupa el puesto #36 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Jun. Respecto al año anterior, la criminalidad está aumentando (+5.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-80.2%)."
+  },
+  "68572": {
+    "codigo_municipio": 68572,
+    "ranking_departamental": 17,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 1057,
+    "promedio_mensual": 5.51,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 127.27,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -40.88,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68572 ocupa el puesto #17 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+127.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-40.9%)."
+  },
+  "68573": {
+    "codigo_municipio": 68573,
+    "ranking_departamental": 26,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 554,
+    "promedio_mensual": 2.89,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 160.34,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -68.99,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68573 ocupa el puesto #26 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+160.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-69.0%)."
+  },
+  "68575": {
+    "codigo_municipio": 68575,
+    "ranking_departamental": 14,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 1429,
+    "promedio_mensual": 7.44,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 48.57,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -20.18,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68575 ocupa el puesto #14 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+48.6%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-20.2%)."
+  },
+  "68615": {
+    "codigo_municipio": 68615,
+    "ranking_departamental": 15,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 1413,
+    "promedio_mensual": 7.36,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 28.05,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -21.04,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68615 ocupa el puesto #15 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+28.1%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-21.0%)."
+  },
+  "68655": {
+    "codigo_municipio": 68655,
+    "ranking_departamental": 9,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 2654,
+    "promedio_mensual": 13.82,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 40.54,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 48.27,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 5,
+    "descripcion_chatbot": "El municipio con código 68655 ocupa el puesto #9 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+40.5%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+48.3%)."
+  },
+  "68669": {
+    "codigo_municipio": 68669,
+    "ranking_departamental": 43,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 302,
+    "promedio_mensual": 1.57,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 38.89,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -83.16,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68669 ocupa el puesto #43 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+38.9%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-83.2%)."
+  },
+  "68673": {
+    "codigo_municipio": 68673,
+    "ranking_departamental": 83,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 93,
+    "promedio_mensual": 0.48,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Dic",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 75.0,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -94.85,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68673 ocupa el puesto #83 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Dic. Respecto al año anterior, la criminalidad está aumentando (+75.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-94.8%)."
+  },
+  "68679": {
+    "codigo_municipio": 68679,
+    "ranking_departamental": 6,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 4533,
+    "promedio_mensual": 23.61,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 43.72,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 153.31,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 4,
+    "descripcion_chatbot": "El municipio con código 68679 ocupa el puesto #6 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está aumentando (+43.7%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+153.3%)."
+  },
+  "68682": {
+    "codigo_municipio": 68682,
+    "ranking_departamental": 74,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 137,
+    "promedio_mensual": 0.71,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 83.33,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -92.38,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68682 ocupa el puesto #74 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+83.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-92.4%)."
+  },
+  "68684": {
+    "codigo_municipio": 68684,
+    "ranking_departamental": 49,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 272,
+    "promedio_mensual": 1.42,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Feb",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 209.09,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -84.77,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68684 ocupa el puesto #49 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Feb. Respecto al año anterior, la criminalidad está aumentando (+209.1%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-84.8%)."
+  },
+  "68686": {
+    "codigo_municipio": 68686,
+    "ranking_departamental": 85,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 74,
+    "promedio_mensual": 0.39,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 0.0,
+      "direccion": "estable"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -95.82,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68686 ocupa el puesto #85 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está estable (+0.0%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-95.8%)."
+  },
+  "68689": {
+    "codigo_municipio": 68689,
+    "ranking_departamental": 13,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 1562,
+    "promedio_mensual": 8.14,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Abr",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 29.27,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -12.67,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68689 ocupa el puesto #13 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Abr. Respecto al año anterior, la criminalidad está aumentando (+29.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-12.7%)."
+  },
+  "68705": {
+    "codigo_municipio": 68705,
+    "ranking_departamental": 79,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 109,
+    "promedio_mensual": 0.57,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Nov",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 66.67,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -93.88,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68705 ocupa el puesto #79 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Nov. Respecto al año anterior, la criminalidad está aumentando (+66.7%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-93.9%)."
+  },
+  "68720": {
+    "codigo_municipio": 68720,
+    "ranking_departamental": 63,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 196,
+    "promedio_mensual": 1.02,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 63.64,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -89.06,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68720 ocupa el puesto #63 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+63.6%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-89.1%)."
+  },
+  "68745": {
+    "codigo_municipio": 68745,
+    "ranking_departamental": 30,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 457,
+    "promedio_mensual": 2.38,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 134.62,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -74.47,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68745 ocupa el puesto #30 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+134.6%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-74.5%)."
+  },
+  "68755": {
+    "codigo_municipio": 68755,
+    "ranking_departamental": 11,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 2447,
+    "promedio_mensual": 12.74,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Mar",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 65.19,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": 36.69,
+      "descripcion": "por encima"
+    },
+    "variabilidad_delitos": 5,
+    "descripcion_chatbot": "El municipio con código 68755 ocupa el puesto #11 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Mar. Respecto al año anterior, la criminalidad está aumentando (+65.2%).  Comparado con el promedio departamental, este municipio está por encima del promedio (+36.7%)."
+  },
+  "68770": {
+    "codigo_municipio": 68770,
+    "ranking_departamental": 22,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 659,
+    "promedio_mensual": 3.43,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 48.78,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -63.2,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68770 ocupa el puesto #22 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+48.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-63.2%)."
+  },
+  "68773": {
+    "codigo_municipio": 68773,
+    "ranking_departamental": 59,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 212,
+    "promedio_mensual": 1.1,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Sep",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -27.78,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -88.2,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68773 ocupa el puesto #59 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Sep. Respecto al año anterior, la criminalidad está disminuyendo (-27.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-88.2%)."
+  },
+  "68780": {
+    "codigo_municipio": 68780,
+    "ranking_departamental": 60,
+    "categoria_riesgo": "Medio-Bajo",
+    "total_delitos": 203,
+    "promedio_mensual": 1.06,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": -11.11,
+      "direccion": "disminuyendo"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -88.63,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68780 ocupa el puesto #60 en el departamento y tiene un nivel de riesgo Medio-Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está disminuyendo (-11.1%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-88.6%)."
+  },
+  "68820": {
+    "codigo_municipio": 68820,
+    "ranking_departamental": 28,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 520,
+    "promedio_mensual": 2.71,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "NO REPORTADO",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 169.23,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -70.92,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68820 ocupa el puesto #28 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con NO REPORTADO. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+169.2%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-70.9%)."
+  },
+  "68855": {
+    "codigo_municipio": 68855,
+    "ranking_departamental": 35,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 370,
+    "promedio_mensual": 1.93,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Oct",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 52.94,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -79.29,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68855 ocupa el puesto #35 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Oct. Respecto al año anterior, la criminalidad está aumentando (+52.9%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-79.3%)."
+  },
+  "68861": {
+    "codigo_municipio": 68861,
+    "ranking_departamental": 12,
+    "categoria_riesgo": "Alto",
+    "total_delitos": 1687,
+    "promedio_mensual": 8.79,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 48.68,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -5.69,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 5,
+    "descripcion_chatbot": "El municipio con código 68861 ocupa el puesto #12 en el departamento y tiene un nivel de riesgo Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+48.7%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-5.7%)."
+  },
+  "68867": {
+    "codigo_municipio": 68867,
+    "ranking_departamental": 68,
+    "categoria_riesgo": "Bajo",
+    "total_delitos": 163,
+    "promedio_mensual": 0.85,
+    "delito_mas_frecuente": "ABIGEATO",
+    "arma_mas_frecuente": "ACIDO",
+    "mes_mas_critico": "Jul",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 171.43,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -90.88,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68867 ocupa el puesto #68 en el departamento y tiene un nivel de riesgo Bajo.  El delito más frecuente es ABIGEATO, generalmente cometido con ACIDO. El mes más crítico históricamente es Jul. Respecto al año anterior, la criminalidad está aumentando (+171.4%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-90.9%)."
+  },
+  "68872": {
+    "codigo_municipio": 68872,
+    "ranking_departamental": 38,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 334,
+    "promedio_mensual": 1.74,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "CONTUNDENTES",
+    "mes_mas_critico": "Ago",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 136.84,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -81.33,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 8,
+    "descripcion_chatbot": "El municipio con código 68872 ocupa el puesto #38 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con CONTUNDENTES. El mes más crítico históricamente es Ago. Respecto al año anterior, la criminalidad está aumentando (+136.8%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-81.3%)."
+  },
+  "68895": {
+    "codigo_municipio": 68895,
+    "ranking_departamental": 40,
+    "categoria_riesgo": "Medio-Alto",
+    "total_delitos": 316,
+    "promedio_mensual": 1.65,
+    "delito_mas_frecuente": "LESIONES",
+    "arma_mas_frecuente": "SIN EMPLEO DE ARMAS",
+    "mes_mas_critico": "Ene",
+    "tendencia": {
+      "cambio_vs_anio_anterior": 33.33,
+      "direccion": "aumentando"
+    },
+    "comparativa": {
+      "vs_promedio_depto": -82.3,
+      "descripcion": "por debajo"
+    },
+    "variabilidad_delitos": 7,
+    "descripcion_chatbot": "El municipio con código 68895 ocupa el puesto #40 en el departamento y tiene un nivel de riesgo Medio-Alto.  El delito más frecuente es LESIONES, generalmente cometido con SIN EMPLEO DE ARMAS. El mes más crítico históricamente es Ene. Respecto al año anterior, la criminalidad está aumentando (+33.3%).  Comparado con el promedio departamental, este municipio está por debajo del promedio (-82.3%)."
+  }
+}

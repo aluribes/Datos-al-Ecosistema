@@ -1,0 +1,58 @@
+{
+  "ABIGEATO": {
+    "total_historico": 1307,
+    "promedio_mensual": 0.1,
+    "porcentaje_del_total": 0.27,
+    "municipio_mas_casos": 68081,
+    "tendencia_anual_pct": -38.46
+  },
+  "AMENAZAS": {
+    "total_historico": 41810,
+    "promedio_mensual": 3.22,
+    "porcentaje_del_total": 8.67,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 19.56
+  },
+  "DELITOS SEXUALES": {
+    "total_historico": 23481,
+    "promedio_mensual": 1.81,
+    "porcentaje_del_total": 4.87,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 69.61
+  },
+  "EXTORSION": {
+    "total_historico": 2989,
+    "promedio_mensual": 0.23,
+    "porcentaje_del_total": 0.62,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 65.19
+  },
+  "HOMICIDIOS": {
+    "total_historico": 9929,
+    "promedio_mensual": 0.76,
+    "porcentaje_del_total": 2.06,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 26.54
+  },
+  "HURTOS": {
+    "total_historico": 146628,
+    "promedio_mensual": 11.29,
+    "porcentaje_del_total": 30.41,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 22.22
+  },
+  "LESIONES": {
+    "total_historico": 166430,
+    "promedio_mensual": 12.82,
+    "porcentaje_del_total": 34.51,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 9.77
+  },
+  "VIOLENCIA INTRAFAMILIAR": {
+    "total_historico": 89626,
+    "promedio_mensual": 6.9,
+    "porcentaje_del_total": 18.59,
+    "municipio_mas_casos": 68001,
+    "tendencia_anual_pct": 55.97
+  }
+}
