@@ -35,6 +35,11 @@ seaborn>=0.13.0
 
 # --- Machine Learning ---
 scikit-learn>=1.4.0
+imbalanced-learn>=0.11.0
+xgboost>=2.0.0
+lightgbm>=4.0.0
+catboost>=1.2.0
+scipy>=1.11.0
 
 # --- Series temporales ---
 statsmodels>=0.14.0
