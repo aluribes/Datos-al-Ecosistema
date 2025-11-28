@@ -16,12 +16,14 @@ GOLD_ROOT = BASE_DIR / "data" / "gold"
 # Rutas de entrada (capa Silver)
 GEO_INPUT = SILVER_ROOT / "dane_geo" / "geografia_silver.parquet"
 POLICIA_INPUT = SILVER_ROOT / "policia_scraping" / "policia_santander.parquet"
+SOCRATA_INPUT = SILVER_ROOT / "delitos" / "consolidado_delitos.parquet"
 POBLACION_INPUT = SILVER_ROOT / "poblacion" / "poblacion_santander.parquet"
 DIVIPOLA_INPUT = SILVER_ROOT / "dane_geo" / "divipola_silver.parquet"
 
 # Rutas de salida (capa Gold base)
 GEO_OUTPUT = GOLD_ROOT / "base" / "geo_gold.parquet"
 POLICIA_OUTPUT = GOLD_ROOT / "base" / "policia_gold.parquet"
+SOCRATA_OUTPUT = GOLD_ROOT / "base" / "socrata_gold.parquet"
 POBLACION_OUTPUT = GOLD_ROOT / "base" / "poblacion_gold.parquet"
 DIVIPOLA_OUTPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
 
@@ -46,22 +48,24 @@ def check_exists(path: Path, label: str | None = None) -> None:
 
 # Carga única de los datasets Silver
 
-def load_silver() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def load_silver() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     print("\n=== Verificando archivos Silver ===")
 
     # Verificaciones previas
     check_exists(GEO_INPUT, "geografia (geo)")
     check_exists(POLICIA_INPUT, "policia scraping")
+    check_exists(SOCRATA_INPUT, "consolidado delitos (socrata)")
     check_exists(POBLACION_INPUT, "poblacion santander")
     check_exists(DIVIPOLA_INPUT, "divipola")
 
     print("\n=== Cargando datasets Silver ===")
     geo = gpd.read_parquet(GEO_INPUT)
     policia = pd.read_parquet(POLICIA_INPUT)
+    socrata = pd.read_parquet(SOCRATA_INPUT)
     poblacion = pd.read_parquet(POBLACION_INPUT)
     divipola = pd.read_parquet(DIVIPOLA_INPUT)
 
-    return geo, policia, poblacion, divipola
+    return geo, policia, socrata, poblacion, divipola
 
 # Limpieza de cada dataset
 
@@ -176,6 +180,79 @@ def clean_divipola(df: pd.DataFrame) -> pd.DataFrame:
     df = clean_names(df)
     return df
 
+
+def clean_socrata(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Limpia y estandariza el consolidado de delitos de Socrata.
+    Normaliza columnas para que sean compatibles con policia_gold.
+    """
+    df = df.copy()
+
+    # Normalizar código municipio (cod_muni -> codigo_municipio)
+    df["codigo_municipio"] = pd.to_numeric(
+        df["cod_muni"].astype(str).str[:5], errors="coerce"
+    ).astype("Int64")
+
+    # Renombrar columnas para compatibilidad
+    df = df.rename(columns={
+        "fecha_hecho": "fecha",
+        "tipo_delito": "delito",
+        "arma_medio": "armas_medios",
+    })
+
+    df = clean_names(df)
+
+    # --- Procesar fecha ---
+    if "fecha" in df.columns:
+        df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
+
+        df["anio"] = df["fecha"].dt.year.astype("Int64")
+        df["mes"] = df["fecha"].dt.month.astype("Int64")
+        df["dia"] = df["fecha"].dt.day.astype("Int64")
+
+        # --- Día de la semana y fin de semana ---
+        dia_semana = df["fecha"].dt.dayofweek
+        df["es_dia_semana"] = (dia_semana < 5).astype(int)
+        df["es_fin_de_semana"] = (dia_semana >= 5).astype(int)
+
+        # --- Fin de mes ---
+        df["es_fin_mes"] = (df["dia"] == df["fecha"].dt.days_in_month).astype(int)
+
+        # --- Festivos colombianos ---
+        anios = df["anio"].dropna().unique().tolist()
+        if anios:
+            col_holidays = holidays.Colombia(years=[int(a) for a in anios])
+            df["es_festivo"] = df["fecha"].apply(
+                lambda x: 1 if pd.notna(x) and x in col_holidays else 0
+            )
+            df["nombre_festivo"] = df["fecha"].apply(
+                lambda x: col_holidays.get(x, None) if pd.notna(x) else None
+            )
+        else:
+            df["es_festivo"] = 0
+            df["nombre_festivo"] = None
+
+        # --- Día laboral (día de semana y no festivo) ---
+        df["es_dia_laboral"] = ((df["es_dia_semana"] == 1) & (df["es_festivo"] == 0)).astype(int)
+
+    # Categorías
+    for col in ["genero", "armas_medios", "delito"]:
+        if col in df.columns:
+            df[col] = (
+                df[col]
+                .astype(str)
+                .str.strip()
+                .str.upper()
+                .replace({"NAN": np.nan})
+                .astype("category")
+            )
+
+    # Agregar columna origen para trazabilidad
+    df["origen"] = "SOCRATA"
+
+    # Eliminar columna vieja
+    df = df.drop(columns=["cod_muni"], errors="ignore")
+
     return df
 
 
@@ -184,13 +261,17 @@ def clean_divipola(df: pd.DataFrame) -> pd.DataFrame:
 def prepare_silver_to_gold() -> None:
 
     print("Cargando datos Silver…")
-    geo, policia, poblacion, divipola = load_silver()
+    geo, policia, socrata, poblacion, divipola = load_silver()
 
     print("Limpiando Geografia…")
     geo = clean_geo(geo)
 
-    print("Limpiando Policía…")
+    print("Limpiando Policía (scraping)…")
     policia = clean_policia(policia)
+    policia["origen"] = "SCRAPING"  # Agregar origen para trazabilidad
+
+    print("Limpiando Socrata (consolidado delitos)…")
+    socrata = clean_socrata(socrata)
 
     print("Limpiando Población…")
     poblacion = clean_poblacion(poblacion)
@@ -198,9 +279,21 @@ def prepare_silver_to_gold() -> None:
     print("Limpiando Divipola…")
     divipola = clean_divipola(divipola)
 
-    print("Guardando en data/gold/base…")
+    # === REPORTE ===
+    print("\n" + "=" * 60)
+    print("📊 RESUMEN DE DATOS PROCESADOS")
+    print("=" * 60)
+    print(f"  Geografía:     {len(geo):>10,} registros")
+    print(f"  Policía:       {len(policia):>10,} registros (scraping)")
+    print(f"  Socrata:       {len(socrata):>10,} registros (API)")
+    print(f"  Población:     {len(poblacion):>10,} registros")
+    print(f"  Divipola:      {len(divipola):>10,} registros")
+    print("=" * 60)
+
+    print("\nGuardando en data/gold/base…")
     save(geo, GEO_OUTPUT)
     save(policia, POLICIA_OUTPUT)
+    save(socrata, SOCRATA_OUTPUT)
     save(poblacion, POBLACION_OUTPUT)
     save(divipola, DIVIPOLA_OUTPUT)
 
