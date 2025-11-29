@@ -2,7 +2,7 @@
   "modelo": "XGBoost MultiOutputClassifier",
   "nombre": "classification_event",
   "descripcion": "Clasificación Multi-Output de Delito y Perfil por evento",
-  "creado": "2025-11-28T15:34:51.840785",
+  "creado": "2025-11-28T20:10:34.610786",
   "targets": {
     "delito": [
       "ABIGEATO",
@@ -18,9 +18,12 @@
       "FEMENINO_ADOLESCENTES",
       "FEMENINO_ADULTOS",
       "FEMENINO_MENORES",
+      "FEMENINO_nan",
       "MASCULINO_ADOLESCENTES",
       "MASCULINO_ADULTOS",
       "MASCULINO_MENORES",
+      "MASCULINO_nan",
+      "NO REPORTADO_nan",
       "NO REPORTA_ADOLESCENTES",
       "NO REPORTA_ADULTOS",
       "NO REPORTA_MENORES"
@@ -62,12 +65,14 @@
       "clases": [
         "ADOLESCENTES",
         "ADULTOS",
-        "MENORES"
+        "MENORES",
+        NaN
       ],
       "encoding": {
         "ADOLESCENTES": 0,
         "ADULTOS": 1,
-        "MENORES": 2
+        "MENORES": 2,
+        "NaN": 3
       }
     }
   },
@@ -76,21 +81,21 @@
     "estimator__subsample": 0.9,
     "estimator__n_estimators": 100,
     "estimator__min_child_weight": 1,
-    "estimator__max_depth": 5,
-    "estimator__learning_rate": 0.05,
-    "estimator__colsample_bytree": 1.0
+    "estimator__max_depth": null,
+    "estimator__learning_rate": 0.1,
+    "estimator__colsample_bytree": 0.8
   },
   "metricas": {
-    "accuracy_delito": 0.4714,
-    "accuracy_perfil": 0.555,
-    "f1_delito": 0.4178,
-    "f1_perfil": 0.5197,
-    "f1_promedio": 0.4688
+    "accuracy_delito": 0.4608,
+    "accuracy_perfil": 0.557,
+    "f1_delito": 0.4169,
+    "f1_perfil": 0.5366,
+    "f1_promedio": 0.4767
   },
   "datos": {
-    "total_eventos": 343861,
-    "train_size": 275088,
-    "test_size": 68773,
+    "total_eventos": 340970,
+    "train_size": 272776,
+    "test_size": 68194,
     "periodo": "2010 - 2025"
   },
   "archivos": [

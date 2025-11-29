@@ -1,7 +1,7 @@
 {
-  "generado": "2025-11-28T15:53:27.099034",
+  "generado": "2025-11-28T20:02:39.585495",
   "dataset": "classification_event_dataset.parquet",
-  "total_eventos": 343861,
+  "total_eventos": 340970,
   "periodo": {
     "anio_inicio": 2010,
     "anio_fin": 2025,
@@ -16,16 +16,16 @@
     "tipos": [
       "ABIGEATO",
       "AMENAZAS",
+      "DELITOS SEXUALES",
       "EXTORSION",
       "HOMICIDIOS",
       "HURTOS",
       "LESIONES",
-      "DELITOS SEXUALES",
       "VIOLENCIA INTRAFAMILIAR"
     ]
   },
   "perfiles": {
-    "n_perfiles": 9,
+    "n_perfiles": 12,
     "perfiles": [
       "MASCULINO_ADULTOS",
       "FEMENINO_ADULTOS",
@@ -35,7 +35,10 @@
       "MASCULINO_MENORES",
       "NO REPORTA_ADULTOS",
       "NO REPORTA_MENORES",
-      "NO REPORTA_ADOLESCENTES"
+      "NO REPORTA_ADOLESCENTES",
+      "MASCULINO_nan",
+      "FEMENINO_nan",
+      "NO REPORTADO_nan"
     ]
   },
   "grupos_etarios": {
@@ -43,12 +46,13 @@
     "grupos": [
       "ADULTOS",
       "ADOLESCENTES",
-      "MENORES"
+      "MENORES",
+      NaN
     ]
   },
   "promedios": {
-    "eventos_por_anio": 21491,
-    "eventos_por_mes": 1790,
-    "eventos_por_municipio": 3952
+    "eventos_por_anio": 21310,
+    "eventos_por_mes": 1775,
+    "eventos_por_municipio": 3919
   }
 }

@@ -1,102 +1,114 @@
 {
-  "generado": "2025-11-28T15:53:27.391626",
+  "generado": "2025-11-28T20:02:39.915615",
   "por_grupo_etario": {
     "distribucion": {
-      "ADULTOS": 306597,
-      "ADOLESCENTES": 23308,
-      "MENORES": 13956
+      "ADULTOS": 297440,
+      "ADOLESCENTES": 24032,
+      "MENORES": 15246
     },
     "porcentajes": {
-      "ADULTOS": 89.16,
-      "ADOLESCENTES": 6.78,
-      "MENORES": 4.06
+      "ADULTOS": 87.23,
+      "ADOLESCENTES": 7.05,
+      "MENORES": 4.47
     },
     "grupo_mas_frecuente": "ADULTOS"
   },
   "por_genero": {
     "distribucion": {
-      "MASCULINO": 180074,
-      "FEMENINO": 163658,
-      "NO REPORTA": 129
+      "MASCULINO": 174189,
+      "FEMENINO": 164102,
+      "NO REPORTADO": 2520,
+      "NO REPORTA": 159
     },
     "porcentajes": {
-      "MASCULINO": 52.37,
-      "FEMENINO": 47.59,
-      "NO REPORTA": 0.04
+      "MASCULINO": 51.09,
+      "FEMENINO": 48.13,
+      "NO REPORTADO": 0.74,
+      "NO REPORTA": 0.05
     }
   },
   "delitos_por_grupo_etario": {
     "ADOLESCENTES": {
       "ABIGEATO": 1,
-      "AMENAZAS": 1010,
-      "DELITOS SEXUALES": 4874,
-      "EXTORSION": 35,
-      "HOMICIDIOS": 538,
-      "HURTOS": 3120,
-      "LESIONES": 11086,
-      "VIOLENCIA INTRAFAMILIAR": 2644
+      "AMENAZAS": 979,
+      "DELITOS SEXUALES": 5818,
+      "EXTORSION": 32,
+      "HOMICIDIOS": 530,
+      "HURTOS": 3471,
+      "LESIONES": 10313,
+      "VIOLENCIA INTRAFAMILIAR": 2888
     },
     "ADULTOS": {
       "ABIGEATO": 1285,
-      "AMENAZAS": 30790,
-      "DELITOS SEXUALES": 5026,
-      "EXTORSION": 2908,
-      "HOMICIDIOS": 8637,
-      "HURTOS": 100849,
-      "LESIONES": 106965,
-      "VIOLENCIA INTRAFAMILIAR": 50137
+      "AMENAZAS": 28844,
+      "DELITOS SEXUALES": 5333,
+      "EXTORSION": 2650,
+      "HOMICIDIOS": 8507,
+      "HURTOS": 100831,
+      "LESIONES": 98424,
+      "VIOLENCIA INTRAFAMILIAR": 51566
     },
     "MENORES": {
       "ABIGEATO": 1,
-      "AMENAZAS": 323,
-      "DELITOS SEXUALES": 6661,
+      "AMENAZAS": 304,
+      "DELITOS SEXUALES": 8161,
       "EXTORSION": 9,
-      "HOMICIDIOS": 165,
-      "HURTOS": 232,
-      "LESIONES": 4297,
-      "VIOLENCIA INTRAFAMILIAR": 2268
+      "HOMICIDIOS": 167,
+      "HURTOS": 233,
+      "LESIONES": 3947,
+      "VIOLENCIA INTRAFAMILIAR": 2424
     }
   },
   "delitos_por_genero": {
     "FEMENINO": {
       "ABIGEATO": 255,
-      "AMENAZAS": 13378,
-      "DELITOS SEXUALES": 14029,
-      "EXTORSION": 942,
-      "HOMICIDIOS": 1332,
-      "HURTOS": 46128,
-      "LESIONES": 45887,
-      "VIOLENCIA INTRAFAMILIAR": 41707
+      "AMENAZAS": 12627,
+      "DELITOS SEXUALES": 17862,
+      "EXTORSION": 856,
+      "HOMICIDIOS": 1361,
+      "HURTOS": 45737,
+      "LESIONES": 42073,
+      "VIOLENCIA INTRAFAMILIAR": 43331
     },
     "MASCULINO": {
       "ABIGEATO": 1031,
-      "AMENAZAS": 18666,
-      "DELITOS SEXUALES": 2517,
-      "EXTORSION": 2010,
-      "HOMICIDIOS": 8008,
-      "HURTOS": 58055,
-      "LESIONES": 76451,
-      "VIOLENCIA INTRAFAMILIAR": 13336
+      "AMENAZAS": 17421,
+      "DELITOS SEXUALES": 3138,
+      "EXTORSION": 1835,
+      "HOMICIDIOS": 7843,
+      "HURTOS": 58779,
+      "LESIONES": 70601,
+      "VIOLENCIA INTRAFAMILIAR": 13541
     },
     "NO REPORTA": {
       "ABIGEATO": 1,
       "AMENAZAS": 79,
-      "DELITOS SEXUALES": 15,
+      "DELITOS SEXUALES": 44,
       "EXTORSION": 0,
       "HOMICIDIOS": 0,
-      "HURTOS": 18,
+      "HURTOS": 19,
       "LESIONES": 10,
       "VIOLENCIA INTRAFAMILIAR": 6
+    },
+    "NO REPORTADO": {
+      "ABIGEATO": 0,
+      "AMENAZAS": 0,
+      "DELITOS SEXUALES": 0,
+      "EXTORSION": 0,
+      "HOMICIDIOS": 0,
+      "HURTOS": 2520,
+      "LESIONES": 0,
+      "VIOLENCIA INTRAFAMILIAR": 0
     }
   },
   "grupo_etario_mas_afectado_por_delito": {
     "ABIGEATO": "ADULTOS",
     "AMENAZAS": "ADULTOS",
+    "DELITOS SEXUALES": "MENORES",
     "EXTORSION": "ADULTOS",
     "HOMICIDIOS": "ADULTOS",
     "HURTOS": "ADULTOS",
     "LESIONES": "ADULTOS",
-    "DELITOS SEXUALES": "MENORES",
     "VIOLENCIA INTRAFAMILIAR": "ADULTOS"
   }
 }

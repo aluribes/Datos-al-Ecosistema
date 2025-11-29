@@ -1,145 +1,145 @@
 {
-  "generado": "2025-11-28T15:53:27.653665",
+  "generado": "2025-11-28T20:02:40.189900",
   "top_20_delito_perfil_edad": [
     {
       "delito": "LESIONES",
       "perfil": "MASCULINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 67027,
-      "porcentaje": 19.49
+      "cantidad": 61859,
+      "porcentaje": 18.14
     },
     {
       "delito": "HURTOS",
       "perfil": "MASCULINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 56008,
-      "porcentaje": 16.29
+      "cantidad": 56497,
+      "porcentaje": 16.57
     },
     {
       "delito": "HURTOS",
       "perfil": "FEMENINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 44823,
-      "porcentaje": 13.04
+      "cantidad": 44315,
+      "porcentaje": 13.0
+    },
+    {
+      "delito": "VIOLENCIA INTRAFAMILIAR",
+      "perfil": "FEMENINO_ADULTOS",
+      "grupo_etario": "ADULTOS",
+      "cantidad": 40205,
+      "porcentaje": 11.79
     },
     {
       "delito": "LESIONES",
       "perfil": "FEMENINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 39928,
-      "porcentaje": 11.61
-    },
-    {
-      "delito": "VIOLENCIA INTRAFAMILIAR",
-      "perfil": "FEMENINO_ADULTOS",
-      "grupo_etario": "ADULTOS",
-      "cantidad": 38829,
-      "porcentaje": 11.29
+      "cantidad": 36555,
+      "porcentaje": 10.72
     },
     {
       "delito": "AMENAZAS",
       "perfil": "MASCULINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 17896,
-      "porcentaje": 5.2
+      "cantidad": 16684,
+      "porcentaje": 4.89
     },
     {
       "delito": "AMENAZAS",
       "perfil": "FEMENINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 12815,
-      "porcentaje": 3.73
+      "cantidad": 12081,
+      "porcentaje": 3.54
     },
     {
       "delito": "VIOLENCIA INTRAFAMILIAR",
       "perfil": "MASCULINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 11303,
-      "porcentaje": 3.29
+      "cantidad": 11356,
+      "porcentaje": 3.33
     },
     {
       "delito": "HOMICIDIOS",
       "perfil": "MASCULINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 7460,
-      "porcentaje": 2.17
-    },
-    {
-      "delito": "LESIONES",
-      "perfil": "MASCULINO_ADOLESCENTES",
-      "grupo_etario": "ADOLESCENTES",
-      "cantidad": 6869,
-      "porcentaje": 2.0
+      "cantidad": 7304,
+      "porcentaje": 2.14
     },
     {
       "delito": "DELITOS SEXUALES",
       "perfil": "FEMENINO_MENORES",
       "grupo_etario": "MENORES",
-      "cantidad": 5391,
-      "porcentaje": 1.57
+      "cantidad": 6613,
+      "porcentaje": 1.94
+    },
+    {
+      "delito": "LESIONES",
+      "perfil": "MASCULINO_ADOLESCENTES",
+      "grupo_etario": "ADOLESCENTES",
+      "cantidad": 6407,
+      "porcentaje": 1.88
     },
     {
       "delito": "DELITOS SEXUALES",
       "perfil": "FEMENINO_ADOLESCENTES",
       "grupo_etario": "ADOLESCENTES",
-      "cantidad": 4332,
-      "porcentaje": 1.26
+      "cantidad": 5157,
+      "porcentaje": 1.51
     },
     {
       "delito": "DELITOS SEXUALES",
       "perfil": "FEMENINO_ADULTOS",
       "grupo_etario": "ADULTOS",
-      "cantidad": 4306,
-      "porcentaje": 1.25
+      "cantidad": 4606,
+      "porcentaje": 1.35
     },
     {
       "delito": "LESIONES",
       "perfil": "FEMENINO_ADOLESCENTES",
       "grupo_etario": "ADOLESCENTES",
-      "cantidad": 4217,
-      "porcentaje": 1.23
+      "cantidad": 3906,
+      "porcentaje": 1.15
     },
     {
       "delito": "LESIONES",
       "perfil": "MASCULINO_MENORES",
       "grupo_etario": "MENORES",
-      "cantidad": 2555,
-      "porcentaje": 0.74
-    },
-    {
-      "delito": "EXTORSION",
-      "perfil": "MASCULINO_ADULTOS",
-      "grupo_etario": "ADULTOS",
-      "cantidad": 1992,
-      "porcentaje": 0.58
+      "cantidad": 2335,
+      "porcentaje": 0.68
     },
     {
       "delito": "HURTOS",
       "perfil": "MASCULINO_ADOLESCENTES",
       "grupo_etario": "ADOLESCENTES",
-      "cantidad": 1923,
-      "porcentaje": 0.56
+      "cantidad": 2152,
+      "porcentaje": 0.63
     },
     {
       "delito": "VIOLENCIA INTRAFAMILIAR",
       "perfil": "FEMENINO_ADOLESCENTES",
       "grupo_etario": "ADOLESCENTES",
-      "cantidad": 1796,
-      "porcentaje": 0.52
+      "cantidad": 1973,
+      "porcentaje": 0.58
+    },
+    {
+      "delito": "EXTORSION",
+      "perfil": "MASCULINO_ADULTOS",
+      "grupo_etario": "ADULTOS",
+      "cantidad": 1818,
+      "porcentaje": 0.53
     },
     {
       "delito": "LESIONES",
       "perfil": "FEMENINO_MENORES",
       "grupo_etario": "MENORES",
-      "cantidad": 1742,
-      "porcentaje": 0.51
+      "cantidad": 1612,
+      "porcentaje": 0.47
     },
     {
       "delito": "DELITOS SEXUALES",
       "perfil": "MASCULINO_MENORES",
       "grupo_etario": "MENORES",
-      "cantidad": 1267,
-      "porcentaje": 0.37
+      "cantidad": 1537,
+      "porcentaje": 0.45
     }
   ],
   "top_15_municipio_delito": [
@@ -147,91 +147,91 @@
       "municipio": "BUCARAMANGA (CT)",
       "codigo_municipio": 68001,
       "delito": "HURTOS",
-      "cantidad": 40465
+      "cantidad": 39736
     },
     {
       "municipio": "BUCARAMANGA (CT)",
       "codigo_municipio": 68001,
       "delito": "LESIONES",
-      "cantidad": 35761
+      "cantidad": 33089
     },
     {
       "municipio": "FLORIDABLANCA",
       "codigo_municipio": 68276,
       "delito": "HURTOS",
-      "cantidad": 14994
+      "cantidad": 15647
     },
     {
       "municipio": "BUCARAMANGA (CT)",
       "codigo_municipio": 68001,
       "delito": "VIOLENCIA INTRAFAMILIAR",
-      "cantidad": 14753
+      "cantidad": 14823
+    },
+    {
+      "municipio": "BARRANCABERMEJA",
+      "codigo_municipio": 68081,
+      "delito": "HURTOS",
+      "cantidad": 13705
     },
     {
       "municipio": "BARRANCABERMEJA",
       "codigo_municipio": 68081,
       "delito": "LESIONES",
-      "cantidad": 13435
+      "cantidad": 12365
     },
     {
       "municipio": "FLORIDABLANCA",
       "codigo_municipio": 68276,
       "delito": "LESIONES",
-      "cantidad": 13333
-    },
-    {
-      "municipio": "BARRANCABERMEJA",
-      "codigo_municipio": 68081,
-      "delito": "HURTOS",
-      "cantidad": 13313
-    },
-    {
-      "municipio": "GIRÓN",
-      "codigo_municipio": 68307,
-      "delito": "LESIONES",
-      "cantidad": 10745
-    },
-    {
-      "municipio": "PIEDECUESTA",
-      "codigo_municipio": 68547,
-      "delito": "LESIONES",
-      "cantidad": 10387
+      "cantidad": 12268
     },
     {
       "municipio": "GIRÓN",
       "codigo_municipio": 68307,
       "delito": "HURTOS",
-      "cantidad": 9432
+      "cantidad": 9930
+    },
+    {
+      "municipio": "GIRÓN",
+      "codigo_municipio": 68307,
+      "delito": "LESIONES",
+      "cantidad": 9865
+    },
+    {
+      "municipio": "PIEDECUESTA",
+      "codigo_municipio": 68547,
+      "delito": "LESIONES",
+      "cantidad": 9407
     },
     {
       "municipio": "PIEDECUESTA",
       "codigo_municipio": 68547,
       "delito": "HURTOS",
-      "cantidad": 8897
+      "cantidad": 9253
     },
     {
       "municipio": "BARRANCABERMEJA",
       "codigo_municipio": 68081,
       "delito": "VIOLENCIA INTRAFAMILIAR",
-      "cantidad": 8142
+      "cantidad": 8474
     },
     {
       "municipio": "BUCARAMANGA (CT)",
       "codigo_municipio": 68001,
       "delito": "AMENAZAS",
-      "cantidad": 7747
+      "cantidad": 7376
     },
     {
       "municipio": "FLORIDABLANCA",
       "codigo_municipio": 68276,
       "delito": "VIOLENCIA INTRAFAMILIAR",
-      "cantidad": 7024
+      "cantidad": 7255
     },
     {
       "municipio": "GIRÓN",
       "codigo_municipio": 68307,
       "delito": "VIOLENCIA INTRAFAMILIAR",
-      "cantidad": 6408
+      "cantidad": 6581
     }
   ]
 }

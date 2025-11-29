@@ -2,106 +2,106 @@
   "municipios_mas_seguros": [
     {
       "codigo": 68686,
-      "pct_bajo": 90.32,
-      "promedio_delitos": 1.5
-    },
-    {
-      "codigo": 68468,
-      "pct_bajo": 87.62,
-      "promedio_delitos": 1.69
-    },
-    {
-      "codigo": 68245,
-      "pct_bajo": 86.36,
-      "promedio_delitos": 1.7
+      "pct_bajo": 92.31,
+      "promedio_delitos": 1.43
     },
     {
       "codigo": 68370,
-      "pct_bajo": 86.21,
-      "promedio_delitos": 1.9
+      "pct_bajo": 89.66,
+      "promedio_delitos": 1.72
     },
     {
-      "codigo": 68160,
-      "pct_bajo": 85.42,
-      "promedio_delitos": 1.67
+      "codigo": 68468,
+      "pct_bajo": 87.74,
+      "promedio_delitos": 1.59
+    },
+    {
+      "codigo": 68245,
+      "pct_bajo": 87.5,
+      "promedio_delitos": 1.59
+    },
+    {
+      "codigo": 68673,
+      "pct_bajo": 85.54,
+      "promedio_delitos": 1.64
     }
   ],
   "municipios_menos_seguros": [
     {
       "codigo": 68001,
       "pct_alto": 100.0,
-      "promedio_delitos": 965.74
+      "promedio_delitos": 971.12
     },
     {
       "codigo": 68077,
       "pct_alto": 100.0,
-      "promedio_delitos": 47.84
+      "promedio_delitos": 45.75
     },
     {
       "codigo": 68081,
       "pct_alto": 100.0,
-      "promedio_delitos": 342.31
+      "promedio_delitos": 330.25
     },
     {
       "codigo": 68190,
       "pct_alto": 100.0,
-      "promedio_delitos": 35.68
+      "promedio_delitos": 34.21
     },
     {
       "codigo": 68276,
       "pct_alto": 100.0,
-      "promedio_delitos": 278.97
+      "promedio_delitos": 276.75
     }
   ],
   "meses_mas_peligrosos": [
     {
       "mes": 1,
       "nombre": "Enero",
-      "pct_alto": 36.32
+      "pct_alto": 35.03
     },
     {
       "mes": 3,
       "nombre": "Marzo",
-      "pct_alto": 34.73
+      "pct_alto": 33.3
     },
     {
       "mes": 7,
       "nombre": "Julio",
-      "pct_alto": 34.34
+      "pct_alto": 32.77
     }
   ],
   "meses_mas_seguros": [
     {
-      "mes": 4,
-      "nombre": "Abril",
-      "pct_alto": 32.96
+      "mes": 11,
+      "nombre": "Noviembre",
+      "pct_alto": 31.69
     },
     {
       "mes": 2,
       "nombre": "Febrero",
-      "pct_alto": 32.62
+      "pct_alto": 31.61
     },
     {
-      "mes": 11,
-      "nombre": "Noviembre",
-      "pct_alto": 32.15
+      "mes": 4,
+      "nombre": "Abril",
+      "pct_alto": 31.12
     }
   ],
   "delito_mas_frecuente": {
-    "tipo": "LESIONES",
-    "total": 166430,
-    "porcentaje": 34.51
+    "tipo": "HURTOS",
+    "total": 163934,
+    "porcentaje": 34.62
   },
   "resumen_general": {
-    "total_delitos": 482200,
-    "promedio_mensual_departamento": 37.14,
+    "total_delitos": 473473,
+    "promedio_mensual_departamento": 36.31,
     "municipios_analizados": 87,
     "periodo": "2010-2025"
   },
   "preguntas_frecuentes": {
-    "¿Cuál es el municipio más seguro?": "El municipio con código 68686 tiene 90.3% de meses en riesgo BAJO.",
-    "¿Cuál es el mes más peligroso?": "Enero tiene 36.3% de riesgo alto.",
-    "¿Qué delito es más común?": "LESIONES representa el 34.5% del total de delitos.",
-    "¿Cuántos delitos hay en promedio?": "En promedio hay 37.1 delitos por municipio al mes."
+    "¿Cuál es el municipio más seguro?": "El municipio con código 68686 tiene 92.3% de meses en riesgo BAJO.",
+    "¿Cuál es el mes más peligroso?": "Enero tiene 35.0% de riesgo alto.",
+    "¿Qué delito es más común?": "HURTOS representa el 34.6% del total de delitos.",
+    "¿Cuántos delitos hay en promedio?": "En promedio hay 36.3 delitos por municipio al mes."
   }
 }

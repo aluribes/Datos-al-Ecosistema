@@ -1,61 +1,61 @@
 {
-  "generado": "2025-11-28T15:53:27.317111",
+  "generado": "2025-11-28T20:02:39.814328",
   "por_anio": {
-    "2010": 9939,
+    "2010": 16764,
     "2011": 17628,
     "2012": 19153,
     "2013": 19447,
-    "2014": 18181,
-    "2015": 12337,
-    "2016": 21038,
+    "2014": 19245,
+    "2015": 21045,
+    "2016": 21290,
     "2017": 22269,
-    "2018": 33253,
+    "2018": 23907,
     "2019": 33061,
     "2020": 20540,
-    "2021": 16177,
-    "2022": 15087,
+    "2021": 23744,
+    "2022": 16215,
     "2023": 23033,
     "2024": 21378,
-    "2025": 41340
+    "2025": 22251
   },
   "por_mes": {
     "distribucion": {
-      "1": 30344,
-      "2": 28589,
-      "3": 30754,
-      "4": 28049,
-      "5": 30229,
-      "6": 28327,
-      "7": 30376,
-      "8": 29966,
-      "9": 30210,
-      "10": 28365,
-      "11": 24359,
-      "12": 24293
+      "1": 29658,
+      "2": 28017,
+      "3": 30115,
+      "4": 27354,
+      "5": 29624,
+      "6": 27765,
+      "7": 29649,
+      "8": 29582,
+      "9": 29728,
+      "10": 28453,
+      "11": 25676,
+      "12": 25349
     },
     "mes_con_mas_delitos": 3,
     "mes_con_menos_delitos": 12
   },
   "por_trimestre": {
-    "1": 89687,
-    "2": 86605,
-    "3": 90552,
-    "4": 77017
+    "1": 87790,
+    "2": 84743,
+    "3": 88959,
+    "4": 79478
   },
   "por_tipo_dia": {
-    "fin_de_semana": 111764,
-    "dia_laboral": 232097,
-    "pct_fin_semana": 32.5
+    "fin_de_semana": 109986,
+    "dia_laboral": 230984,
+    "pct_fin_semana": 32.26
   },
   "festivos": {
-    "en_festivo": 16437,
-    "no_festivo": 327424,
-    "pct_festivo": 4.78
+    "en_festivo": 16404,
+    "no_festivo": 324566,
+    "pct_festivo": 4.81
   },
   "variacion_anual": [
     {
       "anio": 2011,
-      "variacion_pct": 77.36
+      "variacion_pct": 5.15
     },
     {
       "anio": 2012,
@@ -67,27 +67,27 @@
     },
     {
       "anio": 2014,
-      "variacion_pct": -6.51
+      "variacion_pct": -1.04
     },
     {
       "anio": 2015,
-      "variacion_pct": -32.14
+      "variacion_pct": 9.35
     },
     {
       "anio": 2016,
-      "variacion_pct": 70.53
+      "variacion_pct": 1.16
     },
     {
       "anio": 2017,
-      "variacion_pct": 5.85
+      "variacion_pct": 4.6
     },
     {
       "anio": 2018,
-      "variacion_pct": 49.32
+      "variacion_pct": 7.36
     },
     {
       "anio": 2019,
-      "variacion_pct": -0.58
+      "variacion_pct": 38.29
     },
     {
       "anio": 2020,
@@ -95,15 +95,15 @@
     },
     {
       "anio": 2021,
-      "variacion_pct": -21.24
+      "variacion_pct": 15.6
     },
     {
       "anio": 2022,
-      "variacion_pct": -6.74
+      "variacion_pct": -31.71
     },
     {
       "anio": 2023,
-      "variacion_pct": 52.67
+      "variacion_pct": 42.05
     },
     {
       "anio": 2024,
@@ -111,19 +111,19 @@
     },
     {
       "anio": 2025,
-      "variacion_pct": 93.38
+      "variacion_pct": 4.08
     }
   ],
   "delitos_por_anio": {
     "2010": {
       "ABIGEATO": 49,
       "AMENAZAS": 1014,
-      "DELITOS SEXUALES": 0,
+      "DELITOS SEXUALES": 979,
       "EXTORSION": 74,
       "HOMICIDIOS": 549,
-      "HURTOS": 910,
+      "HURTOS": 4786,
       "LESIONES": 7343,
-      "VIOLENCIA INTRAFAMILIAR": 0
+      "VIOLENCIA INTRAFAMILIAR": 1970
     },
     "2011": {
       "ABIGEATO": 43,
@@ -158,7 +158,7 @@
     "2014": {
       "ABIGEATO": 49,
       "AMENAZAS": 1527,
-      "DELITOS SEXUALES": 0,
+      "DELITOS SEXUALES": 1064,
       "EXTORSION": 150,
       "HOMICIDIOS": 513,
       "HURTOS": 5750,
@@ -171,16 +171,16 @@
       "DELITOS SEXUALES": 1293,
       "EXTORSION": 161,
       "HOMICIDIOS": 498,
-      "HURTOS": 985,
+      "HURTOS": 5790,
       "LESIONES": 7453,
-      "VIOLENCIA INTRAFAMILIAR": 0
+      "VIOLENCIA INTRAFAMILIAR": 3903
     },
     "2016": {
       "ABIGEATO": 66,
       "AMENAZAS": 2114,
       "DELITOS SEXUALES": 1398,
       "EXTORSION": 117,
-      "HOMICIDIOS": 263,
+      "HOMICIDIOS": 515,
       "HURTOS": 5111,
       "LESIONES": 7768,
       "VIOLENCIA INTRAFAMILIAR": 4201
@@ -198,12 +198,12 @@
     "2018": {
       "ABIGEATO": 139,
       "AMENAZAS": 2117,
-      "DELITOS SEXUALES": 0,
+      "DELITOS SEXUALES": 1763,
       "EXTORSION": 205,
       "HOMICIDIOS": 481,
-      "HURTOS": 8271,
-      "LESIONES": 14734,
-      "VIOLENCIA INTRAFAMILIAR": 7306
+      "HURTOS": 8182,
+      "LESIONES": 7367,
+      "VIOLENCIA INTRAFAMILIAR": 3653
     },
     "2019": {
       "ABIGEATO": 136,
@@ -228,12 +228,12 @@
     "2021": {
       "ABIGEATO": 99,
       "AMENAZAS": 2809,
-      "DELITOS SEXUALES": 0,
+      "DELITOS SEXUALES": 1732,
       "EXTORSION": 171,
       "HOMICIDIOS": 631,
-      "HURTOS": 6263,
+      "HURTOS": 7693,
       "LESIONES": 6204,
-      "VIOLENCIA INTRAFAMILIAR": 0
+      "VIOLENCIA INTRAFAMILIAR": 4405
     },
     "2022": {
       "ABIGEATO": 97,
@@ -241,7 +241,7 @@
       "DELITOS SEXUALES": 1048,
       "EXTORSION": 199,
       "HOMICIDIOS": 686,
-      "HURTOS": 1392,
+      "HURTOS": 2520,
       "LESIONES": 6133,
       "VIOLENCIA INTRAFAMILIAR": 3208
     },
@@ -267,13 +267,13 @@
     },
     "2025": {
       "ABIGEATO": 40,
-      "AMENAZAS": 3992,
-      "DELITOS SEXUALES": 2110,
-      "EXTORSION": 522,
-      "HOMICIDIOS": 1092,
-      "HURTOS": 15849,
-      "LESIONES": 8143,
-      "VIOLENCIA INTRAFAMILIAR": 9592
+      "AMENAZAS": 1996,
+      "DELITOS SEXUALES": 1055,
+      "EXTORSION": 261,
+      "HOMICIDIOS": 704,
+      "HURTOS": 7553,
+      "LESIONES": 5846,
+      "VIOLENCIA INTRAFAMILIAR": 4796
     }
   }
 }

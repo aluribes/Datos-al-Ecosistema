@@ -1,5 +1,5 @@
 {
-  "fecha_generacion": "2025-11-28 16:41:01",
+  "fecha_generacion": "2025-11-28 20:12:59",
   "dataset": "classification_monthly_dataset.parquet",
   "periodo": {
     "inicio": 2010,
@@ -7,28 +7,28 @@
     "total_meses": 192
   },
   "cobertura": {
-    "total_registros": 12984,
+    "total_registros": 13040,
     "municipios": 87,
-    "registros_por_municipio": 149.2
+    "registros_por_municipio": 149.9
   },
   "distribucion_riesgo": {
     "BAJO": {
-      "cantidad": 4424,
-      "porcentaje": 34.07
+      "cantidad": 4590,
+      "porcentaje": 35.2
     },
     "ALTO": {
-      "cantidad": 4372,
-      "porcentaje": 33.67
+      "cantidad": 4231,
+      "porcentaje": 32.45
     },
     "MEDIO": {
-      "cantidad": 4188,
-      "porcentaje": 32.26
+      "cantidad": 4219,
+      "porcentaje": 32.35
     }
   },
   "delitos": {
-    "total_acumulado": 482200,
-    "promedio_mensual": 37.14,
-    "maximo_mensual": 1769,
+    "total_acumulado": 473473,
+    "promedio_mensual": 36.31,
+    "maximo_mensual": 1369,
     "municipio_max_delitos": 68001
   }
 }
