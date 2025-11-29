@@ -1,12 +1,12 @@
 {
   "por_anio": {
     "2010": {
-      "total_delitos": 21758,
-      "promedio_mensual": 27.54,
+      "total_delitos": 22798,
+      "promedio_mensual": 28.86,
       "distribucion_riesgo": {
-        "BAJO": 40.13,
-        "MEDIO": 28.35,
-        "ALTO": 31.52
+        "BAJO": 37.22,
+        "MEDIO": 32.28,
+        "ALTO": 30.51
       }
     },
     "2011": {
@@ -14,8 +14,8 @@
       "promedio_mensual": 29.18,
       "distribucion_riesgo": {
         "BAJO": 35.02,
-        "MEDIO": 32.97,
-        "ALTO": 32.0
+        "MEDIO": 34.78,
+        "ALTO": 30.19
       }
     },
     "2012": {
@@ -23,8 +23,8 @@
       "promedio_mensual": 33.01,
       "distribucion_riesgo": {
         "BAJO": 37.06,
-        "MEDIO": 31.41,
-        "ALTO": 31.53
+        "MEDIO": 33.54,
+        "ALTO": 29.4
       }
     },
     "2013": {
@@ -32,17 +32,17 @@
       "promedio_mensual": 33.99,
       "distribucion_riesgo": {
         "BAJO": 38.87,
-        "MEDIO": 29.73,
-        "ALTO": 31.4
+        "MEDIO": 30.76,
+        "ALTO": 30.37
       }
     },
     "2014": {
-      "total_delitos": 26670,
-      "promedio_mensual": 32.68,
+      "total_delitos": 27802,
+      "promedio_mensual": 34.07,
       "distribucion_riesgo": {
-        "BAJO": 40.93,
-        "MEDIO": 29.29,
-        "ALTO": 29.78
+        "BAJO": 37.75,
+        "MEDIO": 33.82,
+        "ALTO": 28.43
       }
     },
     "2015": {
@@ -50,8 +50,8 @@
       "promedio_mensual": 35.9,
       "distribucion_riesgo": {
         "BAJO": 35.19,
-        "MEDIO": 32.41,
-        "ALTO": 32.41
+        "MEDIO": 35.07,
+        "ALTO": 29.75
       }
     },
     "2016": {
@@ -59,8 +59,8 @@
       "promedio_mensual": 40.54,
       "distribucion_riesgo": {
         "BAJO": 36.97,
-        "MEDIO": 30.92,
-        "ALTO": 32.11
+        "MEDIO": 32.82,
+        "ALTO": 30.21
       }
     },
     "2017": {
@@ -68,17 +68,17 @@
       "promedio_mensual": 36.68,
       "distribucion_riesgo": {
         "BAJO": 31.35,
-        "MEDIO": 37.43,
-        "ALTO": 31.23
+        "MEDIO": 40.12,
+        "ALTO": 28.54
       }
     },
     "2018": {
-      "total_delitos": 33967,
-      "promedio_mensual": 38.82,
+      "total_delitos": 49552,
+      "promedio_mensual": 56.63,
       "distribucion_riesgo": {
-        "BAJO": 28.23,
-        "MEDIO": 38.06,
-        "ALTO": 33.71
+        "BAJO": 17.94,
+        "MEDIO": 40.57,
+        "ALTO": 41.49
       }
     },
     "2019": {
@@ -86,8 +86,8 @@
       "promedio_mensual": 38.55,
       "distribucion_riesgo": {
         "BAJO": 33.76,
-        "MEDIO": 33.76,
-        "ALTO": 32.49
+        "MEDIO": 35.84,
+        "ALTO": 30.4
       }
     },
     "2020": {
@@ -95,8 +95,8 @@
       "promedio_mensual": 33.48,
       "distribucion_riesgo": {
         "BAJO": 36.44,
-        "MEDIO": 32.39,
-        "ALTO": 31.17
+        "MEDIO": 34.72,
+        "ALTO": 28.83
       }
     },
     "2021": {
@@ -104,8 +104,8 @@
       "promedio_mensual": 40.77,
       "distribucion_riesgo": {
         "BAJO": 32.79,
-        "MEDIO": 33.84,
-        "ALTO": 33.37
+        "MEDIO": 36.28,
+        "ALTO": 30.93
       }
     },
     "2022": {
@@ -113,8 +113,8 @@
       "promedio_mensual": 42.45,
       "distribucion_riesgo": {
         "BAJO": 35.33,
-        "MEDIO": 31.47,
-        "ALTO": 33.2
+        "MEDIO": 33.47,
+        "ALTO": 31.21
       }
     },
     "2023": {
@@ -122,8 +122,8 @@
       "promedio_mensual": 43.57,
       "distribucion_riesgo": {
         "BAJO": 33.73,
-        "MEDIO": 33.85,
-        "ALTO": 32.42
+        "MEDIO": 36.58,
+        "ALTO": 29.69
       }
     },
     "2024": {
@@ -131,92 +131,92 @@
       "promedio_mensual": 39.81,
       "distribucion_riesgo": {
         "BAJO": 34.81,
-        "MEDIO": 29.52,
-        "ALTO": 35.67
+        "MEDIO": 32.23,
+        "ALTO": 32.96
       }
     },
     "2025": {
-      "total_delitos": 22251,
-      "promedio_mensual": 32.53,
+      "total_delitos": 39248,
+      "promedio_mensual": 57.05,
       "distribucion_riesgo": {
-        "BAJO": 33.63,
-        "MEDIO": 30.85,
-        "ALTO": 35.53
+        "BAJO": 20.06,
+        "MEDIO": 35.76,
+        "ALTO": 44.19
       }
     }
   },
   "por_mes": {
     "1": {
       "nombre": "Enero",
-      "total_delitos": 41064,
-      "promedio": 36.7,
-      "pct_riesgo_alto": 35.03
+      "total_delitos": 44294,
+      "promedio": 39.58,
+      "pct_riesgo_alto": 33.78
     },
     "2": {
       "nombre": "Febrero",
-      "total_delitos": 38915,
-      "promedio": 35.97,
-      "pct_riesgo_alto": 31.61
+      "total_delitos": 42009,
+      "promedio": 38.83,
+      "pct_riesgo_alto": 30.22
     },
     "3": {
       "nombre": "Marzo",
-      "total_delitos": 40900,
-      "promedio": 37.11,
-      "pct_riesgo_alto": 33.3
+      "total_delitos": 44265,
+      "promedio": 40.17,
+      "pct_riesgo_alto": 32.58
     },
     "4": {
       "nombre": "Abril",
-      "total_delitos": 37247,
-      "promedio": 34.81,
-      "pct_riesgo_alto": 31.12
+      "total_delitos": 40470,
+      "promedio": 37.82,
+      "pct_riesgo_alto": 31.03
     },
     "5": {
       "nombre": "Mayo",
-      "total_delitos": 40542,
-      "promedio": 36.49,
-      "pct_riesgo_alto": 32.31
+      "total_delitos": 43931,
+      "promedio": 39.54,
+      "pct_riesgo_alto": 32.13
     },
     "6": {
       "nombre": "Junio",
-      "total_delitos": 37901,
-      "promedio": 34.8,
-      "pct_riesgo_alto": 31.77
+      "total_delitos": 41058,
+      "promedio": 37.7,
+      "pct_riesgo_alto": 31.13
     },
     "7": {
       "nombre": "Julio",
-      "total_delitos": 40882,
-      "promedio": 36.21,
-      "pct_riesgo_alto": 32.77
+      "total_delitos": 44240,
+      "promedio": 39.19,
+      "pct_riesgo_alto": 32.33
     },
     "8": {
       "nombre": "Agosto",
-      "total_delitos": 41155,
-      "promedio": 36.84,
-      "pct_riesgo_alto": 32.68
+      "total_delitos": 44291,
+      "promedio": 39.58,
+      "pct_riesgo_alto": 31.64
     },
     "9": {
       "nombre": "Septiembre",
-      "total_delitos": 41788,
-      "promedio": 37.75,
-      "pct_riesgo_alto": 31.98
+      "total_delitos": 45137,
+      "promedio": 40.77,
+      "pct_riesgo_alto": 31.17
     },
     "10": {
       "nombre": "Octubre",
-      "total_delitos": 40100,
-      "promedio": 35.96,
-      "pct_riesgo_alto": 32.56
+      "total_delitos": 42816,
+      "promedio": 38.33,
+      "pct_riesgo_alto": 30.98
     },
     "11": {
       "nombre": "Noviembre",
-      "total_delitos": 36410,
-      "promedio": 35.84,
-      "pct_riesgo_alto": 31.69
+      "total_delitos": 37744,
+      "promedio": 37.15,
+      "pct_riesgo_alto": 30.41
     },
     "12": {
       "nombre": "Diciembre",
-      "total_delitos": 36569,
-      "promedio": 37.2,
-      "pct_riesgo_alto": 32.35
+      "total_delitos": 37972,
+      "promedio": 38.63,
+      "pct_riesgo_alto": 31.64
     }
   },
   "estacionalidad": {
@@ -224,34 +224,34 @@
       {
         "mes": 1,
         "nombre": "Enero",
-        "pct_alto": 35.03
+        "pct_alto": 33.78
       },
       {
         "mes": 3,
         "nombre": "Marzo",
-        "pct_alto": 33.3
+        "pct_alto": 32.58
       },
       {
         "mes": 7,
         "nombre": "Julio",
-        "pct_alto": 32.77
+        "pct_alto": 32.33
       }
     ],
     "meses_menos_riesgo": [
       {
+        "mes": 10,
+        "nombre": "Octubre",
+        "pct_alto": 30.98
+      },
+      {
         "mes": 11,
         "nombre": "Noviembre",
-        "pct_alto": 31.69
+        "pct_alto": 30.41
       },
       {
         "mes": 2,
         "nombre": "Febrero",
-        "pct_alto": 31.61
-      },
-      {
-        "mes": 4,
-        "nombre": "Abril",
-        "pct_alto": 31.12
+        "pct_alto": 30.22
       }
     ]
   }

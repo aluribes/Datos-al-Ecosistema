@@ -1,18 +1,18 @@
 {
   "estadisticas_clave": {
-    "total_delitos_historico": 473473,
-    "promedio_mensual_departamento": 36.31,
+    "total_delitos_historico": 508227,
+    "promedio_mensual_departamento": 38.96,
     "total_municipios": 87,
     "periodo": "2010-2025"
   },
   "municipio_mas_delitos": {
     "codigo": 68001,
-    "promedio_mensual": 971.12,
-    "total_ultimo_anio": 8074
+    "promedio_mensual": 1039.22,
+    "total_ultimo_anio": 15101
   },
   "municipio_mas_seguro": {
     "codigo": 68686,
-    "promedio_mensual": 1.43,
+    "promedio_mensual": 1.48,
     "total_ultimo_anio": 3
   },
   "estacionalidad": {
@@ -20,48 +20,48 @@
       {
         "mes": 9,
         "nombre": "Septiembre",
-        "promedio": 37.75
-      },
-      {
-        "mes": 12,
-        "nombre": "Diciembre",
-        "promedio": 37.2
+        "promedio": 40.77
       },
       {
         "mes": 3,
         "nombre": "Marzo",
-        "promedio": 37.11
+        "promedio": 40.17
+      },
+      {
+        "mes": 1,
+        "nombre": "Enero",
+        "promedio": 39.58
       }
     ],
     "meses_menos_delitos": [
       {
-        "mes": 11,
-        "nombre": "Noviembre",
-        "promedio": 35.84
-      },
-      {
         "mes": 4,
         "nombre": "Abril",
-        "promedio": 34.81
+        "promedio": 37.82
       },
       {
         "mes": 6,
         "nombre": "Junio",
-        "promedio": 34.8
+        "promedio": 37.7
+      },
+      {
+        "mes": 11,
+        "nombre": "Noviembre",
+        "promedio": 37.15
       }
     ],
-    "variacion_estacional_pct": 8.48
+    "variacion_estacional_pct": 9.74
   },
   "tendencia_departamental": {
-    "variacion_ultimo_anio": -31.25,
-    "direccion": "reducción"
+    "variacion_ultimo_anio": 21.27,
+    "direccion": "incremento"
   },
   "preguntas_frecuentes": {
-    "¿Cuántos delitos hay en promedio al mes?": "En Santander hay un promedio de 36.3 delitos por municipio al mes.",
-    "¿Cuál es el municipio con más delitos?": "El municipio 68001 tiene el mayor promedio con 971.1 delitos mensuales.",
-    "¿Cuál es el municipio más seguro?": "El municipio 68686 es el más seguro con solo 1.4 delitos mensuales en promedio.",
-    "¿En qué mes hay más delitos?": "Septiembre es el mes con más delitos (37.8 en promedio).",
-    "¿Cómo va la tendencia este año?": "El último año hubo una -31.2% variación respecto al año anterior.",
+    "¿Cuántos delitos hay en promedio al mes?": "En Santander hay un promedio de 39.0 delitos por municipio al mes.",
+    "¿Cuál es el municipio con más delitos?": "El municipio 68001 tiene el mayor promedio con 1039.2 delitos mensuales.",
+    "¿Cuál es el municipio más seguro?": "El municipio 68686 es el más seguro con solo 1.5 delitos mensuales en promedio.",
+    "¿En qué mes hay más delitos?": "Septiembre es el mes con más delitos (40.8 en promedio).",
+    "¿Cómo va la tendencia este año?": "El último año hubo una +21.3% variación respecto al año anterior.",
     "¿Cuántos municipios están por encima del promedio?": "8 municipios están por encima del promedio departamental."
   }
 }

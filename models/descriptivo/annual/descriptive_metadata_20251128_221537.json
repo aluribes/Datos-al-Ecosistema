@@ -1,0 +1,80 @@
+{
+  "modelo": {
+    "nombre": "Modelo Descriptivo Anual de Delitos",
+    "descripcion": "Segmentacion y perfilado de municipios segun patrones de criminalidad anual",
+    "version": "20251128_221537",
+    "fecha_generacion": "2025-11-28T22:15:37.271584"
+  },
+  "dataset": {
+    "fuente": "regression_annual_dataset.parquet",
+    "periodo": "2010-2025",
+    "municipios": 87,
+    "total_registros": 1388
+  },
+  "clustering": {
+    "algoritmo": "K-Means",
+    "n_clusters": 3,
+    "silhouette_score": 0.20086804674369035,
+    "features": [
+      "delitos_promedio",
+      "delitos_variabilidad",
+      "poblacion",
+      "densidad",
+      "pendiente",
+      "volatilidad",
+      "indice_concentracion",
+      "prop_ABIGEATO",
+      "prop_HURTOS",
+      "prop_LESIONES",
+      "prop_VIOLENCIA INTRAFAMILIAR",
+      "prop_AMENAZAS",
+      "prop_DELITOS SEXUALES",
+      "prop_EXTORSION",
+      "prop_HOMICIDIOS"
+    ]
+  },
+  "tendencias": {
+    "distribucion": {
+      "Estable": 56,
+      "Volatil": 16,
+      "Ascendente": 13,
+      "Descendente": 2
+    }
+  },
+  "composicion": {
+    "delitos_analizados": [
+      "ABIGEATO",
+      "HURTOS",
+      "LESIONES",
+      "VIOLENCIA INTRAFAMILIAR",
+      "AMENAZAS",
+      "DELITOS SEXUALES",
+      "EXTORSION",
+      "HOMICIDIOS"
+    ],
+    "distribucion_dominante": {
+      "LESIONES": 77,
+      "VIOLENCIA INTRAFAMILIAR": 8,
+      "HURTOS": 2
+    }
+  },
+  "archivos_generados": {
+    "perfiles_municipios": "perfiles_municipios_20251128_221537.json",
+    "perfiles_clusters": "perfiles_clusters_20251128_221537.json"
+  },
+  "uso": {
+    "preguntas_ejemplo": [
+      "Como se clasifican los municipios segun su perfil delictivo?",
+      "Cuales son los municipios con tendencia ascendente de criminalidad?",
+      "Cual es el delito mas frecuente en el municipio X?",
+      "Describeme la situacion de seguridad del municipio X",
+      "Cuales son los municipios de alto riesgo?"
+    ],
+    "casos_de_uso": [
+      "Chatbot de consulta ciudadana",
+      "Dashboard de monitoreo de seguridad",
+      "Informes ejecutivos automatizados",
+      "Planeacion territorial estrategica"
+    ]
+  }
+}

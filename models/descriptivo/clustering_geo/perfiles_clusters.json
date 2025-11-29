@@ -1,6 +1,72 @@
 {
   "0": {
-    "n_municipios": 55,
+    "n_municipios": 11,
+    "municipios": [
+      "CALIFORNIA",
+      "CHIPATÁ",
+      "GÜEPSA",
+      "JESÚS MARÍA",
+      "MACARAVITA",
+      "MÁLAGA",
+      "PALMAR",
+      "SAN BENITO",
+      "SAN JOSÉ DE MIRANDA",
+      "VALLE DE SAN JOSÉ",
+      "VETAS"
+    ],
+    "codigos": [
+      68132,
+      68179,
+      68327,
+      68368,
+      68425,
+      68432,
+      68522,
+      68673,
+      68684,
+      68855,
+      68867
+    ],
+    "estadisticas": {
+      "tasa_delitos_promedio": 6844.16,
+      "densidad_promedio": 180.62,
+      "poblacion_promedio": 7571.0,
+      "area_promedio_km2": 68.95
+    }
+  },
+  "1": {
+    "n_municipios": 9,
+    "municipios": [
+      "BUCARAMANGA",
+      "BARBOSA",
+      "BARRANCABERMEJA",
+      "FLORIDABLANCA",
+      "GIRÓN",
+      "PIEDECUESTA",
+      "PUENTE NACIONAL",
+      "SAN GIL",
+      "SOCORRO"
+    ],
+    "codigos": [
+      68001,
+      68077,
+      68081,
+      68276,
+      68307,
+      68547,
+      68572,
+      68679,
+      68755
+    ],
+    "estadisticas": {
+      "tasa_delitos_promedio": 17126.55,
+      "densidad_promedio": 1766.11,
+      "poblacion_promedio": 249209.0,
+      "area_promedio_km2": 348.86
+    }
+  },
+  "2": {
+    "n_municipios": 50,
     "municipios": [
       "AGUADA",
       "ALBANIA",
@@ -8,7 +74,6 @@
       "BARICHARA",
       "BOLÍVAR",
       "CABRERA",
-      "CALIFORNIA",
       "CAPITANEJO",
       "CARCASÍ",
       "CEPITÁ",
@@ -16,7 +81,6 @@
       "CHARALÁ",
       "CHARTA",
       "CHIMA",
-      "CHIPATÁ",
       "CONCEPCIÓN",
       "CONFINES",
       "CONTRATACIÓN",
@@ -37,7 +101,6 @@
       "LA BELLEZA",
       "LA PAZ",
       "LOS SANTOS",
-      "MÁLAGA",
       "MATANZA",
       "MOLAGAVITA",
       "OCAMONTE",
@@ -47,14 +110,12 @@
       "PINCHOTE",
       "SAN ANDRÉS",
       "SAN JOAQUÍN",
-      "SAN JOSÉ DE MIRANDA",
       "SAN MIGUEL",
       "SAN VICENTE DE CHUCURÍ",
       "SANTA BÁRBARA",
       "SUAITA",
       "SUCRE",
       "SURATÁ",
-      "VETAS",
       "VILLANUEVA",
       "ZAPATOCA"
     ],
@@ -65,7 +126,6 @@
       68079,
       68101,
       68121,
-      68132,
       68147,
       68152,
       68160,
@@ -73,7 +133,6 @@
       68167,
       68169,
       68176,
-      68179,
       68207,
       68209,
       68211,
@@ -94,7 +153,6 @@
       68377,
       68397,
       68418,
-      68432,
       68444,
       68468,
       68498,
@@ -104,25 +162,23 @@
       68549,
       68669,
       68682,
-      68684,
       68686,
       68689,
       68705,
       68770,
       68773,
       68780,
-      68867,
       68872,
       68895
     ],
     "estadisticas": {
-      "tasa_delitos_promedio": 5874.98,
-      "densidad_promedio": 75.37,
-      "poblacion_promedio": 9378.0,
-      "area_promedio_km2": 240.49
+      "tasa_delitos_promedio": 5856.71,
+      "densidad_promedio": 62.52,
+      "poblacion_promedio": 9323.0,
+      "area_promedio_km2": 257.14
     }
   },
-  "1": {
+  "3": {
     "n_municipios": 17,
     "municipios": [
       "BETULIA",
@@ -163,66 +219,10 @@
       68861
     ],
     "estadisticas": {
-      "tasa_delitos_promedio": 9607.1,
+      "tasa_delitos_promedio": 9750.17,
       "densidad_promedio": 45.42,
-      "poblacion_promedio": 24442.0,
+      "poblacion_promedio": 24448.0,
       "area_promedio_km2": 817.25
-    }
-  },
-  "2": {
-    "n_municipios": 9,
-    "municipios": [
-      "BUCARAMANGA",
-      "BARBOSA",
-      "BARRANCABERMEJA",
-      "FLORIDABLANCA",
-      "GIRÓN",
-      "PIEDECUESTA",
-      "PUENTE NACIONAL",
-      "SAN GIL",
-      "SOCORRO"
-    ],
-    "codigos": [
-      68001,
-      68077,
-      68081,
-      68276,
-      68307,
-      68547,
-      68572,
-      68679,
-      68755
-    ],
-    "estadisticas": {
-      "tasa_delitos_promedio": 16322.11,
-      "densidad_promedio": 1766.11,
-      "poblacion_promedio": 249209.0,
-      "area_promedio_km2": 348.86
-    }
-  },
-  "3": {
-    "n_municipios": 6,
-    "municipios": [
-      "GÜEPSA",
-      "JESÚS MARÍA",
-      "MACARAVITA",
-      "PALMAR",
-      "SAN BENITO",
-      "VALLE DE SAN JOSÉ"
-    ],
-    "codigos": [
-      68327,
-      68368,
-      68425,
-      68522,
-      68673,
-      68855
-    ],
-    "estadisticas": {
-      "tasa_delitos_promedio": 6047.8,
-      "densidad_promedio": 161.26,
-      "poblacion_promedio": 5515.0,
-      "area_promedio_km2": 64.76
     }
   }
 }

@@ -1,9 +1,9 @@
 {
-  "fecha_entrenamiento": "2025-11-28 17:41:59",
+  "fecha_entrenamiento": "2025-11-28 22:13:22",
   "algoritmo": "KMeans",
   "n_clusters": 4,
   "parametros": {
-    "init": "random",
+    "init": "k-means++",
     "n_init": 10,
     "max_iter": 500,
     "random_state": 42
@@ -23,15 +23,15 @@
     "proporcion_adolescentes"
   ],
   "metricas": {
-    "silhouette_score": 0.2805482243474966,
-    "calinski_harabasz": 30.686068782435473,
-    "davies_bouldin": 1.183832742984318
+    "silhouette_score": 0.26767833681376024,
+    "calinski_harabasz": 31.793868758528582,
+    "davies_bouldin": 1.2184801580076259
   },
   "n_municipios": 87,
   "distribucion_clusters": {
-    "0": 55,
-    "1": 17,
-    "2": 9,
-    "3": 6
+    "0": 11,
+    "1": 9,
+    "2": 50,
+    "3": 17
   }
 }

@@ -1,5 +1,5 @@
 {
-  "fecha_generacion": "2025-11-28 20:41:00",
+  "fecha_generacion": "2025-11-28 22:16:52",
   "dataset": "regression_monthly_dataset.parquet",
   "periodo": {
     "inicio": 2010,
@@ -8,21 +8,21 @@
     "ultimo_anio_completo": 2025
   },
   "cobertura": {
-    "total_registros": 13040,
+    "total_registros": 13044,
     "municipios": 87,
     "registros_por_municipio": 149.9
   },
   "delitos_historico": {
-    "total_acumulado": 473473,
-    "promedio_mensual_global": 36.31,
+    "total_acumulado": 508227,
+    "promedio_mensual_global": 38.96,
     "mediana_mensual": 4.0,
-    "desviacion_estandar": 130.76,
+    "desviacion_estandar": 141.52,
     "minimo_mensual": 1,
-    "maximo_mensual": 1369
+    "maximo_mensual": 1723
   },
   "delitos_ultimo_anio": {
-    "total": 22251,
-    "promedio_mensual": 32.53,
-    "variacion_vs_anterior": -31.25
+    "total": 39248,
+    "promedio_mensual": 57.05,
+    "variacion_vs_anterior": 21.27
   }
 }

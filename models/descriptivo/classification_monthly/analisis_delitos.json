@@ -1,58 +1,58 @@
 {
   "ABIGEATO": {
-    "total_historico": 1307,
+    "total_historico": 1347,
     "promedio_mensual": 0.1,
-    "porcentaje_del_total": 0.28,
+    "porcentaje_del_total": 0.27,
     "municipio_mas_casos": 68081,
-    "tendencia_anual_pct": -38.46
+    "tendencia_anual_pct": 23.08
   },
   "AMENAZAS": {
     "total_historico": 39814,
     "promedio_mensual": 3.05,
-    "porcentaje_del_total": 8.41,
+    "porcentaje_del_total": 7.83,
     "municipio_mas_casos": 68001,
     "tendencia_anual_pct": -40.22
   },
   "DELITOS SEXUALES": {
-    "total_historico": 22422,
-    "promedio_mensual": 1.72,
-    "porcentaje_del_total": 4.74,
+    "total_historico": 24594,
+    "promedio_mensual": 1.89,
+    "porcentaje_del_total": 4.84,
     "municipio_mas_casos": 68001,
     "tendencia_anual_pct": -15.19
   },
   "EXTORSION": {
     "total_historico": 2728,
     "promedio_mensual": 0.21,
-    "porcentaje_del_total": 0.58,
+    "porcentaje_del_total": 0.54,
     "municipio_mas_casos": 68001,
     "tendencia_anual_pct": -17.41
   },
   "HOMICIDIOS": {
-    "total_historico": 9806,
-    "promedio_mensual": 0.75,
-    "porcentaje_del_total": 2.07,
+    "total_historico": 10122,
+    "promedio_mensual": 0.78,
+    "porcentaje_del_total": 1.99,
     "municipio_mas_casos": 68001,
-    "tendencia_anual_pct": -18.42
+    "tendencia_anual_pct": 18.19
   },
   "HURTOS": {
-    "total_historico": 163934,
-    "promedio_mensual": 12.57,
-    "porcentaje_del_total": 34.62,
+    "total_historico": 172321,
+    "promedio_mensual": 13.21,
+    "porcentaje_del_total": 33.91,
     "municipio_mas_casos": 68001,
-    "tendencia_anual_pct": -41.76
+    "tendencia_anual_pct": 22.22
   },
   "LESIONES": {
-    "total_historico": 153714,
-    "promedio_mensual": 11.79,
-    "porcentaje_del_total": 32.47,
+    "total_historico": 167682,
+    "promedio_mensual": 12.86,
+    "porcentaje_del_total": 32.99,
     "municipio_mas_casos": 68001,
-    "tendencia_anual_pct": -21.19
+    "tendencia_anual_pct": 26.65
   },
   "VIOLENCIA INTRAFAMILIAR": {
-    "total_historico": 79748,
-    "promedio_mensual": 6.12,
-    "porcentaje_del_total": 16.84,
+    "total_historico": 89619,
+    "promedio_mensual": 6.87,
+    "porcentaje_del_total": 17.63,
     "municipio_mas_casos": 68001,
-    "tendencia_anual_pct": -22.02
+    "tendencia_anual_pct": 55.97
   }
 }

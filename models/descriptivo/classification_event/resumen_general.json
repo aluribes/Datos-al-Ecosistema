@@ -1,7 +1,7 @@
 {
-  "generado": "2025-11-28T20:02:39.585495",
+  "generado": "2025-11-28T21:41:44.959118",
   "dataset": "classification_event_dataset.parquet",
-  "total_eventos": 340970,
+  "total_eventos": 371119,
   "periodo": {
     "anio_inicio": 2010,
     "anio_fin": 2025,
@@ -51,8 +51,8 @@
     ]
   },
   "promedios": {
-    "eventos_por_anio": 21310,
-    "eventos_por_mes": 1775,
-    "eventos_por_municipio": 3919
+    "eventos_por_anio": 23194,
+    "eventos_por_mes": 1932,
+    "eventos_por_municipio": 4265
   }
 }

@@ -1,0 +1,109 @@
+{
+  "modelo": {
+    "nombre": "Modelo de Regresion Anual de Delitos",
+    "descripcion": "Modelo de regresion para predecir el total de delitos anuales por municipio en Santander",
+    "tipo": "RandomForest",
+    "version": "20251128_221634",
+    "fecha_entrenamiento": "2025-11-28T22:16:34.088989"
+  },
+  "dataset": {
+    "nombre": "regression_annual_dataset.parquet",
+    "periodo": "2010-2025",
+    "municipios": 87,
+    "total_registros": 1388,
+    "registros_entrenamiento": 1041,
+    "registros_test": 173
+  },
+  "variable_objetivo": {
+    "nombre": "total_delitos",
+    "descripcion": "Total de delitos registrados en el municipio durante el anio",
+    "media": 366.15778097982707,
+    "mediana": 34.0,
+    "std": 1490.3318348512641,
+    "min": 1.0,
+    "max": 17940.0
+  },
+  "features": {
+    "total": 19,
+    "lista": [
+      "poblacion_total",
+      "poblacion_menores",
+      "poblacion_adultos",
+      "poblacion_adolescentes",
+      "area_km2",
+      "densidad_poblacional",
+      "centros_por_km2",
+      "ABIGEATO",
+      "HURTOS",
+      "LESIONES",
+      "VIOLENCIA INTRAFAMILIAR",
+      "AMENAZAS",
+      "DELITOS SEXUALES",
+      "EXTORSION",
+      "HOMICIDIOS",
+      "es_post_2020",
+      "total_delitos_lag1",
+      "total_delitos_lag2",
+      "delitos_media_movil_3"
+    ],
+    "importancia_top_20": {
+      "LESIONES": 0.2085233715301302,
+      "delitos_media_movil_3": 0.20801178900295922,
+      "total_delitos_lag2": 0.14539127460691478,
+      "VIOLENCIA INTRAFAMILIAR": 0.08811849345161149,
+      "poblacion_adolescentes": 0.06129172008696521,
+      "total_delitos_lag1": 0.05814226586622363,
+      "poblacion_total": 0.056655054536697544,
+      "HURTOS": 0.056039401829568715,
+      "poblacion_menores": 0.04749826035497533,
+      "DELITOS SEXUALES": 0.03548816446542228,
+      "poblacion_adultos": 0.013272632749031427,
+      "EXTORSION": 0.012726351472605996,
+      "HOMICIDIOS": 0.003023497023521434,
+      "densidad_poblacional": 0.00242544855666386,
+      "AMENAZAS": 0.0015688897929394185,
+      "ABIGEATO": 0.0014266331469418572,
+      "es_post_2020": 0.000163948331803781,
+      "centros_por_km2": 0.00015228715081703472,
+      "area_km2": 8.051604420695957e-05
+    }
+  },
+  "parametros_modelo": {
+    "max_depth": 10,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "n_estimators": 200
+  },
+  "metricas": {
+    "train": {
+      "r2": 0.9951606310233725,
+      "rmse": 105.79757418901846,
+      "mae": 17.638106309764826,
+      "mape": 12.674620915582905
+    },
+    "test": {
+      "r2": 0.9929092706544308,
+      "rmse": 138.52839524076552,
+      "mae": 35.19735878889419,
+      "mape": 16.646739191679707
+    }
+  },
+  "archivos": {
+    "modelo": "regression_annual_randomforest_20251128_221634.joblib",
+    "scaler": "scaler_20251128_221634.joblib"
+  },
+  "uso": {
+    "preguntas_ejemplo": [
+      "Cual sera la cantidad de delitos el proximo anio en Bucaramanga?",
+      "Que municipios tendran mas delitos el proximo anio?",
+      "Que factores influyen mas en la cantidad de delitos anuales?",
+      "Como se compara la prediccion con anos anteriores?"
+    ],
+    "casos_de_uso": [
+      "Prediccion de delitos anuales por municipio",
+      "Planificacion de recursos de seguridad",
+      "Identificacion de factores de riesgo",
+      "Analisis de tendencias a largo plazo"
+    ]
+  }
+}

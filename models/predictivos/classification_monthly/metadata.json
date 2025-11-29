@@ -1,10 +1,10 @@
 {
-  "fecha_entrenamiento": "2025-11-28 20:15:33",
+  "fecha_entrenamiento": "2025-11-28 22:12:27",
   "dataset": "classification_monthly_dataset.parquet",
-  "n_muestras_train_riesgo": 10223,
-  "n_muestras_test_riesgo": 2556,
-  "n_muestras_train_incr": 10223,
-  "n_muestras_test_incr": 2556,
+  "n_muestras_train_riesgo": 10226,
+  "n_muestras_test_riesgo": 2557,
+  "n_muestras_train_incr": 10226,
+  "n_muestras_test_incr": 2557,
   "n_features": 42,
   "modelos": {
     "nivel_riesgo": {

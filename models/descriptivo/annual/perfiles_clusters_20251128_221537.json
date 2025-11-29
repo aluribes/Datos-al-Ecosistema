@@ -1,0 +1,155 @@
+{
+  "0": {
+    "id": 0,
+    "nombre": "Bajo Riesgo - Rural",
+    "num_municipios": 41,
+    "municipios": [
+      68013,
+      68020,
+      68101,
+      68121,
+      68132,
+      68152,
+      68160,
+      68169,
+      68176,
+      68209,
+      68211,
+      68235,
+      68245,
+      68250,
+      68264,
+      68271,
+      68296,
+      68298,
+      68318,
+      68320,
+      68322,
+      68324,
+      68344,
+      68368,
+      68370,
+      68377,
+      68385,
+      68425,
+      68502,
+      68522,
+      68573,
+      68575,
+      68682,
+      68686,
+      68705,
+      68720,
+      68745,
+      68773,
+      68780,
+      68867,
+      68895
+    ],
+    "estadisticas": {
+      "delitos_promedio": 31.42214665415885,
+      "poblacion_promedio": 8249.87969043152,
+      "densidad_promedio": 37.611874762099994,
+      "pendiente_promedio": 1.3735494588772332
+    },
+    "tendencias": {
+      "Estable": 22,
+      "Volatil": 14,
+      "Ascendente": 5
+    },
+    "delitos_dominantes": {
+      "LESIONES": 34,
+      "VIOLENCIA INTRAFAMILIAR": 7
+    }
+  },
+  "1": {
+    "id": 1,
+    "nombre": "Riesgo Medio",
+    "num_municipios": 43,
+    "municipios": [
+      68051,
+      68077,
+      68079,
+      68092,
+      68147,
+      68162,
+      68167,
+      68179,
+      68190,
+      68207,
+      68217,
+      68229,
+      68255,
+      68266,
+      68307,
+      68327,
+      68397,
+      68406,
+      68418,
+      68432,
+      68444,
+      68464,
+      68468,
+      68498,
+      68500,
+      68524,
+      68533,
+      68547,
+      68549,
+      68572,
+      68615,
+      68655,
+      68669,
+      68673,
+      68679,
+      68684,
+      68689,
+      68755,
+      68770,
+      68820,
+      68855,
+      68861,
+      68872
+    ],
+    "estadisticas": {
+      "delitos_promedio": 242.4796511627907,
+      "poblacion_promedio": 30447.601744186046,
+      "densidad_promedio": 134.90538662551404,
+      "pendiente_promedio": 4.65547195622435
+    },
+    "tendencias": {
+      "Estable": 33,
+      "Ascendente": 6,
+      "Volatil": 2,
+      "Descendente": 2
+    },
+    "delitos_dominantes": {
+      "LESIONES": 42,
+      "VIOLENCIA INTRAFAMILIAR": 1
+    }
+  },
+  "2": {
+    "id": 2,
+    "nombre": "Alto Riesgo - Creciente - Urbano",
+    "num_municipios": 3,
+    "municipios": [
+      68001,
+      68081,
+      68276
+    ],
+    "estadisticas": {
+      "delitos_promedio": 6683.458333333333,
+      "poblacion_promedio": 517758.1041666667,
+      "densidad_promedio": 3298.7807772435003,
+      "pendiente_promedio": 195.0588235294118
+    },
+    "tendencias": {
+      "Ascendente": 2,
+      "Estable": 1
+    },
+    "delitos_dominantes": {
+      "HURTOS": 2,
+      "LESIONES": 1
+    }
+  }
+}
