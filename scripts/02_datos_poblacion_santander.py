@@ -5,8 +5,8 @@
 Procesa datos de población del DANE para la capa Silver.
 
 Entrada:
-    data/bronze/poblacion_dane/TerriData_Pob_2005.rar (contiene TerriData_Pob_2005.txt)
-    data/bronze/poblacion_dane/TerriData_Pob_2018.rar (contiene TerriData_Pob_2018.txt)
+    data/bronze/poblacion_dane/TerriData_Pob_2005.zip (contiene TerriData_Pob_2005.txt)
+    data/bronze/poblacion_dane/TerriData_Pob_2018.zip (contiene TerriData_Pob_2018.txt)
 
 Salida:
     data/silver/poblacion/poblacion_santander.parquet
@@ -14,18 +14,18 @@ Salida:
 
 from pathlib import Path
 import re
+import zipfile
 
 import pandas as pd
-import rarfile
 
 # === CONFIGURACIÓN ===
 # Subimos un nivel desde scripts/ para llegar a la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Entrada (archivos RAR comprimidos)
-INPUT_POB_2005_RAR = BASE_DIR / "data" / "bronze" / "poblacion_dane" / "TerriData_Pob_2005.rar"
-INPUT_POB_2018_RAR = BASE_DIR / "data" / "bronze" / "poblacion_dane" / "TerriData_Pob_2018.rar"
-# Nombres de los archivos TXT dentro de los RAR
+# Entrada (archivos ZIP comprimidos)
+INPUT_POB_2005_ZIP = BASE_DIR / "data" / "bronze" / "poblacion_dane" / "TerriData_Pob_2005.zip"
+INPUT_POB_2018_ZIP = BASE_DIR / "data" / "bronze" / "poblacion_dane" / "TerriData_Pob_2018.zip"
+# Nombres de los archivos TXT dentro de los ZIP
 ARCHIVO_INTERNO_2005 = "TerriData_Pob_2005.txt"
 ARCHIVO_INTERNO_2018 = "TerriData_Pob_2018.txt"
 INPUT_SEPARATOR = "|"
@@ -42,15 +42,15 @@ def ensure_folder(path: Path) -> None:
 
 
 def load_poblacion_data() -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Carga los archivos de población del DANE desde archivos RAR comprimidos."""
-    print("Cargando archivo Censo 2005 desde RAR...")
-    with rarfile.RarFile(INPUT_POB_2005_RAR, 'r') as rf:
-        with rf.open(ARCHIVO_INTERNO_2005) as f:
+    """Carga los archivos de población del DANE desde archivos ZIP comprimidos."""
+    print("Cargando archivo Censo 2005 desde ZIP...")
+    with zipfile.ZipFile(INPUT_POB_2005_ZIP, 'r') as zf:
+        with zf.open(ARCHIVO_INTERNO_2005) as f:
             poblacion_2005 = pd.read_csv(f, sep=INPUT_SEPARATOR, dtype=str)
     
-    print("Cargando archivo Censo 2018 desde RAR...")
-    with rarfile.RarFile(INPUT_POB_2018_RAR, 'r') as rf:
-        with rf.open(ARCHIVO_INTERNO_2018) as f:
+    print("Cargando archivo Censo 2018 desde ZIP...")
+    with zipfile.ZipFile(INPUT_POB_2018_ZIP, 'r') as zf:
+        with zf.open(ARCHIVO_INTERNO_2018) as f:
             poblacion_2018 = pd.read_csv(f, sep=INPUT_SEPARATOR, dtype=str)
     
     return poblacion_2005, poblacion_2018

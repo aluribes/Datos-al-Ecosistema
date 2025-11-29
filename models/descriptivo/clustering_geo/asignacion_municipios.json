@@ -1,524 +1,524 @@
 {
   "68001": {
     "municipio": "BUCARAMANGA",
-    "cluster": 2,
-    "tasa_delitos": 22052.57,
+    "cluster": 1,
+    "tasa_delitos": 23730.46,
     "densidad": 6854.84
   },
   "68013": {
     "municipio": "AGUADA",
-    "cluster": 0,
-    "tasa_delitos": 4637.5,
+    "cluster": 2,
+    "tasa_delitos": 4600.99,
     "densidad": 53.74
   },
   "68020": {
     "municipio": "ALBANIA",
-    "cluster": 0,
-    "tasa_delitos": 3924.96,
+    "cluster": 2,
+    "tasa_delitos": 4022.73,
     "densidad": 58.43
   },
   "68051": {
     "municipio": "ARATOCA",
-    "cluster": 0,
-    "tasa_delitos": 8698.59,
+    "cluster": 2,
+    "tasa_delitos": 8825.0,
     "densidad": 99.45
   },
   "68077": {
     "municipio": "BARBOSA",
-    "cluster": 2,
-    "tasa_delitos": 20391.46,
+    "cluster": 1,
+    "tasa_delitos": 21282.04,
     "densidad": 1174.13
   },
   "68079": {
     "municipio": "BARICHARA",
-    "cluster": 0,
-    "tasa_delitos": 5846.46,
+    "cluster": 2,
+    "tasa_delitos": 6086.11,
     "densidad": 109.5
   },
   "68081": {
     "municipio": "BARRANCABERMEJA",
-    "cluster": 2,
-    "tasa_delitos": 21800.64,
+    "cluster": 1,
+    "tasa_delitos": 22442.55,
     "densidad": 289.65
   },
   "68092": {
     "municipio": "BETULIA",
-    "cluster": 1,
-    "tasa_delitos": 8928.47,
+    "cluster": 3,
+    "tasa_delitos": 9074.75,
     "densidad": 25.26
   },
   "68101": {
     "municipio": "BOLÍVAR",
-    "cluster": 0,
-    "tasa_delitos": 4480.8,
+    "cluster": 2,
+    "tasa_delitos": 4636.05,
     "densidad": 27.01
   },
   "68121": {
     "municipio": "CABRERA",
-    "cluster": 0,
-    "tasa_delitos": 5060.66,
+    "cluster": 2,
+    "tasa_delitos": 5038.88,
     "densidad": 64.44
   },
   "68132": {
     "municipio": "CALIFORNIA",
     "cluster": 0,
-    "tasa_delitos": 9575.28,
+    "tasa_delitos": 9716.1,
     "densidad": 84.84
   },
   "68147": {
     "municipio": "CAPITANEJO",
-    "cluster": 0,
-    "tasa_delitos": 7755.06,
+    "cluster": 2,
+    "tasa_delitos": 7738.65,
     "densidad": 138.49
   },
   "68152": {
     "municipio": "CARCASÍ",
-    "cluster": 0,
-    "tasa_delitos": 2607.87,
+    "cluster": 2,
+    "tasa_delitos": 2666.47,
     "densidad": 40.81
   },
   "68160": {
     "municipio": "CEPITÁ",
-    "cluster": 0,
-    "tasa_delitos": 2949.88,
-    "densidad": 36.75
+    "cluster": 2,
+    "tasa_delitos": 2972.41,
+    "densidad": 36.94
   },
   "68162": {
     "municipio": "CERRITO",
-    "cluster": 0,
-    "tasa_delitos": 5661.7,
+    "cluster": 2,
+    "tasa_delitos": 5957.81,
     "densidad": 29.55
   },
   "68167": {
     "municipio": "CHARALÁ",
-    "cluster": 0,
-    "tasa_delitos": 8542.53,
+    "cluster": 2,
+    "tasa_delitos": 8854.34,
     "densidad": 53.31
   },
   "68169": {
     "municipio": "CHARTA",
-    "cluster": 0,
-    "tasa_delitos": 7582.67,
+    "cluster": 2,
+    "tasa_delitos": 7718.24,
     "densidad": 46.85
   },
   "68176": {
     "municipio": "CHIMA",
-    "cluster": 0,
-    "tasa_delitos": 6245.19,
+    "cluster": 2,
+    "tasa_delitos": 6205.41,
     "densidad": 38.01
   },
   "68179": {
     "municipio": "CHIPATÁ",
     "cluster": 0,
-    "tasa_delitos": 3308.07,
+    "tasa_delitos": 3555.79,
     "densidad": 108.97
   },
   "68190": {
     "municipio": "CIMITARRA",
-    "cluster": 1,
-    "tasa_delitos": 11163.99,
+    "cluster": 3,
+    "tasa_delitos": 11406.04,
     "densidad": 25.73
   },
   "68207": {
     "municipio": "CONCEPCIÓN",
-    "cluster": 0,
-    "tasa_delitos": 4373.29,
+    "cluster": 2,
+    "tasa_delitos": 4467.09,
     "densidad": 34.23
   },
   "68209": {
     "municipio": "CONFINES",
-    "cluster": 0,
-    "tasa_delitos": 7633.2,
+    "cluster": 2,
+    "tasa_delitos": 7900.06,
     "densidad": 77.34
   },
   "68211": {
     "municipio": "CONTRATACIÓN",
-    "cluster": 0,
-    "tasa_delitos": 7024.43,
+    "cluster": 2,
+    "tasa_delitos": 7208.31,
     "densidad": 55.73
   },
   "68217": {
     "municipio": "COROMORO",
-    "cluster": 0,
-    "tasa_delitos": 4953.29,
+    "cluster": 2,
+    "tasa_delitos": 5150.67,
     "densidad": 26.88
   },
   "68229": {
     "municipio": "CURITÍ",
-    "cluster": 0,
-    "tasa_delitos": 8340.61,
+    "cluster": 2,
+    "tasa_delitos": 8492.46,
     "densidad": 96.72
   },
   "68235": {
     "municipio": "EL CARMEN DE CHUCURI",
-    "cluster": 0,
-    "tasa_delitos": 3758.54,
+    "cluster": 2,
+    "tasa_delitos": 3811.42,
     "densidad": 42.36
   },
   "68245": {
     "municipio": "EL GUACAMAYO",
-    "cluster": 0,
-    "tasa_delitos": 4947.8,
+    "cluster": 2,
+    "tasa_delitos": 5046.76,
     "densidad": 47.32
   },
   "68250": {
     "municipio": "EL PEÑÓN",
-    "cluster": 1,
-    "tasa_delitos": 5254.19,
+    "cluster": 3,
+    "tasa_delitos": 5163.1,
     "densidad": 27.83
   },
   "68255": {
     "municipio": "EL PLAYÓN",
-    "cluster": 1,
-    "tasa_delitos": 9461.22,
+    "cluster": 3,
+    "tasa_delitos": 9781.86,
     "densidad": 55.71
   },
   "68264": {
     "municipio": "ENCINO",
-    "cluster": 0,
-    "tasa_delitos": 3316.8,
+    "cluster": 2,
+    "tasa_delitos": 3391.06,
     "densidad": 13.96
   },
   "68266": {
     "municipio": "ENCISO",
-    "cluster": 0,
-    "tasa_delitos": 4174.76,
+    "cluster": 2,
+    "tasa_delitos": 4200.94,
     "densidad": 98.12
   },
   "68271": {
     "municipio": "FLORIÁN",
-    "cluster": 0,
-    "tasa_delitos": 5792.68,
+    "cluster": 2,
+    "tasa_delitos": 6060.74,
     "densidad": 72.81
   },
   "68276": {
     "municipio": "FLORIDABLANCA",
-    "cluster": 2,
-    "tasa_delitos": 12419.93,
+    "cluster": 1,
+    "tasa_delitos": 13215.9,
     "densidad": 5205.86
   },
   "68296": {
     "municipio": "GALÁN",
-    "cluster": 0,
-    "tasa_delitos": 7000.9,
+    "cluster": 2,
+    "tasa_delitos": 7136.35,
     "densidad": 26.99
   },
   "68298": {
     "municipio": "GÁMBITA",
-    "cluster": 1,
-    "tasa_delitos": 8469.53,
+    "cluster": 3,
+    "tasa_delitos": 8358.86,
     "densidad": 17.69
   },
   "68307": {
     "municipio": "GIRÓN",
-    "cluster": 2,
-    "tasa_delitos": 15127.7,
+    "cluster": 1,
+    "tasa_delitos": 15872.49,
     "densidad": 638.15
   },
   "68318": {
     "municipio": "GUACA",
-    "cluster": 0,
-    "tasa_delitos": 4787.86,
+    "cluster": 2,
+    "tasa_delitos": 4820.21,
     "densidad": 44.96
   },
   "68320": {
     "municipio": "GUADALUPE",
-    "cluster": 0,
-    "tasa_delitos": 9117.84,
+    "cluster": 2,
+    "tasa_delitos": 9573.05,
     "densidad": 71.61
   },
   "68322": {
     "municipio": "GUAPOTÁ",
-    "cluster": 0,
-    "tasa_delitos": 6494.75,
+    "cluster": 2,
+    "tasa_delitos": 6596.04,
     "densidad": 66.23
   },
   "68324": {
     "municipio": "GUAVATÁ",
-    "cluster": 0,
-    "tasa_delitos": 6347.85,
+    "cluster": 2,
+    "tasa_delitos": 6427.74,
     "densidad": 96.76
   },
   "68327": {
     "municipio": "GÜEPSA",
-    "cluster": 3,
-    "tasa_delitos": 13135.52,
+    "cluster": 0,
+    "tasa_delitos": 13472.73,
     "densidad": 268.87
   },
   "68344": {
     "municipio": "HATO",
-    "cluster": 0,
-    "tasa_delitos": 6503.03,
+    "cluster": 2,
+    "tasa_delitos": 6558.09,
     "densidad": 29.14
   },
   "68368": {
     "municipio": "JESÚS MARÍA",
-    "cluster": 3,
-    "tasa_delitos": 4985.53,
+    "cluster": 0,
+    "tasa_delitos": 5320.17,
     "densidad": 74.49
   },
   "68370": {
     "municipio": "JORDÁN",
-    "cluster": 0,
-    "tasa_delitos": 3132.3,
+    "cluster": 2,
+    "tasa_delitos": 3075.35,
     "densidad": 57.79
   },
   "68377": {
     "municipio": "LA BELLEZA",
-    "cluster": 0,
-    "tasa_delitos": 3997.26,
+    "cluster": 2,
+    "tasa_delitos": 4150.4,
     "densidad": 51.97
   },
   "68385": {
     "municipio": "LANDÁZURI",
-    "cluster": 1,
-    "tasa_delitos": 6579.82,
+    "cluster": 3,
+    "tasa_delitos": 6628.06,
     "densidad": 52.76
   },
   "68397": {
     "municipio": "LA PAZ",
-    "cluster": 0,
-    "tasa_delitos": 4767.03,
+    "cluster": 2,
+    "tasa_delitos": 4819.78,
     "densidad": 38.81
   },
   "68406": {
     "municipio": "LEBRIJA",
-    "cluster": 1,
-    "tasa_delitos": 11085.68,
+    "cluster": 3,
+    "tasa_delitos": 11530.31,
     "densidad": 126.68
   },
   "68418": {
     "municipio": "LOS SANTOS",
-    "cluster": 0,
-    "tasa_delitos": 5973.84,
+    "cluster": 2,
+    "tasa_delitos": 6248.15,
     "densidad": 80.91
   },
   "68425": {
     "municipio": "MACARAVITA",
-    "cluster": 3,
-    "tasa_delitos": 3905.87,
+    "cluster": 0,
+    "tasa_delitos": 3967.11,
     "densidad": 50.55
   },
   "68432": {
     "municipio": "MÁLAGA",
     "cluster": 0,
-    "tasa_delitos": 9848.3,
+    "tasa_delitos": 10289.73,
     "densidad": 649.88
   },
   "68444": {
     "municipio": "MATANZA",
-    "cluster": 0,
-    "tasa_delitos": 7056.33,
+    "cluster": 2,
+    "tasa_delitos": 7319.53,
     "densidad": 48.22
   },
   "68464": {
     "municipio": "MOGOTES",
-    "cluster": 1,
-    "tasa_delitos": 8019.1,
+    "cluster": 3,
+    "tasa_delitos": 8189.29,
     "densidad": 46.1
   },
   "68468": {
     "municipio": "MOLAGAVITA",
-    "cluster": 0,
-    "tasa_delitos": 2259.74,
+    "cluster": 2,
+    "tasa_delitos": 2308.42,
     "densidad": 61.44
   },
   "68498": {
     "municipio": "OCAMONTE",
-    "cluster": 0,
-    "tasa_delitos": 5908.79,
+    "cluster": 2,
+    "tasa_delitos": 6099.12,
     "densidad": 130.86
   },
   "68500": {
     "municipio": "OIBA",
-    "cluster": 1,
-    "tasa_delitos": 10348.08,
+    "cluster": 3,
+    "tasa_delitos": 10645.07,
     "densidad": 80.26
   },
   "68502": {
     "municipio": "ONZAGA",
-    "cluster": 0,
-    "tasa_delitos": 5435.79,
+    "cluster": 2,
+    "tasa_delitos": 5493.46,
     "densidad": 22.89
   },
   "68522": {
     "municipio": "PALMAR",
-    "cluster": 3,
-    "tasa_delitos": 2612.59,
+    "cluster": 0,
+    "tasa_delitos": 2661.32,
     "densidad": 315.71
   },
   "68524": {
     "municipio": "PALMAS DEL SOCORRO",
-    "cluster": 0,
-    "tasa_delitos": 10237.92,
+    "cluster": 2,
+    "tasa_delitos": 10409.26,
     "densidad": 80.94
   },
   "68533": {
     "municipio": "PÁRAMO",
-    "cluster": 0,
-    "tasa_delitos": 7389.78,
+    "cluster": 2,
+    "tasa_delitos": 7358.67,
     "densidad": 107.71
   },
   "68547": {
     "municipio": "PIEDECUESTA",
-    "cluster": 2,
-    "tasa_delitos": 14171.54,
+    "cluster": 1,
+    "tasa_delitos": 14792.84,
     "densidad": 548.8
   },
   "68549": {
     "municipio": "PINCHOTE",
-    "cluster": 0,
-    "tasa_delitos": 8425.58,
+    "cluster": 2,
+    "tasa_delitos": 8681.68,
     "densidad": 173.54
   },
   "68572": {
     "municipio": "PUENTE NACIONAL",
-    "cluster": 2,
-    "tasa_delitos": 12452.13,
+    "cluster": 1,
+    "tasa_delitos": 12809.58,
     "densidad": 107.89
   },
   "68573": {
     "municipio": "PUERTO PARRA",
-    "cluster": 1,
-    "tasa_delitos": 11150.53,
+    "cluster": 3,
+    "tasa_delitos": 10694.21,
     "densidad": 19.38
   },
   "68575": {
     "municipio": "PUERTO WILCHES",
-    "cluster": 1,
-    "tasa_delitos": 8962.85,
+    "cluster": 3,
+    "tasa_delitos": 9062.76,
     "densidad": 42.77
   },
   "68615": {
     "municipio": "RIONEGRO",
-    "cluster": 1,
-    "tasa_delitos": 8498.43,
+    "cluster": 3,
+    "tasa_delitos": 8810.75,
     "densidad": 49.3
   },
   "68655": {
     "municipio": "SABANA DE TORRES",
-    "cluster": 1,
-    "tasa_delitos": 20609.77,
+    "cluster": 3,
+    "tasa_delitos": 20837.59,
     "densidad": 28.54
   },
   "68669": {
     "municipio": "SAN ANDRÉS",
-    "cluster": 0,
-    "tasa_delitos": 3837.11,
+    "cluster": 2,
+    "tasa_delitos": 4011.29,
     "densidad": 65.87
   },
   "68673": {
     "municipio": "SAN BENITO",
-    "cluster": 3,
-    "tasa_delitos": 2498.13,
+    "cluster": 0,
+    "tasa_delitos": 2619.94,
     "densidad": 134.57
   },
   "68679": {
     "municipio": "SAN GIL",
-    "cluster": 2,
-    "tasa_delitos": 15197.94,
+    "cluster": 1,
+    "tasa_delitos": 15965.22,
     "densidad": 607.78
   },
   "68682": {
     "municipio": "SAN JOAQUÍN",
-    "cluster": 0,
-    "tasa_delitos": 5596.47,
+    "cluster": 2,
+    "tasa_delitos": 5668.13,
     "densidad": 38.7
   },
   "68684": {
     "municipio": "SAN JOSÉ DE MIRANDA",
     "cluster": 0,
-    "tasa_delitos": 6847.11,
+    "tasa_delitos": 6953.35,
     "densidad": 122.85
   },
   "68686": {
     "municipio": "SAN MIGUEL",
-    "cluster": 0,
-    "tasa_delitos": 2434.38,
+    "cluster": 2,
+    "tasa_delitos": 2484.76,
     "densidad": 71.97
   },
   "68689": {
     "municipio": "SAN VICENTE DE CHUCURÍ",
-    "cluster": 0,
-    "tasa_delitos": 7682.76,
+    "cluster": 2,
+    "tasa_delitos": 7858.8,
     "densidad": 61.85
   },
   "68705": {
     "municipio": "SANTA BÁRBARA",
-    "cluster": 0,
-    "tasa_delitos": 4759.58,
+    "cluster": 2,
+    "tasa_delitos": 4878.35,
     "densidad": 21.04
   },
   "68720": {
     "municipio": "SANTA HELENA DEL OPÓN",
-    "cluster": 1,
-    "tasa_delitos": 5543.89,
+    "cluster": 3,
+    "tasa_delitos": 5762.28,
     "densidad": 24.46
   },
   "68745": {
     "municipio": "SIMACOTA",
-    "cluster": 1,
-    "tasa_delitos": 7895.14,
+    "cluster": 3,
+    "tasa_delitos": 8062.16,
     "densidad": 19.41
   },
   "68755": {
     "municipio": "SOCORRO",
-    "cluster": 2,
-    "tasa_delitos": 13285.03,
+    "cluster": 1,
+    "tasa_delitos": 14027.86,
     "densidad": 467.89
   },
   "68770": {
     "municipio": "SUAITA",
-    "cluster": 0,
-    "tasa_delitos": 9006.97,
+    "cluster": 2,
+    "tasa_delitos": 9326.59,
     "densidad": 75.42
   },
   "68773": {
     "municipio": "SUCRE",
-    "cluster": 0,
-    "tasa_delitos": 2953.86,
+    "cluster": 2,
+    "tasa_delitos": 3043.87,
     "densidad": 34.66
   },
   "68780": {
     "municipio": "SURATÁ",
-    "cluster": 0,
-    "tasa_delitos": 6860.0,
+    "cluster": 2,
+    "tasa_delitos": 7040.33,
     "densidad": 20.17
   },
   "68820": {
     "municipio": "TONA",
-    "cluster": 1,
-    "tasa_delitos": 9264.95,
+    "cluster": 3,
+    "tasa_delitos": 9164.18,
     "densidad": 42.64
   },
   "68855": {
     "municipio": "VALLE DE SAN JOSÉ",
-    "cluster": 3,
-    "tasa_delitos": 9149.15,
+    "cluster": 0,
+    "tasa_delitos": 9314.75,
     "densidad": 123.39
   },
   "68861": {
     "municipio": "VÉLEZ",
-    "cluster": 1,
-    "tasa_delitos": 12085.14,
+    "cluster": 3,
+    "tasa_delitos": 12581.66,
     "densidad": 87.64
   },
   "68867": {
     "municipio": "VETAS",
     "cluster": 0,
-    "tasa_delitos": 7171.28,
+    "tasa_delitos": 7414.83,
     "densidad": 52.7
   },
   "68872": {
     "municipio": "VILLANUEVA",
-    "cluster": 0,
-    "tasa_delitos": 5565.85,
+    "cluster": 2,
+    "tasa_delitos": 5744.43,
     "densidad": 132.38
   },
   "68895": {
     "municipio": "ZAPATOCA",
-    "cluster": 0,
-    "tasa_delitos": 4530.81,
+    "cluster": 2,
+    "tasa_delitos": 4650.92,
     "densidad": 51.2
   }
 }

@@ -1,29 +1,29 @@
 {
-  "generado": "2025-11-28T20:02:39.915615",
+  "generado": "2025-11-28T21:41:45.295071",
   "por_grupo_etario": {
     "distribucion": {
-      "ADULTOS": 297440,
-      "ADOLESCENTES": 24032,
-      "MENORES": 15246
+      "ADULTOS": 324089,
+      "ADOLESCENTES": 25936,
+      "MENORES": 16842
     },
     "porcentajes": {
-      "ADULTOS": 87.23,
-      "ADOLESCENTES": 7.05,
-      "MENORES": 4.47
+      "ADULTOS": 87.33,
+      "ADOLESCENTES": 6.99,
+      "MENORES": 4.54
     },
     "grupo_mas_frecuente": "ADULTOS"
   },
   "por_genero": {
     "distribucion": {
-      "MASCULINO": 174189,
-      "FEMENINO": 164102,
+      "MASCULINO": 187965,
+      "FEMENINO": 180446,
       "NO REPORTADO": 2520,
-      "NO REPORTA": 159
+      "NO REPORTA": 188
     },
     "porcentajes": {
-      "MASCULINO": 51.09,
-      "FEMENINO": 48.13,
-      "NO REPORTADO": 0.74,
+      "MASCULINO": 50.65,
+      "FEMENINO": 48.62,
+      "NO REPORTADO": 0.68,
       "NO REPORTA": 0.05
     }
   },
@@ -31,59 +31,59 @@
     "ADOLESCENTES": {
       "ABIGEATO": 1,
       "AMENAZAS": 979,
-      "DELITOS SEXUALES": 5818,
+      "DELITOS SEXUALES": 6421,
       "EXTORSION": 32,
-      "HOMICIDIOS": 530,
-      "HURTOS": 3471,
-      "LESIONES": 10313,
-      "VIOLENCIA INTRAFAMILIAR": 2888
+      "HOMICIDIOS": 535,
+      "HURTOS": 3591,
+      "LESIONES": 11170,
+      "VIOLENCIA INTRAFAMILIAR": 3207
     },
     "ADULTOS": {
-      "ABIGEATO": 1285,
+      "ABIGEATO": 1325,
       "AMENAZAS": 28844,
-      "DELITOS SEXUALES": 5333,
+      "DELITOS SEXUALES": 5835,
       "EXTORSION": 2650,
-      "HOMICIDIOS": 8507,
-      "HURTOS": 100831,
-      "LESIONES": 98424,
-      "VIOLENCIA INTRAFAMILIAR": 51566
+      "HOMICIDIOS": 8816,
+      "HURTOS": 109081,
+      "LESIONES": 108181,
+      "VIOLENCIA INTRAFAMILIAR": 59357
     },
     "MENORES": {
       "ABIGEATO": 1,
       "AMENAZAS": 304,
-      "DELITOS SEXUALES": 8161,
+      "DELITOS SEXUALES": 9099,
       "EXTORSION": 9,
-      "HOMICIDIOS": 167,
-      "HURTOS": 233,
-      "LESIONES": 3947,
-      "VIOLENCIA INTRAFAMILIAR": 2424
+      "HOMICIDIOS": 169,
+      "HURTOS": 248,
+      "LESIONES": 4249,
+      "VIOLENCIA INTRAFAMILIAR": 2763
     }
   },
   "delitos_por_genero": {
     "FEMENINO": {
-      "ABIGEATO": 255,
+      "ABIGEATO": 258,
       "AMENAZAS": 12627,
-      "DELITOS SEXUALES": 17862,
+      "DELITOS SEXUALES": 19573,
       "EXTORSION": 856,
-      "HOMICIDIOS": 1361,
-      "HURTOS": 45737,
-      "LESIONES": 42073,
-      "VIOLENCIA INTRAFAMILIAR": 43331
+      "HOMICIDIOS": 1411,
+      "HURTOS": 49760,
+      "LESIONES": 46287,
+      "VIOLENCIA INTRAFAMILIAR": 49674
     },
     "MASCULINO": {
-      "ABIGEATO": 1031,
+      "ABIGEATO": 1068,
       "AMENAZAS": 17421,
-      "DELITOS SEXUALES": 3138,
+      "DELITOS SEXUALES": 3441,
       "EXTORSION": 1835,
-      "HOMICIDIOS": 7843,
-      "HURTOS": 58779,
-      "LESIONES": 70601,
-      "VIOLENCIA INTRAFAMILIAR": 13541
+      "HOMICIDIOS": 8109,
+      "HURTOS": 63141,
+      "LESIONES": 77303,
+      "VIOLENCIA INTRAFAMILIAR": 15647
     },
     "NO REPORTA": {
       "ABIGEATO": 1,
       "AMENAZAS": 79,
-      "DELITOS SEXUALES": 44,
+      "DELITOS SEXUALES": 73,
       "EXTORSION": 0,
       "HOMICIDIOS": 0,
       "HURTOS": 19,

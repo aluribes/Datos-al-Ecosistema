@@ -1,0 +1,32 @@
+{
+  "titulo": "Modelo de Regresion Anual de Delitos - Santander",
+  "resumen_ejecutivo": "Este modelo predice el total de delitos anuales por municipio en Santander.\nUtiliza RandomForest con un R2 de 0.9929 en el conjunto de test.\nEl error promedio de prediccion (MAE) es de 35 delitos.",
+  "interpretacion": {
+    "r2_score": "El modelo explica el 99.3% de la variabilidad en los delitos anuales",
+    "rmse": "Error cuadratico medio de 139 delitos",
+    "mae": "En promedio, las predicciones difieren en 35 delitos del valor real",
+    "mape": "Error porcentual promedio de 16.6%"
+  },
+  "factores_principales": [
+    "LESIONES",
+    "delitos_media_movil_3",
+    "total_delitos_lag2",
+    "VIOLENCIA INTRAFAMILIAR",
+    "poblacion_adolescentes",
+    "total_delitos_lag1",
+    "poblacion_total",
+    "HURTOS",
+    "poblacion_menores",
+    "DELITOS SEXUALES"
+  ],
+  "limitaciones": [
+    "El modelo esta entrenado con datos hasta el anio 2025",
+    "No considera eventos externos no historicos (nuevas politicas, eventos atipicos)",
+    "La precision puede variar entre municipios de diferente tamano"
+  ],
+  "recomendaciones": [
+    "Actualizar el modelo periodicamente con nuevos datos",
+    "Combinar predicciones con conocimiento experto local",
+    "Monitorear el rendimiento del modelo en produccion"
+  ]
+}

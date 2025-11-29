@@ -1,27 +1,27 @@
 {
   "model_name": "regression_timeseries",
   "model_type": "Prophet",
-  "created_at": "2025-11-28T20:59:34.446134",
+  "created_at": "2025-11-28T22:14:11.533613",
   "training_data": {
     "start": "2010-01-01T00:00:00",
     "end": "2025-10-01T00:00:00",
     "n_months": 190
   },
   "best_params": {
-    "changepoint_prior_scale": 0.05,
-    "seasonality_prior_scale": 0.01,
-    "seasonality_mode": "additive"
+    "changepoint_prior_scale": 0.5,
+    "seasonality_prior_scale": 10.0,
+    "seasonality_mode": "multiplicative"
   },
   "metrics": {
-    "MAE": 441.1998378024685,
-    "RMSE": 571.1308515726485,
-    "R2": -1.1737564400848242,
-    "MAPE": 20.911652995755258
+    "MAE": 550.0122960271877,
+    "RMSE": 608.1200987349752,
+    "R2": 0.18327040533715577,
+    "MAPE": 17.744437317690696
   },
   "forecast": {
     "months": 12,
     "start": "2025-11-01T00:00:00",
     "end": "2026-10-01T00:00:00",
-    "mean_prediction": 2668.4322072065147
+    "mean_prediction": 3662.5098759330194
   }
 }

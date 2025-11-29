@@ -2,7 +2,7 @@
   "model_name": "classification_dominant",
   "model_type": "MultiOutputClassifier",
   "base_estimator": "XGBClassifier",
-  "created_at": "2025-11-28T20:00:21.362186",
+  "created_at": "2025-11-28T21:41:12.946501",
   "features": [
     "anio",
     "mes",
@@ -45,28 +45,28 @@
     ]
   },
   "best_params": {
-    "colsample_bytree": 0.9100531293444458,
-    "gamma": 0.46974947078209456,
-    "learning_rate": 0.27844820512829466,
-    "max_depth": 10,
+    "colsample_bytree": 0.9350840423629312,
+    "gamma": 0.33784505851964036,
+    "learning_rate": 0.23056483577223164,
+    "max_depth": 4,
     "min_child_weight": 7,
-    "n_estimators": 298,
-    "subsample": 0.9844688097397396
+    "n_estimators": 208,
+    "subsample": 0.9509357413523924
   },
   "metrics": {
     "delito_dominante": {
-      "accuracy": 0.3832923832923833,
-      "f1_weighted": 0.31003372929334416
+      "accuracy": 0.3868792152053955,
+      "f1_weighted": 0.3003113744910816
     },
     "arma_dominante": {
-      "accuracy": 0.5712530712530712,
-      "f1_weighted": 0.5826034239305905
+      "accuracy": 0.5867565910484366,
+      "f1_weighted": 0.5952528013675132
     },
     "promedio": {
-      "f1_weighted": 0.44631857661196733
+      "f1_weighted": 0.4477820879292974
     }
   },
   "train_samples": 7435,
-  "test_samples": 1628,
+  "test_samples": 1631,
   "year_split": 2023
 }

@@ -1,8 +1,89 @@
 # Capa Model Data — Preparación para Machine Learning
 
-La capa Model Data contiene los datasets optimizados para entrenamiento de modelos de Machine Learning. Se generan a partir de `gold_analytics.parquet` (nivel mensual), `gold_integrado.parquet` y `policia_gold.parquet` (nivel evento).
+La capa Model Data contiene los datasets optimizados para entrenamiento de modelos de Machine Learning y visualización en dashboard. Se generan a partir de `gold_integrado.parquet`, `gold_analytics.parquet` y `policia_gold.parquet`.
 
-## Resumen de Datasets (7 consolidados)
+## Scripts de la Sección 04
+
+| # | Script | Descripción | Entrada | Salida |
+|---|--------|-------------|---------|--------|
+| 1 | `04_generate_analytics.py` | Enriquece gold_integrado con tasas, lags, rolling | `gold_integrado.parquet` | `gold_analytics.parquet` |
+| 2 | `04_generate_dashboard_data.py` | Prepara datos para visualización en dashboard | Silver diversos | `data/gold/dashboard/*.parquet` |
+| 3 | `04_generate_regression_monthly_dataset.py` | Dataset regresión mensual | `gold_analytics.parquet` | `regression_monthly_dataset.parquet` |
+| 4 | `04_generate_regression_annual_dataset.py` | Dataset regresión anual | `gold_integrado.parquet` | `regression_annual_dataset.parquet` |
+| 5 | `04_generate_regression_timeseries_dataset.py` | Serie temporal global | `gold_analytics.parquet` | `regression_timeseries_dataset.parquet` |
+| 6 | `04_generate_classification_monthly_dataset.py` | Clasificación riesgo/incremento | `gold_analytics.parquet` | `classification_monthly_dataset.parquet` |
+| 7 | `04_generate_classification_event_dataset.py` | Clasificación por evento | `policia_gold.parquet` + `gold_integrado.parquet` | `classification_event_dataset.parquet` |
+| 8 | `04_generate_classification_dominant_dataset.py` | Delito/arma dominante | `policia_gold.parquet` | `classification_dominant_dataset.parquet` |
+| 9 | `04_generate_clustering_geo_dataset.py` | Clustering geográfico | `gold_integrado.parquet` | `clustering_geo_dataset.parquet` |
+
+---
+
+## 1. Analytics — Enriquecimiento de Gold Integrado
+
+**Script:** `scripts/04_generate_analytics.py`
+
+Genera el dataset analítico enriquecido con tasas por 100k, lags, rolling means y codificación cíclica.
+
+### Entrada y Salida
+
+| | Archivo |
+|---|---------|
+| **Entrada** | `data/gold/gold_integrado.parquet` |
+| **Salida** | `data/gold/analytics/gold_analytics.parquet` |
+
+### Features generados
+
+| Categoría | Columnas |
+|-----------|----------|
+| **Tasas por 100k** | `tasa_homicidios`, `tasa_hurtos`, `tasa_lesiones`, `tasa_violencia_intrafamiliar`, `tasa_amenazas`, `tasa_delitos_sexuales`, `tasa_extorsion`, `tasa_abigeato` |
+| **Codificación cíclica** | `mes_sin`, `mes_cos` |
+| **Lags** | `lag_1`, `lag_3`, `lag_12` |
+| **Rolling** | `roll_mean_3`, `roll_mean_12`, `roll_std_3`, `roll_std_12` |
+| **Variaciones** | `pct_change_1`, `pct_change_3`, `pct_change_12` |
+
+### Ejecución
+
+```bash
+python scripts/04_generate_analytics.py
+```
+
+---
+
+## 2. Dashboard Data — Datos para Visualización
+
+**Script:** `scripts/04_generate_dashboard_data.py`
+
+Prepara datasets específicos para el dashboard con columnas temporales enriquecidas.
+
+### Entrada y Salida
+
+| Entrada (Silver) | Salida (Gold/dashboard) |
+|------------------|-------------------------|
+| `dane_geo/geografia_silver.parquet` | `municipios.parquet` |
+| `metas/*.parquet` | `<mismo nombre>.parquet` |
+| `poblacion/poblacion_santander.parquet` | `poblacion_santander.parquet` |
+| `policia_scraping/policia_santander.parquet` | `policia_santander.parquet` |
+| `socrata_api/delitos_informaticos.parquet` | `delitos_informaticos.parquet` |
+| `socrata_api/delitos_bucaramanga.parquet` | `delitos_bucaramanga.parquet` |
+
+### Columnas temporales agregadas
+
+Para datasets con columna `fecha`:
+- `anio`, `mes`, `dia`
+- `es_dia_semana`, `es_fin_de_semana`
+- `es_fin_mes`
+- `es_festivo`, `nombre_festivo`
+- `es_dia_laboral`
+
+### Ejecución
+
+```bash
+python scripts/04_generate_dashboard_data.py
+```
+
+---
+
+## Resumen de Datasets para Modelos (7 consolidados)
 
 | Dataset | Filas | Nivel | Targets | Script |
 |---------|-------|-------|---------|--------|
@@ -18,7 +99,7 @@ La capa Model Data contiene los datasets optimizados para entrenamiento de model
 
 ## Datasets de Regresión
 
-### 1. Regresión Mensual
+### 3. Regresión Mensual
 
 **Script:** `scripts/04_generate_regression_monthly_dataset.py`
 
@@ -286,14 +367,24 @@ python scripts/04_generate_clustering_geo_dataset.py
 ## Resumen de Salidas
 
 ```
-data/gold/model/
-├── regression_monthly_dataset.parquet       # 9,143 filas - Regresión mensual
-├── regression_annual_dataset.parquet        # 1,334 filas - Regresión anual
-├── regression_timeseries_dataset.parquet    # 190 filas   - Serie temporal global
-├── classification_monthly_dataset.parquet   # 9,143 filas - Riesgo + incremento
-├── classification_event_dataset.parquet     # 279,762 filas - Eventos individuales
-├── classification_dominant_dataset.parquet  # 33,408 filas - Delito/arma dominante
-└── clustering_geo_dataset.parquet           # 9,143 filas - Clusters geográficos
+data/gold/
+├── analytics/
+│   └── gold_analytics.parquet              # Analytics enriquecido
+├── dashboard/
+│   ├── municipios.parquet                  # Geografía para dashboard
+│   ├── poblacion_santander.parquet         # Población
+│   ├── policia_santander.parquet           # Policía + temporales
+│   ├── delitos_informaticos.parquet        # Delitos informáticos
+│   ├── delitos_bucaramanga.parquet         # Socrata Bucaramanga
+│   └── <metas>/*.parquet                   # Metas copiadas
+└── model/
+    ├── regression_monthly_dataset.parquet       # 9,143 filas
+    ├── regression_annual_dataset.parquet        # 1,334 filas
+    ├── regression_timeseries_dataset.parquet    # 190 filas
+    ├── classification_monthly_dataset.parquet   # 9,143 filas
+    ├── classification_event_dataset.parquet     # 279,762 filas
+    ├── classification_dominant_dataset.parquet  # 33,408 filas
+    └── clustering_geo_dataset.parquet           # 9,143 filas
 ```
 
 ---
@@ -313,17 +404,21 @@ data/gold/model/
 ## Ejecución Completa del Pipeline
 
 ```bash
-# Regresión
+# 1. Analytics y Dashboard (deben ejecutarse primero)
+python scripts/04_generate_analytics.py
+python scripts/04_generate_dashboard_data.py
+
+# 2. Regresión
 python scripts/04_generate_regression_monthly_dataset.py
 python scripts/04_generate_regression_annual_dataset.py
 python scripts/04_generate_regression_timeseries_dataset.py
 
-# Clasificación
+# 3. Clasificación
 python scripts/04_generate_classification_monthly_dataset.py
 python scripts/04_generate_classification_event_dataset.py
 python scripts/04_generate_classification_dominant_dataset.py
 
-# Clustering
+# 4. Clustering
 python scripts/04_generate_clustering_geo_dataset.py
 ```
 

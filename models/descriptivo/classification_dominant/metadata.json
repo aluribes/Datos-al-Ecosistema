@@ -2,8 +2,8 @@
   "modelo": "descriptivo",
   "nombre": "classification_dominant",
   "descripcion": "Análisis descriptivo de delitos y armas dominantes por municipio",
-  "creado": "2025-11-28T19:43:07.544556",
-  "fuente_datos": "/home/byverbel/challenges/Datos-al-Ecosistema/data/gold/model/classification_dominant_dataset.parquet",
+  "creado": "2025-11-28T21:36:11.933597",
+  "fuente_datos": "/Users/byverbel/quick_projects/Datos-al-Ecosistema/data/gold/model/classification_dominant_dataset.parquet",
   "archivos_generados": [
     "estadisticas_generales.json",
     "tendencias_anuales.json",

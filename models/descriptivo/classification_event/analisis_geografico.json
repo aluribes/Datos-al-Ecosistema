@@ -1,166 +1,166 @@
 {
-  "generado": "2025-11-28T20:02:40.116387",
+  "generado": "2025-11-28T21:41:45.511946",
   "n_municipios": 87,
   "top_10_municipios": [
     {
       "codigo": 68001,
       "nombre": "BUCARAMANGA (CT)",
-      "cantidad": 104277,
-      "porcentaje": 30.58
+      "cantidad": 114940,
+      "porcentaje": 30.97
     },
     {
       "codigo": 68081,
       "nombre": "BARRANCABERMEJA",
-      "cantidad": 45169,
-      "porcentaje": 13.25
+      "cantidad": 48660,
+      "porcentaje": 13.11
     },
     {
       "codigo": 68276,
       "nombre": "FLORIDABLANCA",
-      "cantidad": 40552,
-      "porcentaje": 11.89
+      "cantidad": 43912,
+      "porcentaje": 11.83
     },
     {
       "codigo": 68307,
       "nombre": "GIRÓN",
-      "cantidad": 30872,
+      "cantidad": 33572,
       "porcentaje": 9.05
     },
     {
       "codigo": 68547,
       "nombre": "PIEDECUESTA",
-      "cantidad": 26696,
-      "porcentaje": 7.83
+      "cantidad": 28973,
+      "porcentaje": 7.81
     },
     {
       "codigo": 68679,
       "nombre": "SAN GIL",
-      "cantidad": 9997,
-      "porcentaje": 2.93
+      "cantidad": 10767,
+      "porcentaje": 2.9
     },
     {
       "codigo": 68077,
       "nombre": "BARBOSA",
-      "cantidad": 7756,
-      "porcentaje": 2.27
+      "cantidad": 8474,
+      "porcentaje": 2.28
     },
     {
       "codigo": 68655,
       "nombre": "SABANA DE TORRES",
-      "cantidad": 6387,
-      "porcentaje": 1.87
+      "cantidad": 6777,
+      "porcentaje": 1.83
     },
     {
       "codigo": 68190,
       "nombre": "CIMITARRA",
-      "cantidad": 5928,
-      "porcentaje": 1.74
+      "cantidad": 6338,
+      "porcentaje": 1.71
     },
     {
       "codigo": 68406,
       "nombre": "LEBRIJA",
-      "cantidad": 5799,
-      "porcentaje": 1.7
+      "cantidad": 6289,
+      "porcentaje": 1.69
     }
   ],
   "delitos_por_municipio_top10": {
     "BUCARAMANGA (CT)": {
-      "HURTOS": 39736,
-      "LESIONES": 33089,
-      "VIOLENCIA INTRAFAMILIAR": 14823,
+      "HURTOS": 44381,
+      "LESIONES": 36090,
+      "VIOLENCIA INTRAFAMILIAR": 17170,
       "AMENAZAS": 7376,
-      "DELITOS SEXUALES": 5819,
-      "HOMICIDIOS": 2519,
+      "DELITOS SEXUALES": 6409,
+      "HOMICIDIOS": 2599,
       "EXTORSION": 901,
       "ABIGEATO": 14
     },
     "BARRANCABERMEJA": {
-      "HURTOS": 13705,
-      "LESIONES": 12365,
-      "VIOLENCIA INTRAFAMILIAR": 8474,
+      "HURTOS": 14429,
+      "LESIONES": 13648,
+      "VIOLENCIA INTRAFAMILIAR": 9729,
       "AMENAZAS": 5667,
-      "DELITOS SEXUALES": 2469,
-      "HOMICIDIOS": 1668,
+      "DELITOS SEXUALES": 2649,
+      "HOMICIDIOS": 1713,
       "EXTORSION": 542,
-      "ABIGEATO": 279
+      "ABIGEATO": 283
     },
     "FLORIDABLANCA": {
-      "HURTOS": 15647,
-      "LESIONES": 12268,
-      "VIOLENCIA INTRAFAMILIAR": 7255,
-      "DELITOS SEXUALES": 2265,
+      "HURTOS": 16587,
+      "LESIONES": 13341,
+      "VIOLENCIA INTRAFAMILIAR": 8312,
+      "DELITOS SEXUALES": 2540,
       "AMENAZAS": 2195,
-      "HOMICIDIOS": 658,
+      "HOMICIDIOS": 673,
       "EXTORSION": 256,
       "ABIGEATO": 8
     },
     "GIRÓN": {
-      "HURTOS": 9930,
-      "LESIONES": 9865,
-      "VIOLENCIA INTRAFAMILIAR": 6581,
+      "LESIONES": 10815,
+      "HURTOS": 10506,
+      "VIOLENCIA INTRAFAMILIAR": 7530,
       "AMENAZAS": 2090,
-      "DELITOS SEXUALES": 1571,
-      "HOMICIDIOS": 641,
+      "DELITOS SEXUALES": 1756,
+      "HOMICIDIOS": 681,
       "EXTORSION": 170,
       "ABIGEATO": 24
     },
     "PIEDECUESTA": {
-      "LESIONES": 9407,
-      "HURTOS": 9253,
-      "VIOLENCIA INTRAFAMILIAR": 4433,
+      "LESIONES": 10299,
+      "HURTOS": 9845,
+      "VIOLENCIA INTRAFAMILIAR": 5074,
+      "DELITOS SEXUALES": 1573,
       "AMENAZAS": 1447,
-      "DELITOS SEXUALES": 1429,
-      "HOMICIDIOS": 568,
+      "HOMICIDIOS": 576,
       "EXTORSION": 141,
       "ABIGEATO": 18
     },
     "SAN GIL": {
-      "LESIONES": 4030,
-      "HURTOS": 2840,
-      "VIOLENCIA INTRAFAMILIAR": 1595,
+      "LESIONES": 4403,
+      "HURTOS": 2969,
+      "VIOLENCIA INTRAFAMILIAR": 1792,
+      "DELITOS SEXUALES": 698,
       "AMENAZAS": 694,
-      "DELITOS SEXUALES": 633,
-      "HOMICIDIOS": 147,
+      "HOMICIDIOS": 153,
       "EXTORSION": 50,
       "ABIGEATO": 8
     },
     "BARBOSA": {
-      "LESIONES": 3178,
-      "HURTOS": 2032,
-      "VIOLENCIA INTRAFAMILIAR": 1185,
+      "LESIONES": 3543,
+      "HURTOS": 2162,
+      "VIOLENCIA INTRAFAMILIAR": 1374,
       "AMENAZAS": 779,
-      "DELITOS SEXUALES": 352,
-      "HOMICIDIOS": 151,
+      "DELITOS SEXUALES": 381,
+      "HOMICIDIOS": 155,
       "EXTORSION": 51,
-      "ABIGEATO": 28
+      "ABIGEATO": 29
     },
     "SABANA DE TORRES": {
-      "LESIONES": 2333,
-      "HURTOS": 1312,
+      "LESIONES": 2504,
+      "HURTOS": 1375,
       "AMENAZAS": 964,
-      "VIOLENCIA INTRAFAMILIAR": 849,
-      "DELITOS SEXUALES": 482,
-      "HOMICIDIOS": 301,
-      "ABIGEATO": 91,
+      "VIOLENCIA INTRAFAMILIAR": 950,
+      "DELITOS SEXUALES": 526,
+      "HOMICIDIOS": 311,
+      "ABIGEATO": 92,
       "EXTORSION": 55
     },
     "CIMITARRA": {
-      "LESIONES": 2352,
+      "LESIONES": 2552,
+      "VIOLENCIA INTRAFAMILIAR": 951,
       "AMENAZAS": 912,
-      "HURTOS": 860,
-      "VIOLENCIA INTRAFAMILIAR": 836,
-      "DELITOS SEXUALES": 466,
-      "HOMICIDIOS": 367,
-      "ABIGEATO": 100,
+      "HURTOS": 893,
+      "DELITOS SEXUALES": 509,
+      "HOMICIDIOS": 381,
+      "ABIGEATO": 105,
       "EXTORSION": 35
     },
     "LEBRIJA": {
-      "LESIONES": 2372,
-      "HURTOS": 1570,
-      "VIOLENCIA INTRAFAMILIAR": 831,
-      "DELITOS SEXUALES": 396,
+      "LESIONES": 2583,
+      "HURTOS": 1667,
+      "VIOLENCIA INTRAFAMILIAR": 955,
+      "DELITOS SEXUALES": 446,
       "AMENAZAS": 385,
-      "HOMICIDIOS": 177,
+      "HOMICIDIOS": 185,
       "EXTORSION": 47,
       "ABIGEATO": 21
     }
@@ -169,7 +169,7 @@
     "ABIGEATO": {
       "codigo": 68081,
       "nombre": "BARRANCABERMEJA",
-      "cantidad": 279
+      "cantidad": 283
     },
     "AMENAZAS": {
       "codigo": 68001,
@@ -179,7 +179,7 @@
     "DELITOS SEXUALES": {
       "codigo": 68001,
       "nombre": "BUCARAMANGA (CT)",
-      "cantidad": 5819
+      "cantidad": 6409
     },
     "EXTORSION": {
       "codigo": 68001,
@@ -189,26 +189,26 @@
     "HOMICIDIOS": {
       "codigo": 68001,
       "nombre": "BUCARAMANGA (CT)",
-      "cantidad": 2519
+      "cantidad": 2599
     },
     "HURTOS": {
       "codigo": 68001,
       "nombre": "BUCARAMANGA (CT)",
-      "cantidad": 39736
+      "cantidad": 44381
     },
     "LESIONES": {
       "codigo": 68001,
       "nombre": "BUCARAMANGA (CT)",
-      "cantidad": 33089
+      "cantidad": 36090
     },
     "VIOLENCIA INTRAFAMILIAR": {
       "codigo": 68001,
       "nombre": "BUCARAMANGA (CT)",
-      "cantidad": 14823
+      "cantidad": 17170
     }
   },
   "densidad_poblacional": {
-    "promedio": 2283.46,
+    "promedio": 2257.99,
     "mediana": 630.28,
     "max": 6912.27,
     "min": 6.37
