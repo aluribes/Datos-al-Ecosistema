@@ -8,15 +8,24 @@ Entrada:
     No requiere archivos de entrada.
 
 Salida:
-    data/bronze/              - Datos crudos
-        socrata_api/
-        policia_scraping/
-        dane_geo/
-    data/silver/              - Datos limpios
-        socrata_api/
-        policia_scraping/
-        dane_geo/
-    data/gold/                - Datos integrados
+    data/bronze/              - Datos crudos (sin procesar)
+        socrata_api/          - JSONs de la API Socrata de Bucaramanga
+        policia_scraping/     - Excels descargados de Policía Nacional
+        dane_geo/             - Datos geográficos DANE (DIVIPOLA, GeoJSON)
+        poblacion_dane/       - Datos de población DANE (ZIPs)
+        metas/                - Datos de metas departamentales
+    data/silver/              - Datos limpios (procesados)
+        socrata_api/          - Parquets procesados de Socrata
+        policia_scraping/     - Parquets procesados de Policía
+        dane_geo/             - Parquets geográficos procesados
+        poblacion/            - Parquet de población Santander
+        delitos/              - Consolidado de delitos
+        metas/                - Parquets de metas procesadas
+    data/gold/                - Datos integrados (listos para análisis)
+        base/                 - Parquets gold individuales (geo, policia, socrata, poblacion, divipola)
+        analytics/            - Datos analíticos agregados
+        model/                - Datasets para modelos ML
+        dashboard/            - Datos para dashboard
 """
 
 from pathlib import Path
@@ -34,23 +43,50 @@ def ensure_folder(path: Path) -> None:
 
 def create_structure() -> None:
     """Crea la estructura de carpetas de las capas Bronze, Silver y Gold."""
-    # Capas que tendrán subcarpetas
-    layers_with_subfolders = ["bronze", "silver"]
+    # Subcarpetas para Bronze
+    bronze_subfolders = [
+        "socrata_api",
+        "policia_scraping",
+        "dane_geo",
+        "poblacion_dane",
+        "metas",
+    ]
 
-    # Subcarpetas para organizar mejor
-    subfolders = ["socrata_api", "policia_scraping", "dane_geo"]
+    # Subcarpetas para Silver
+    silver_subfolders = [
+        "socrata_api",
+        "policia_scraping",
+        "dane_geo",
+        "poblacion",
+        "delitos",
+        "metas",
+    ]
 
-    # Crear estructura para bronze y silver
-    for layer in layers_with_subfolders:
-        for sub in subfolders:
-            path = DATA_DIR / layer / sub
-            ensure_folder(path)
-            print(f"✔ Creado: {path}")
+    # Subcarpetas para Gold
+    gold_subfolders = [
+        "base",
+        "analytics",
+        "model",
+        "dashboard",
+    ]
 
-    # Crear solo la carpeta gold (sin subcarpetas)
-    gold_path = DATA_DIR / "gold"
-    ensure_folder(gold_path)
-    print(f"✔ Creado: {gold_path}")
+    # Crear estructura para bronze
+    for sub in bronze_subfolders:
+        path = DATA_DIR / "bronze" / sub
+        ensure_folder(path)
+        print(f"✔ Creado: {path}")
+
+    # Crear estructura para silver
+    for sub in silver_subfolders:
+        path = DATA_DIR / "silver" / sub
+        ensure_folder(path)
+        print(f"✔ Creado: {path}")
+
+    # Crear estructura para gold
+    for sub in gold_subfolders:
+        path = DATA_DIR / "gold" / sub
+        ensure_folder(path)
+        print(f"✔ Creado: {path}")
 
 
 def main() -> None:
