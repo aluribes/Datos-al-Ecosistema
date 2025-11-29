@@ -44,6 +44,7 @@ joblib==1.5.2
 
 # --- Series temporales ---
 statsmodels==0.14.5
+prophet==1.2.1
 
 # --- Fechas y festivos ---
 holidays==0.85
