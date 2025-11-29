@@ -10,6 +10,33 @@ Funcionalidades:
 - Descubre los scripts en la carpeta `scripts/` y los ejecuta en orden alfabético.
 - Pensado para ejecutarse bajo demanda o programado (cron, Task Scheduler).
 
+Fases del pipeline (por prefijo):
+    00_  Setup inicial (crear carpetas, configuración)
+    01_  Bronze - Ingesta de datos crudos (scraping, APIs, descargas)
+    02_  Silver - Limpieza y estandarización de datos
+    03_  Gold - Integración y enriquecimiento de datos
+    04_  Model - Generación de datasets para ML y dashboard
+
+Scripts ejecutados (en orden alfabético):
+    00_setup.py                              # Configuración inicial
+    01_extract_bronze.py                     # Extracción de datos bronze
+    01_generate_polygon_santander.py         # Polígonos geográficos
+    01_scrape_policia_estadistica.py         # Scraping Policía Nacional
+    02_datos_poblacion_santander.py          # Población DANE
+    02_extract_metas.py                      # Metas del Plan de Desarrollo
+    02_process_danegeo.py                    # Geografía DANE (Divipola)
+    02_process_policia_completo.py           # Policía consolidado
+    02_process_policia.py                    # Policía básico
+    02_process_socrata.py                    # Datos abiertos Socrata
+    02_socrata_bucaramanga_to_parquet.py     # Socrata Bucaramanga
+    03_generate_gold.py                      # Capa Gold base
+    03_process_silver_data.py                # Preparación Silver→Gold
+    04_generate_analytics.py                 # Métricas analíticas
+    04_generate_classification_*.py          # Datasets clasificación (3)
+    04_generate_clustering_geo_dataset.py    # Dataset clustering
+    04_generate_dashboard_data.py            # Datos para Streamlit
+    04_generate_regression_*.py              # Datasets regresión (3)
+
 Uso básico:
     python run_pipeline.py
 
