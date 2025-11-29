@@ -126,11 +126,11 @@ def clean_policia(df: pd.DataFrame) -> pd.DataFrame:
 
         # --- Día de la semana y fin de semana ---
         dia_semana = df["fecha"].dt.dayofweek
-        df["es_dia_semana"] = (dia_semana < 5).astype(int)
-        df["es_fin_de_semana"] = (dia_semana >= 5).astype(int)
+        df["es_dia_semana"] = (dia_semana < 5).fillna(False).astype(int)
+        df["es_fin_de_semana"] = (dia_semana >= 5).fillna(False).astype(int)
 
         # --- Fin de mes ---
-        df["es_fin_mes"] = (df["dia"] == df["fecha"].dt.days_in_month).astype(int)
+        df["es_fin_mes"] = (df["dia"] == df["fecha"].dt.days_in_month).fillna(False).astype(int)
 
         # --- Festivos colombianos ---
         anios = df["anio"].dropna().unique().tolist()
@@ -256,6 +256,124 @@ def clean_socrata(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def complementar_policia_con_socrata(policia: pd.DataFrame, socrata: pd.DataFrame) -> pd.DataFrame:
+    """
+    Complementa los datos faltantes de policía con datos del consolidado (socrata).
+    
+    Problemas identificados en policía:
+    - DELITOS SEXUALES: falta en 2010, 2014, 2021
+    - HURTOS 2022: solo 1,497 vs ~14,000 esperados (registros con cantidad nula)
+    - DELITOS (genérico): existe en 2010 y 2014, probablemente son DELITOS SEXUALES
+    
+    Estrategia:
+    1. Eliminar registros con cantidad nula en policía (HURTOS 2022 con codigo 00nan)
+    2. Fusionar "DELITOS" con "DELITOS SEXUALES" en policía para 2010 y 2014
+    3. Extraer del consolidado los datos faltantes y agregarlos
+    """
+    print("\n=== Complementando datos de Policía con Socrata ===")
+    
+    policia = policia.copy()
+    socrata = socrata.copy()
+    
+    registros_inicial = len(policia)
+    
+    # --- PASO 1: Eliminar registros con cantidad nula (HURTOS 2022 problemáticos) ---
+    nulos_antes = policia["cantidad"].isnull().sum()
+    policia = policia[policia["cantidad"].notna()].copy()
+    print(f"  ✔ Eliminados {nulos_antes:,} registros con cantidad nula")
+    
+    # --- PASO 2: Fusionar "DELITOS" con "DELITOS SEXUALES" en policía ---
+    # En 2010 y 2014, "DELITOS" parece ser la categoría que después se llamó "DELITOS SEXUALES"
+    mask_delitos_generico = policia["delito"].astype(str) == "DELITOS"
+    n_delitos_genericos = mask_delitos_generico.sum()
+    if n_delitos_genericos > 0:
+        policia.loc[mask_delitos_generico, "delito"] = "DELITOS SEXUALES"
+        print(f"  ✔ Reclasificados {n_delitos_genericos:,} registros de 'DELITOS' a 'DELITOS SEXUALES'")
+    
+    # --- PASO 3: Mapeo de nombres de delitos entre datasets ---
+    mapeo_socrata_a_policia = {
+        "HURTO_PERSONAS": "HURTOS",
+        "DELITOS_SEXUALES": "DELITOS SEXUALES",
+        "VIOLENCIA_INTRAFAMILIAR": "VIOLENCIA INTRAFAMILIAR",
+        "AMENAZAS": "AMENAZAS",
+        "LESIONES": "LESIONES",
+        "HOMICIDIOS": "HOMICIDIOS",
+        "EXTORSION": "EXTORSION",
+    }
+    
+    # --- PASO 4: Definir qué datos faltantes traer del consolidado ---
+    # Casos a complementar: (delito_policia, año)
+    casos_complementar = [
+        ("DELITOS SEXUALES", 2021),  # Falta completamente
+        ("HURTOS", 2022),            # Tiene solo 1,497 vs ~14,000
+    ]
+    
+    registros_agregados = 0
+    
+    for delito_policia, anio in casos_complementar:
+        # Buscar el nombre equivalente en socrata
+        delito_socrata = [k for k, v in mapeo_socrata_a_policia.items() if v == delito_policia]
+        
+        if not delito_socrata:
+            print(f"  ⚠ No se encontró mapeo para {delito_policia}")
+            continue
+        
+        delito_socrata = delito_socrata[0]
+        
+        # Extraer datos del consolidado para ese delito y año
+        mask_socrata = (
+            (socrata["delito"].astype(str) == delito_socrata) & 
+            (socrata["anio"] == anio)
+        )
+        datos_socrata = socrata[mask_socrata].copy()
+        
+        if len(datos_socrata) == 0:
+            print(f"  ⚠ No hay datos en Socrata para {delito_policia} {anio}")
+            continue
+        
+        # Renombrar delito al formato de policía
+        datos_socrata["delito"] = delito_policia
+        
+        # Marcar origen como complemento
+        datos_socrata["origen"] = "SOCRATA_COMPLEMENTO"
+        
+        # Agregar columnas faltantes que tiene policía pero no socrata
+        for col in policia.columns:
+            if col not in datos_socrata.columns:
+                datos_socrata[col] = np.nan
+        
+        # Seleccionar solo columnas que existen en policía
+        cols_comunes = [c for c in policia.columns if c in datos_socrata.columns]
+        datos_socrata = datos_socrata[cols_comunes]
+        
+        # Si es HURTOS 2022, primero eliminar los existentes (que están incompletos)
+        if delito_policia == "HURTOS" and anio == 2022:
+            mask_eliminar = (
+                (policia["delito"].astype(str) == "HURTOS") & 
+                (policia["anio"] == 2022)
+            )
+            n_eliminar = mask_eliminar.sum()
+            policia = policia[~mask_eliminar]
+            print(f"  ✔ Eliminados {n_eliminar:,} registros incompletos de HURTOS 2022")
+        
+        # Concatenar
+        policia = pd.concat([policia, datos_socrata], ignore_index=True)
+        registros_agregados += len(datos_socrata)
+        
+        print(f"  ✔ Agregados {len(datos_socrata):,} registros de {delito_policia} {anio} desde Socrata")
+    
+    # --- Convertir delito a categoría nuevamente ---
+    policia["delito"] = policia["delito"].astype(str).astype("category")
+    
+    # --- Reporte final ---
+    print(f"\n  📊 Resumen de complementación:")
+    print(f"     Registros iniciales: {registros_inicial:,}")
+    print(f"     Registros finales:   {len(policia):,}")
+    print(f"     Diferencia:          {len(policia) - registros_inicial:+,}")
+    
+    return policia
+
+
 # Ejecutar transformación completa Silver → Gold/base
 
 def prepare_silver_to_gold() -> None:
@@ -278,6 +396,9 @@ def prepare_silver_to_gold() -> None:
 
     print("Limpiando Divipola…")
     divipola = clean_divipola(divipola)
+
+    # === COMPLEMENTAR DATOS FALTANTES DE POLICÍA CON SOCRATA ===
+    policia = complementar_policia_con_socrata(policia, socrata)
 
     # === REPORTE ===
     print("\n" + "=" * 60)

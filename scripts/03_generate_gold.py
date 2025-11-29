@@ -11,27 +11,11 @@ GOLD_ROOT = BASE_DIR / "data" / "gold"
 # Rutas de entrada (capa Gold base)
 GEO_INPUT = GOLD_ROOT / "base" / "geo_gold.parquet"
 POLICIA_INPUT = GOLD_ROOT / "base" / "policia_gold.parquet"
-SOCRATA_INPUT = GOLD_ROOT / "base" / "socrata_gold.parquet"
 POBLACION_INPUT = GOLD_ROOT / "base" / "poblacion_gold.parquet"
 DIVIPOLA_INPUT = GOLD_ROOT / "base" / "divipola_gold.parquet"
 
 # Ruta de salida
 GOLD_OUTPUT = GOLD_ROOT / "gold_integrado.parquet"
-DELITOS_INTEGRADO_OUTPUT = GOLD_ROOT / "base" / "delitos_integrado.parquet"
-
-# === CONFIGURACIÓN DE GAPS ===
-# Años faltantes en scraping que se llenarán con Socrata
-# Mapeo: delito_scraping -> delito_socrata
-GAPS_CONFIG = {
-    "DELITOS SEXUALES": {
-        "anios_faltantes": [2010, 2014, 2018, 2021],
-        "delito_socrata": "DELITOS_SEXUALES",
-    },
-    "VIOLENCIA INTRAFAMILIAR": {
-        "anios_faltantes": [2010, 2015, 2021],
-        "delito_socrata": "VIOLENCIA_INTRAFAMILIAR",
-    },
-}
 
 
 def ensure_folder(path: Path) -> None:
@@ -44,61 +28,33 @@ def save(df: pd.DataFrame | gpd.GeoDataFrame, path: Path) -> None:
 
 
 # Cargar GOLD/base
-def load_gold_base() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def load_gold_base() -> tuple[gpd.GeoDataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """
+    Carga los datasets Gold/base.
+    
+    Nota: policia_gold ya viene complementado con datos de Socrata desde
+    03_process_silver_data.py (función complementar_policia_con_socrata).
+    No es necesario hacer fill_gaps aquí.
+    """
     print("\n=== Cargando datasets Gold/base ===")
     geo = gpd.read_parquet(GEO_INPUT)
     policia = pd.read_parquet(POLICIA_INPUT)
-    socrata = pd.read_parquet(SOCRATA_INPUT)
     poblacion = pd.read_parquet(POBLACION_INPUT)
     divipola = pd.read_parquet(DIVIPOLA_INPUT)
     
     print(f"  Geografía:     {len(geo):>10,} registros")
-    print(f"  Policía:       {len(policia):>10,} registros (scraping)")
-    print(f"  Socrata:       {len(socrata):>10,} registros (API)")
+    print(f"  Policía:       {len(policia):>10,} registros (ya incluye complementos de Socrata)")
     print(f"  Población:     {len(poblacion):>10,} registros")
     print(f"  Divipola:      {len(divipola):>10,} registros")
     
-    return geo, policia, socrata, poblacion, divipola
-
-
-def fill_gaps_from_socrata(policia: pd.DataFrame, socrata: pd.DataFrame) -> pd.DataFrame:
-    """
-    Llena los gaps en policia (scraping) con datos de socrata (API).
-    Solo para los delitos y años configurados en GAPS_CONFIG.
-    """
-    print("\n=== Llenando gaps con datos de Socrata ===")
+    # Mostrar origen de los datos de policía
+    if "origen" in policia.columns:
+        print("\n  Origen de datos policía:")
+        for origen, count in policia["origen"].value_counts().items():
+            pct = count / len(policia) * 100
+            print(f"    {origen}: {count:,} ({pct:.1f}%)")
     
-    registros_agregados = 0
-    dataframes = [policia]
-    
-    for delito_scraping, config in GAPS_CONFIG.items():
-        anios = config["anios_faltantes"]
-        delito_socrata = config["delito_socrata"]
-        
-        # Filtrar registros de Socrata para este delito y años
-        mask = (
-            (socrata["delito"] == delito_socrata) &
-            (socrata["anio"].isin(anios))
-        )
-        registros_socrata = socrata[mask].copy()
-        
-        if len(registros_socrata) > 0:
-            # Renombrar delito para que coincida con scraping
-            registros_socrata["delito"] = delito_scraping
-            registros_socrata["delito"] = registros_socrata["delito"].astype("category")
-            
-            dataframes.append(registros_socrata)
-            registros_agregados += len(registros_socrata)
-            
-            print(f"  ✔ {delito_scraping}: +{len(registros_socrata):,} registros (años {anios})")
-    
-    # Concatenar todos los dataframes
-    df_integrado = pd.concat(dataframes, ignore_index=True)
-    
-    print(f"\n  Total registros agregados de Socrata: {registros_agregados:,}")
-    print(f"  Total registros integrados: {len(df_integrado):,}")
-    
-    return df_integrado
+    return geo, policia, poblacion, divipola
 
 
 # Integración GOLD
@@ -230,18 +186,11 @@ def make_gold() -> None:
     print("🥇 GENERACIÓN DE GOLD INTEGRADO")
     print("=" * 60)
     
-    # Cargar datos
-    geo, policia, socrata, poblacion, divipola = load_gold_base()
+    # Cargar datos (policia ya viene complementado desde 03_process_silver_data.py)
+    geo, policia, poblacion, divipola = load_gold_base()
     
-    # Integrar delitos (scraping + gaps de Socrata)
-    delitos = fill_gaps_from_socrata(policia, socrata)
-    
-    # Guardar delitos integrados para referencia
-    save(delitos, DELITOS_INTEGRADO_OUTPUT)
-    print(f"\n✔ delitos_integrado.parquet guardado ({len(delitos):,} registros)")
-    
-    # Generar gold integrado
-    df_gold = integrate_gold(geo, delitos, poblacion, divipola)
+    # Generar gold integrado usando policia directamente (ya está completo)
+    df_gold = integrate_gold(geo, policia, poblacion, divipola)
     
     # Guardar
     save(df_gold, GOLD_OUTPUT)
@@ -256,11 +205,12 @@ def make_gold() -> None:
     print(f"  Municipios: {df_gold['codigo_municipio'].nunique()}")
     
     # Origen de datos
-    origen_counts = delitos['origen'].value_counts()
-    print("\n  Origen de delitos:")
-    for origen, count in origen_counts.items():
-        pct = count / len(delitos) * 100
-        print(f"    {origen}: {count:,} ({pct:.1f}%)")
+    if "origen" in policia.columns:
+        origen_counts = policia['origen'].value_counts()
+        print("\n  Origen de delitos:")
+        for origen, count in origen_counts.items():
+            pct = count / len(policia) * 100
+            print(f"    {origen}: {count:,} ({pct:.1f}%)")
     
     print("=" * 60)
     print("✔ gold_integrado.parquet generado con éxito.")
