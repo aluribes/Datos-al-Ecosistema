@@ -47,6 +47,23 @@ source setup.sh
 setup
 ```
 
+### 4. Dependencias del sistema (macOS)
+
+En **macOS**, XGBoost requiere la librería OpenMP para funcionar. Si al importar `xgboost` obtienes un error como:
+
+```
+XGBoost Library (libxgboost.dylib) could not be loaded.
+Likely causes: OpenMP runtime is not installed
+```
+
+Instala OpenMP con Homebrew:
+
+```bash
+brew install libomp
+```
+
+> 💡 Esto no es necesario en Linux (ya incluye `libgomp`) ni en Windows.
+
 ---
 
 ## Ejecución del Pipeline
