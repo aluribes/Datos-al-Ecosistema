@@ -1,37 +1,37 @@
 {
-  "generado": "2025-11-28T15:53:27.664929",
+  "generado": "2025-11-28T20:02:40.202229",
   "preguntas_respuestas": [
     {
       "pregunta": "¿Cuántos delitos hay registrados en total?",
-      "respuesta": "En el período 2010-2025 se registraron 343,861 eventos delictivos en Santander."
+      "respuesta": "En el período 2010-2025 se registraron 340,970 eventos delictivos en Santander."
     },
     {
       "pregunta": "¿Cuál es el delito más común?",
-      "respuesta": "El delito más común es LESIONES con 122,348 casos (35.58% del total)."
+      "respuesta": "El delito más común es LESIONES con 112,684 casos (33.05% del total)."
     },
     {
       "pregunta": "¿Cuál es el perfil más frecuente?",
-      "respuesta": "El perfil más frecuente es MASCULINO_ADULTOS con 163,424 casos (47.53% del total)."
+      "respuesta": "El perfil más frecuente es MASCULINO_ADULTOS con 157,249 casos (46.12% del total)."
     },
     {
       "pregunta": "¿Qué municipio tiene más delitos?",
-      "respuesta": "El municipio con más delitos es BUCARAMANGA (CT) con 106,885 casos (31.08% del total)."
+      "respuesta": "El municipio con más delitos es BUCARAMANGA (CT) con 104,277 casos (30.58% del total)."
     },
     {
       "pregunta": "¿Qué grupo etario es más afectado?",
-      "respuesta": "El grupo etario más afectado es ADULTOS con 306,597 casos (89.16% del total)."
+      "respuesta": "El grupo etario más afectado es ADULTOS con 297,440 casos (87.23% del total)."
     },
     {
       "pregunta": "¿Cuál es el mes con más delitos?",
-      "respuesta": "El mes con más delitos es marzo con 30,754 casos."
+      "respuesta": "El mes con más delitos es marzo con 30,115 casos."
     },
     {
       "pregunta": "¿Cuántos tipos de delitos hay?",
-      "respuesta": "Hay 8 tipos de delitos: ABIGEATO, AMENAZAS, EXTORSION, HOMICIDIOS, HURTOS, LESIONES, DELITOS SEXUALES, VIOLENCIA INTRAFAMILIAR."
+      "respuesta": "Hay 8 tipos de delitos: ABIGEATO, AMENAZAS, DELITOS SEXUALES, EXTORSION, HOMICIDIOS, HURTOS, LESIONES, VIOLENCIA INTRAFAMILIAR."
     },
     {
       "pregunta": "¿Hay más delitos en fin de semana o días laborales?",
-      "respuesta": "Hay más delitos en días laborales (232,097) que en fines de semana (111,764). Los fines de semana representan el 32.5% del total."
+      "respuesta": "Hay más delitos en días laborales (230,984) que en fines de semana (109,986). Los fines de semana representan el 32.26% del total."
     },
     {
       "pregunta": "¿Cuántos municipios tienen registros de delitos?",
@@ -40,130 +40,130 @@
   ],
   "respuestas_por_delito": {
     "LESIONES": {
-      "total": 122348,
-      "porcentaje": 35.58,
+      "total": 112684,
+      "porcentaje": 33.05,
       "perfil_principal": "MASCULINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "LESIONES: 122,348 casos (35.58%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "LESIONES: 112,684 casos (33.05%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "HURTOS": {
-      "total": 104201,
-      "porcentaje": 30.3,
+      "total": 107055,
+      "porcentaje": 31.4,
       "perfil_principal": "MASCULINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "HURTOS: 104,201 casos (30.3%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "HURTOS: 107,055 casos (31.4%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "VIOLENCIA INTRAFAMILIAR": {
-      "total": 55049,
-      "porcentaje": 16.01,
+      "total": 56878,
+      "porcentaje": 16.68,
       "perfil_principal": "FEMENINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "VIOLENCIA INTRAFAMILIAR: 55,049 casos (16.01%). El perfil más común es FEMENINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "VIOLENCIA INTRAFAMILIAR: 56,878 casos (16.68%). El perfil más común es FEMENINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "AMENAZAS": {
-      "total": 32123,
-      "porcentaje": 9.34,
+      "total": 30127,
+      "porcentaje": 8.84,
       "perfil_principal": "MASCULINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "AMENAZAS: 32,123 casos (9.34%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "AMENAZAS: 30,127 casos (8.84%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "DELITOS SEXUALES": {
-      "total": 16561,
-      "porcentaje": 4.82,
+      "total": 21044,
+      "porcentaje": 6.17,
       "perfil_principal": "FEMENINO_MENORES",
       "grupo_etario_mas_afectado": "MENORES",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "DELITOS SEXUALES: 16,561 casos (4.82%). El perfil más común es FEMENINO_MENORES y el grupo etario más afectado es MENORES. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "DELITOS SEXUALES: 21,044 casos (6.17%). El perfil más común es FEMENINO_MENORES y el grupo etario más afectado es MENORES. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "HOMICIDIOS": {
-      "total": 9340,
-      "porcentaje": 2.72,
+      "total": 9204,
+      "porcentaje": 2.7,
       "perfil_principal": "MASCULINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "HOMICIDIOS: 9,340 casos (2.72%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "HOMICIDIOS: 9,204 casos (2.7%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "EXTORSION": {
-      "total": 2952,
-      "porcentaje": 0.86,
+      "total": 2691,
+      "porcentaje": 0.79,
       "perfil_principal": "MASCULINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BUCARAMANGA (CT)",
-      "respuesta": "EXTORSION: 2,952 casos (0.86%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
+      "respuesta": "EXTORSION: 2,691 casos (0.79%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BUCARAMANGA (CT)."
     },
     "ABIGEATO": {
       "total": 1287,
-      "porcentaje": 0.37,
+      "porcentaje": 0.38,
       "perfil_principal": "MASCULINO_ADULTOS",
       "grupo_etario_mas_afectado": "ADULTOS",
       "municipio_con_mas_casos": "BARRANCABERMEJA",
-      "respuesta": "ABIGEATO: 1,287 casos (0.37%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BARRANCABERMEJA."
+      "respuesta": "ABIGEATO: 1,287 casos (0.38%). El perfil más común es MASCULINO_ADULTOS y el grupo etario más afectado es ADULTOS. El municipio con más casos es BARRANCABERMEJA."
     }
   },
   "respuestas_por_municipio": {
     "BUCARAMANGA (CT)": {
-      "total": 106885,
-      "porcentaje": 31.08,
+      "total": 104277,
+      "porcentaje": 30.58,
       "delito_mas_comun": "HURTOS",
-      "respuesta": "BUCARAMANGA (CT): 106,885 delitos (31.08%). El delito más común es HURTOS."
+      "respuesta": "BUCARAMANGA (CT): 104,277 delitos (30.58%). El delito más común es HURTOS."
     },
     "BARRANCABERMEJA": {
-      "total": 45812,
-      "porcentaje": 13.32,
-      "delito_mas_comun": "LESIONES",
-      "respuesta": "BARRANCABERMEJA: 45,812 delitos (13.32%). El delito más común es LESIONES."
+      "total": 45169,
+      "porcentaje": 13.25,
+      "delito_mas_comun": "HURTOS",
+      "respuesta": "BARRANCABERMEJA: 45,169 delitos (13.25%). El delito más común es HURTOS."
     },
     "FLORIDABLANCA": {
-      "total": 40372,
-      "porcentaje": 11.74,
+      "total": 40552,
+      "porcentaje": 11.89,
       "delito_mas_comun": "HURTOS",
-      "respuesta": "FLORIDABLANCA: 40,372 delitos (11.74%). El delito más común es HURTOS."
+      "respuesta": "FLORIDABLANCA: 40,552 delitos (11.89%). El delito más común es HURTOS."
     },
     "GIRÓN": {
-      "total": 30865,
-      "porcentaje": 8.98,
-      "delito_mas_comun": "LESIONES",
-      "respuesta": "GIRÓN: 30,865 delitos (8.98%). El delito más común es LESIONES."
+      "total": 30872,
+      "porcentaje": 9.05,
+      "delito_mas_comun": "HURTOS",
+      "respuesta": "GIRÓN: 30,872 delitos (9.05%). El delito más común es HURTOS."
     },
     "PIEDECUESTA": {
-      "total": 26950,
-      "porcentaje": 7.84,
+      "total": 26696,
+      "porcentaje": 7.83,
       "delito_mas_comun": "LESIONES",
-      "respuesta": "PIEDECUESTA: 26,950 delitos (7.84%). El delito más común es LESIONES."
+      "respuesta": "PIEDECUESTA: 26,696 delitos (7.83%). El delito más común es LESIONES."
     },
     "SAN GIL": {
-      "total": 9732,
-      "porcentaje": 2.83,
+      "total": 9997,
+      "porcentaje": 2.93,
       "delito_mas_comun": "LESIONES",
-      "respuesta": "SAN GIL: 9,732 delitos (2.83%). El delito más común es LESIONES."
+      "respuesta": "SAN GIL: 9,997 delitos (2.93%). El delito más común es LESIONES."
     },
     "BARBOSA": {
-      "total": 7805,
+      "total": 7756,
       "porcentaje": 2.27,
       "delito_mas_comun": "LESIONES",
-      "respuesta": "BARBOSA: 7,805 delitos (2.27%). El delito más común es LESIONES."
+      "respuesta": "BARBOSA: 7,756 delitos (2.27%). El delito más común es LESIONES."
     },
     "SABANA DE TORRES": {
-      "total": 6409,
-      "porcentaje": 1.86,
+      "total": 6387,
+      "porcentaje": 1.87,
       "delito_mas_comun": "LESIONES",
-      "respuesta": "SABANA DE TORRES: 6,409 delitos (1.86%). El delito más común es LESIONES."
+      "respuesta": "SABANA DE TORRES: 6,387 delitos (1.87%). El delito más común es LESIONES."
     },
     "CIMITARRA": {
-      "total": 5902,
-      "porcentaje": 1.72,
+      "total": 5928,
+      "porcentaje": 1.74,
       "delito_mas_comun": "LESIONES",
-      "respuesta": "CIMITARRA: 5,902 delitos (1.72%). El delito más común es LESIONES."
+      "respuesta": "CIMITARRA: 5,928 delitos (1.74%). El delito más común es LESIONES."
     },
     "LEBRIJA": {
-      "total": 5752,
-      "porcentaje": 1.67,
+      "total": 5799,
+      "porcentaje": 1.7,
       "delito_mas_comun": "LESIONES",
-      "respuesta": "LEBRIJA: 5,752 delitos (1.67%). El delito más común es LESIONES."
+      "respuesta": "LEBRIJA: 5,799 delitos (1.7%). El delito más común es LESIONES."
     }
   }
 }

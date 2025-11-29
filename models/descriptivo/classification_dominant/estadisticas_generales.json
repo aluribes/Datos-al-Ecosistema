@@ -5,123 +5,127 @@
   },
   "total_municipios": 87,
   "total_registros": 16704,
-  "suma_delitos_dominantes": 155687,
+  "suma_delitos_dominantes": 143446,
   "delito_mas_frecuente": {
     "nombre": "LESIONES",
-    "porcentaje": 35.42
+    "porcentaje": 32.83
   },
   "arma_mas_frecuente": {
     "nombre": "CONTUNDENTES",
-    "porcentaje": 34.36
+    "porcentaje": 35.9
   },
   "distribucion_delitos": {
     "LESIONES": {
-      "frecuencia": 5916,
-      "porcentaje": 35.42
+      "frecuencia": 5484,
+      "porcentaje": 32.83
     },
     "ABIGEATO": {
-      "frecuencia": 4200,
-      "porcentaje": 25.14
+      "frecuencia": 3838,
+      "porcentaje": 22.98
     },
     "HURTOS": {
-      "frecuencia": 1976,
-      "porcentaje": 11.83
+      "frecuencia": 2296,
+      "porcentaje": 13.75
     },
     "AMENAZAS": {
-      "frecuencia": 1922,
-      "porcentaje": 11.51
+      "frecuencia": 1915,
+      "porcentaje": 11.46
     },
     "VIOLENCIA INTRAFAMILIAR": {
-      "frecuencia": 1380,
-      "porcentaje": 8.26
+      "frecuencia": 1546,
+      "porcentaje": 9.26
     },
     "DELITOS SEXUALES": {
-      "frecuencia": 910,
-      "porcentaje": 5.45
+      "frecuencia": 1241,
+      "porcentaje": 7.43
     },
     "HOMICIDIOS": {
-      "frecuencia": 331,
-      "porcentaje": 1.98
+      "frecuencia": 325,
+      "porcentaje": 1.95
     },
     "EXTORSION": {
-      "frecuencia": 69,
-      "porcentaje": 0.41
+      "frecuencia": 59,
+      "porcentaje": 0.35
     }
   },
   "distribucion_armas": {
     "CONTUNDENTES": {
-      "frecuencia": 5740,
-      "porcentaje": 34.36
-    },
-    "ACIDO": {
-      "frecuencia": 4094,
-      "porcentaje": 24.51
+      "frecuencia": 5997,
+      "porcentaje": 35.9
     },
     "SIN EMPLEO DE ARMAS": {
-      "frecuencia": 3521,
-      "porcentaje": 21.08
+      "frecuencia": 3710,
+      "porcentaje": 22.21
     },
     "ARMA BLANCA / CORTOPUNZANTE": {
-      "frecuencia": 1308,
-      "porcentaje": 7.83
+      "frecuencia": 1261,
+      "porcentaje": 7.55
     },
     "NO REPORTADO": {
-      "frecuencia": 1200,
-      "porcentaje": 7.18
+      "frecuencia": 1228,
+      "porcentaje": 7.35
     },
     "ARMA DE FUEGO": {
-      "frecuencia": 502,
-      "porcentaje": 3.01
+      "frecuencia": 487,
+      "porcentaje": 2.92
     },
     "VEHICULO": {
-      "frecuencia": 111,
-      "porcentaje": 0.66
+      "frecuencia": 95,
+      "porcentaje": 0.57
     },
     "MOTO": {
-      "frecuencia": 73,
-      "porcentaje": 0.44
+      "frecuencia": 64,
+      "porcentaje": 0.38
+    },
+    "ACIDO": {
+      "frecuencia": 54,
+      "porcentaje": 0.32
     },
     "PALANCAS": {
-      "frecuencia": 39,
-      "porcentaje": 0.23
+      "frecuencia": 30,
+      "porcentaje": 0.18
     },
     "LLAMADA TELEFONICA": {
-      "frecuencia": 32,
-      "porcentaje": 0.19
+      "frecuencia": 28,
+      "porcentaje": 0.17
     },
     "ESCOPOLAMINA": {
-      "frecuencia": 14,
-      "porcentaje": 0.08
-    },
-    "CORTANTES": {
-      "frecuencia": 11,
-      "porcentaje": 0.07
+      "frecuencia": 18,
+      "porcentaje": 0.11
     },
     "DIRECTA": {
       "frecuencia": 11,
       "porcentaje": 0.07
     },
+    "CORTANTES": {
+      "frecuencia": 10,
+      "porcentaje": 0.06
+    },
     "LLAVE MAESTRA": {
       "frecuencia": 9,
       "porcentaje": 0.05
     },
-    "REDES SOCIALES": {
+    "CINTAS/CINTURON": {
       "frecuencia": 5,
       "porcentaje": 0.03
-    },
-    "CINTAS/CINTURON": {
-      "frecuencia": 4,
-      "porcentaje": 0.02
-    },
-    "PERRO": {
-      "frecuencia": 4,
-      "porcentaje": 0.02
     },
     "COMBUSTIBLE": {
       "frecuencia": 4,
       "porcentaje": 0.02
     },
-    "BICICLETA": {
+    "PUNZANTES": {
+      "frecuencia": 3,
+      "porcentaje": 0.02
+    },
+    "MIXTA": {
+      "frecuencia": 3,
+      "porcentaje": 0.02
+    },
+    "PERRO": {
+      "frecuencia": 3,
+      "porcentaje": 0.02
+    },
+    "REDES SOCIALES": {
       "frecuencia": 3,
       "porcentaje": 0.02
     },
@@ -133,31 +137,15 @@
       "frecuencia": 3,
       "porcentaje": 0.02
     },
-    "MIXTA": {
-      "frecuencia": 3,
-      "porcentaje": 0.02
+    "BICICLETA": {
+      "frecuencia": 2,
+      "porcentaje": 0.01
     },
-    "PUNZANTES": {
-      "frecuencia": 3,
-      "porcentaje": 0.02
+    "CORTOPUNZANTES": {
+      "frecuencia": 2,
+      "porcentaje": 0.01
     },
     "ARTEFACTO INCENDIARIO": {
-      "frecuencia": 1,
-      "porcentaje": 0.01
-    },
-    "SUSTANCIAS TOXICAS": {
-      "frecuencia": 1,
-      "porcentaje": 0.01
-    },
-    "ALIMENTOS VENCIDOS": {
-      "frecuencia": 1,
-      "porcentaje": 0.01
-    },
-    "ARMA TRAUMATICA": {
-      "frecuencia": 1,
-      "porcentaje": 0.01
-    },
-    "CARRO BOMBA": {
       "frecuencia": 1,
       "porcentaje": 0.01
     },
@@ -165,81 +153,25 @@
       "frecuencia": 1,
       "porcentaje": 0.01
     },
-    "CORTOPUNZANTES": {
+    "ARMA TRAUMATICA": {
       "frecuencia": 1,
       "porcentaje": 0.01
     },
-    "ALUCINOGENOS": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
+    "ALIMENTOS VENCIDOS": {
+      "frecuencia": 1,
+      "porcentaje": 0.01
     },
-    "BOLSA PLASTICA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "ARTEFACTO EXPLOSIVO/CARGA DINAMITA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "MINA ANTIPERSONA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "JERINGA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
+    "CARRO BOMBA": {
+      "frecuencia": 1,
+      "porcentaje": 0.01
     },
     "LICOR ADULTERADO": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
+      "frecuencia": 1,
+      "porcentaje": 0.01
     },
-    "GRANADA DE MANO": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "GASES": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "CUERDA/SOGA/CADENA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "ESPOSAS": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "CUCHILLA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "MEDICAMENTOS": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "PAPA EXPLOSIVA": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "POLVORA(FUEGOS PIROTECNICOS)": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "PRENDAS DE VESTIR": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "QUIMICOS": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "TREN": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
-    },
-    "VENENO": {
-      "frecuencia": 0,
-      "porcentaje": 0.0
+    "SUSTANCIAS TOXICAS": {
+      "frecuencia": 1,
+      "porcentaje": 0.01
     }
   }
 }

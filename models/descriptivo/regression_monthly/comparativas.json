@@ -1,0 +1,211 @@
+{
+  "rankings": {
+    "por_total_ultimo_anio": [
+      {
+        "posicion": 1,
+        "codigo_municipio": 68001,
+        "total_delitos": 8074
+      },
+      {
+        "posicion": 2,
+        "codigo_municipio": 68081,
+        "total_delitos": 2977
+      },
+      {
+        "posicion": 3,
+        "codigo_municipio": 68276,
+        "total_delitos": 2276
+      },
+      {
+        "posicion": 4,
+        "codigo_municipio": 68307,
+        "total_delitos": 1762
+      },
+      {
+        "posicion": 5,
+        "codigo_municipio": 68547,
+        "total_delitos": 1620
+      },
+      {
+        "posicion": 6,
+        "codigo_municipio": 68077,
+        "total_delitos": 518
+      },
+      {
+        "posicion": 7,
+        "codigo_municipio": 68679,
+        "total_delitos": 511
+      },
+      {
+        "posicion": 8,
+        "codigo_municipio": 68406,
+        "total_delitos": 366
+      },
+      {
+        "posicion": 9,
+        "codigo_municipio": 68655,
+        "total_delitos": 356
+      },
+      {
+        "posicion": 10,
+        "codigo_municipio": 68190,
+        "total_delitos": 348
+      }
+    ],
+    "por_promedio_mensual": [
+      {
+        "posicion": 1,
+        "codigo_municipio": 68001,
+        "promedio": 971.12
+      },
+      {
+        "posicion": 2,
+        "codigo_municipio": 68081,
+        "promedio": 330.25
+      },
+      {
+        "posicion": 3,
+        "codigo_municipio": 68276,
+        "promedio": 276.75
+      },
+      {
+        "posicion": 4,
+        "codigo_municipio": 68307,
+        "promedio": 200.62
+      },
+      {
+        "posicion": 5,
+        "codigo_municipio": 68547,
+        "promedio": 171.24
+      },
+      {
+        "posicion": 6,
+        "codigo_municipio": 68679,
+        "promedio": 59.44
+      },
+      {
+        "posicion": 7,
+        "codigo_municipio": 68077,
+        "promedio": 45.75
+      },
+      {
+        "posicion": 8,
+        "codigo_municipio": 68655,
+        "promedio": 37.35
+      },
+      {
+        "posicion": 9,
+        "codigo_municipio": 68190,
+        "promedio": 34.21
+      },
+      {
+        "posicion": 10,
+        "codigo_municipio": 68406,
+        "promedio": 33.48
+      }
+    ],
+    "mas_seguros": [
+      {
+        "posicion": 1,
+        "codigo_municipio": 68686,
+        "promedio": 1.43
+      },
+      {
+        "posicion": 2,
+        "codigo_municipio": 68522,
+        "promedio": 1.56
+      },
+      {
+        "posicion": 3,
+        "codigo_municipio": 68160,
+        "promedio": 1.58
+      },
+      {
+        "posicion": 4,
+        "codigo_municipio": 68468,
+        "promedio": 1.59
+      },
+      {
+        "posicion": 5,
+        "codigo_municipio": 68245,
+        "promedio": 1.59
+      },
+      {
+        "posicion": 6,
+        "codigo_municipio": 68673,
+        "promedio": 1.64
+      },
+      {
+        "posicion": 7,
+        "codigo_municipio": 68425,
+        "promedio": 1.64
+      },
+      {
+        "posicion": 8,
+        "codigo_municipio": 68264,
+        "promedio": 1.66
+      },
+      {
+        "posicion": 9,
+        "codigo_municipio": 68013,
+        "promedio": 1.67
+      },
+      {
+        "posicion": 10,
+        "codigo_municipio": 68370,
+        "promedio": 1.72
+      }
+    ]
+  },
+  "alertas": {
+    "mayor_incremento": [
+      {
+        "codigo_municipio": 68684,
+        "incremento_pct": 218.18
+      },
+      {
+        "codigo_municipio": 68522,
+        "incremento_pct": 200.0
+      },
+      {
+        "codigo_municipio": 68368,
+        "incremento_pct": 162.5
+      },
+      {
+        "codigo_municipio": 68867,
+        "incremento_pct": 63.64
+      },
+      {
+        "codigo_municipio": 68250,
+        "incremento_pct": 60.0
+      }
+    ],
+    "mayor_reduccion": [
+      {
+        "codigo_municipio": 68245,
+        "reduccion_pct": 60.0
+      },
+      {
+        "codigo_municipio": 68121,
+        "reduccion_pct": 63.64
+      },
+      {
+        "codigo_municipio": 68211,
+        "reduccion_pct": 63.64
+      },
+      {
+        "codigo_municipio": 68169,
+        "reduccion_pct": 64.29
+      },
+      {
+        "codigo_municipio": 68773,
+        "reduccion_pct": 66.67
+      }
+    ]
+  },
+  "contexto_departamental": {
+    "promedio_mensual": 36.31,
+    "municipios_sobre_promedio": 8,
+    "municipios_bajo_promedio": 79
+  }
+}

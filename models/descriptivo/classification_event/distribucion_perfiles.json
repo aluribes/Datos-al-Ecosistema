@@ -1,56 +1,71 @@
 {
-  "generado": "2025-11-28T15:53:27.143494",
-  "total": 343861,
-  "n_perfiles": 9,
+  "generado": "2025-11-28T20:02:39.620627",
+  "total": 340970,
+  "n_perfiles": 12,
   "perfil_mas_comun": {
     "nombre": "MASCULINO_ADULTOS",
-    "cantidad": 163424,
-    "porcentaje": 47.53
+    "cantidad": 157249,
+    "porcentaje": 46.12
   },
   "distribucion": [
     {
       "perfil": "MASCULINO_ADULTOS",
-      "cantidad": 163424,
-      "porcentaje": 47.53
+      "cantidad": 157249,
+      "porcentaje": 46.12
     },
     {
       "perfil": "FEMENINO_ADULTOS",
-      "cantidad": 143049,
-      "porcentaje": 41.6
+      "cantidad": 140052,
+      "porcentaje": 41.07
     },
     {
       "perfil": "FEMENINO_ADOLESCENTES",
-      "cantidad": 12086,
-      "porcentaje": 3.51
+      "cantidad": 12890,
+      "porcentaje": 3.78
     },
     {
       "perfil": "MASCULINO_ADOLESCENTES",
-      "cantidad": 11221,
-      "porcentaje": 3.26
+      "cantidad": 11134,
+      "porcentaje": 3.27
     },
     {
       "perfil": "FEMENINO_MENORES",
-      "cantidad": 8523,
-      "porcentaje": 2.48
+      "cantidad": 9674,
+      "porcentaje": 2.84
     },
     {
       "perfil": "MASCULINO_MENORES",
-      "cantidad": 5429,
-      "porcentaje": 1.58
+      "cantidad": 5560,
+      "porcentaje": 1.63
+    },
+    {
+      "perfil": "NO REPORTADO_nan",
+      "cantidad": 2520,
+      "porcentaje": 0.74
+    },
+    {
+      "perfil": "FEMENINO_nan",
+      "cantidad": 1486,
+      "porcentaje": 0.44
+    },
+    {
+      "perfil": "MASCULINO_nan",
+      "cantidad": 246,
+      "porcentaje": 0.07
     },
     {
       "perfil": "NO REPORTA_ADULTOS",
-      "cantidad": 124,
+      "cantidad": 139,
       "porcentaje": 0.04
     },
     {
       "perfil": "NO REPORTA_MENORES",
-      "cantidad": 4,
+      "cantidad": 12,
       "porcentaje": 0.0
     },
     {
       "perfil": "NO REPORTA_ADOLESCENTES",
-      "cantidad": 1,
+      "cantidad": 8,
       "porcentaje": 0.0
     }
   ]
