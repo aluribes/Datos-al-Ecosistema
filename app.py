@@ -23,10 +23,25 @@ Simula el modelo relacional uniéndolas en memoria para:
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+import os
 import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
+
+# Configurar Gemini API
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if GOOGLE_API_KEY:
+    print("DEBUG: API Key encontrada.")
+    genai.configure(api_key=GOOGLE_API_KEY)
+else:
+    print("DEBUG: API Key NO encontrada.")
+    st.warning("⚠️ No se encontró la variable GOOGLE_API_KEY en el archivo .env. El chatbot no funcionará correctamente.")
 
 # ============================================================
 # CONFIGURACIÓN GENERAL
@@ -535,124 +550,67 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
 
 def explain_stats_agent(df: pd.DataFrame, question: str) -> str:
     """
-    Agente sencillo que:
-        - Detecta delito, municipio y año (si se menciona).
-        - Calcula casos y tasa.
-        - Explica en lenguaje natural y añade rutas de atención.
+    Agente basado en Gemini 1.5 Flash que:
+        - Recibe el dataframe (contexto resumido) y la pregunta.
+        - Genera una respuesta en lenguaje natural usando la API de Google.
     """
+    if not GOOGLE_API_KEY:
+        return "Error: No hay API Key configurada. Por favor revisa el archivo .env."
+
+    # 1. Preparar contexto de los datos
+    # Para no saturar el contexto, enviamos un resumen estadístico y la estructura
     df = normalize_columns(df)
+    
+    # Rango de años
+    min_year = int(df["anio"].min())
+    max_year = int(df["anio"].max())
+    
+    # Totales por delito (top 10)
+    top_delitos = df.groupby("delito")["cantidad"].sum().sort_values(ascending=False).head(10).to_dict()
+    
+    # Totales por municipio (top 10)
+    top_muni = df.groupby("municipio")["cantidad"].sum().sort_values(ascending=False).head(10).to_dict()
+    
+    # Muestra de datos (primeras 5 filas como csv string)
+    sample_csv = df.head(5).to_csv(index=False)
+    
+    # Estructura de columnas
+    columns_info = list(df.columns)
 
-    text = question.lower()
+    context_prompt = f"""
+    Actúa como un experto analista de seguridad ciudadana en Santander, Colombia.
+    Tienes acceso a un dataset con las siguientes características:
+    
+    - Columnas: {columns_info}
+    - Rango de años: {min_year} a {max_year}
+    - Top 10 Delitos (total histórico): {top_delitos}
+    - Top 10 Municipios (total histórico): {top_muni}
+    
+    Muestra de los datos (CSV):
+    {sample_csv}
+    
+    Instrucciones:
+    1. Responde a la pregunta del usuario basándote en la estructura de los datos y los resúmenes proporcionados.
+    2. Si la pregunta requiere un cálculo específico que no tienes en el resumen (ej. "cuántos hurtos hubo en 2023 en Bucaramanga"), explica qué pasos lógicos harías o da una estimación basada en tu conocimiento general si es coherente, pero aclara que estás analizando los datos disponibles. 
+    3. IMPORTANTE: Si la pregunta es sobre rutas de atención, emergencias o denuncias, SIEMPRE incluye la siguiente información de contacto al final:
+       - Emergencias: Línea 123.
+       - Violencia intrafamiliar/sexual: Comisarías de Familia, Línea 155.
+       - Denuncias: Fiscalía General de la Nación.
+    4. Sé amable, claro y conciso.
+    
+    Pregunta del usuario: "{question}"
+    """
 
-    # --- Detectar delito por palabras clave ---
-    crime_map = {
-        "homicid": "HOMICIDIOS",
-        "asesin": "HOMICIDIOS",
-        "hurto": "HURTOS",
-        "robo": "HURTOS",
-        "lesion": "LESIONES",
-        "violencia intrafamiliar": "VIOLENCIA INTRAFAMILIAR",
-        "intrafamiliar": "VIOLENCIA INTRAFAMILIAR",
-        "sexual": "DELITOS SEXUALES",
-        "informatic": "DELITOS INFORMÁTICOS",
-    }
-    crime_detected = None
-    for key, crime in crime_map.items():
-        if key in text:
-            crime_detected = crime
-            break
-
-    # --- Detectar municipio buscando coincidencia exacta del nombre ---
-    muni_detected = None
-    for muni in df["municipio"].dropna().unique():
-        if str(muni).lower() in text:
-            muni_detected = muni
-            break
-
-    # --- Detectar año (si hay un número de 4 dígitos en rango) ---
-    year_detected = None
-    years_valid = df["anio"].dropna().unique().tolist()
-    for token in text.split():
-        if token.isdigit() and len(token) == 4:
-            year_candidate = int(token)
-            if year_candidate in years_valid:
-                year_detected = year_candidate
-                break
-
-    if year_detected is None:
-        year_detected = int(df["anio"].max())
-
-    # --- Construir filtro ---
-    df_q = df[df["anio"] == year_detected].copy()
-    filtros_txt: List[str] = [f"año = **{year_detected}**"]
-
-    if crime_detected is not None:
-        df_q = df_q[df_q["delito"] == crime_detected]
-        filtros_txt.append(f"delito = **{crime_detected}**")
-
-    if muni_detected is not None:
-        df_q = df_q[df_q["municipio"] == muni_detected]
-        filtros_txt.append(f"municipio = **{muni_detected}**")
-
-    if df_q.empty:
-        resumen = (
-            "Con la información disponible no encontré registros que coincidan con tu pregunta. "
-            "Prueba preguntando solo por tipo de delito o solo por municipio."
-        )
-    else:
-        total_cases = int(df_q["cantidad"].sum())
-        tasa_prom = float(df_q["tasa_100k"].mean()) if "tasa_100k" in df_q.columns else None
-
-        # Comparar con año anterior si existe
-        trend_text = ""
-        prev_year = year_detected - 1
-        if prev_year in years_valid:
-            df_prev = df[df["anio"] == prev_year].copy()
-            if crime_detected is not None:
-                df_prev = df_prev[df_prev["delito"] == crime_detected]
-            if muni_detected is not None:
-                df_prev = df_prev[df_prev["municipio"] == muni_detected]
-
-            if not df_prev.empty:
-                prev_cases = int(df_prev["cantidad"].sum())
-                diff = total_cases - prev_cases
-                sign = "más" if diff > 0 else "menos" if diff < 0 else "igual número de"
-                trend_text = (
-                    f" En comparación con {prev_year}, hay **{abs(diff):,} casos {sign}**."
-                    if diff != 0
-                    else f" En comparación con {prev_year}, se mantiene un nivel similar de casos."
-                )
-
-        filtros_str = ", ".join(filtros_txt)
-        if tasa_prom is not None and not pd.isna(tasa_prom):
-            resumen = (
-                f"Con los filtros {filtros_str}, se registran **{total_cases:,} casos** "
-                f"y una **tasa promedio de {tasa_prom:,.2f} por cada 100.000 habitantes**."
-            )
-        else:
-            resumen = (
-                f"Con los filtros {filtros_str}, se registran **{total_cases:,} casos** "
-                f"(no tengo columna de tasa disponible)."
-            )
-
-        if trend_text:
-            resumen += trend_text
-
-    rutas = """
-**Rutas de atención recomendadas**
-
-- Emergencias y situaciones en curso: **línea 123** (Policía Nacional).
-- Violencia intrafamiliar y delitos sexuales:
-  - **Comisarías de Familia** del municipio.
-  - **Línea 155** (orientación a mujeres).
-- Denuncias formales:
-  - **Fiscalía General de la Nación** (URI / CAI / Casas de Justicia).
-  - Estaciones de Policía más cercanas.
-
-Recuerda que estos datos son estadísticos y no reemplazan las rutas oficiales de atención inmediata.
-"""
-
-    return resumen + "\n\n" + rutas
+    try:
+        print(f"DEBUG: Enviando prompt a Gemini... Modelo: gemini-2.0-flash-lite")
+        # Usamos el modelo flash como se solicitó
+        model = genai.GenerativeModel('gemini-2.0-flash-lite')
+        response = model.generate_content(context_prompt)
+        print(f"DEBUG: Respuesta recibida. Longitud: {len(response.text)}")
+        return response.text
+    except Exception as e:
+        print(f"DEBUG: Error en Gemini: {e}")
+        return f"Ocurrió un error al consultar a Gemini: {str(e)}"
 
 
 def chatbot_tab(df_integrated: pd.DataFrame) -> None:
@@ -697,12 +655,12 @@ Ejemplos de preguntas:
             st.session_state.chat_history.append(
                 {"role": "assistant", "content": answer}
             )
-            st.experimental_rerun()
+            st.rerun()
 
     with col_btn2:
         if st.button("🗑️ Limpiar conversación"):
             st.session_state.chat_history = []
-            st.experimental_rerun()
+            st.rerun()
 
 
 # ============================================================
