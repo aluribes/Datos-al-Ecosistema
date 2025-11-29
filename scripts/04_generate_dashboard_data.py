@@ -155,6 +155,12 @@ def process_municipios() -> None:
     check_exists(GEO_INPUT, "geografia_silver")
     geo = gpd.read_parquet(GEO_INPUT)
 
+    # 👉 NUEVO: asegurar codigo_municipio como Int64
+    if "codigo_municipio" in geo.columns:
+        geo["codigo_municipio"] = (
+            pd.to_numeric(geo["codigo_municipio"], errors="coerce").astype("Int64")
+        )
+
     save_parquet(geo, MUNICIPIOS_OUTPUT)
 
 
@@ -181,19 +187,34 @@ def process_metas() -> None:
 
 
 def process_poblacion() -> None:
-    """Copia poblacion_santander.parquet a GOLD/dashboard."""
+    """
+    Copia poblacion_santander.parquet a GOLD/dashboard,
+    asegurando que 'anio' (y opcionalmente 'codigo_municipio')
+    queden como tipo numérico Int64.
+    """
     print("\n" + "=" * 60)
     print("👥 COPIANDO POBLACIÓN (Silver → Gold/dashboard)")
     print("=" * 60)
 
     check_exists(POBLACION_INPUT, "poblacion_santander")
-    df = pd.read_parquet(POBLACION_INPUT)
+    df = pd.read_parquet(POBLACION_INPUT).copy()
+
+    # 👉 AQUÍ normalizamos tipos
+    if "anio" in df.columns:
+        df["anio"] = pd.to_numeric(df["anio"], errors="coerce").astype("Int64")
+
+    if "codigo_municipio" in df.columns:
+        df["codigo_municipio"] = (
+            pd.to_numeric(df["codigo_municipio"], errors="coerce").astype("Int64")
+        )
+
     save_parquet(df, POBLACION_OUTPUT)
 
 
 def process_policia() -> None:
     """
     Procesa data/silver/policia_scraping/policia_santander.parquet:
+        - Normaliza codigo_municipio a Int64
         - Agrega columnas temporales basadas en 'fecha'
         - Guarda en data/gold/dashboard/policia_santander.parquet
     """
@@ -202,7 +223,13 @@ def process_policia() -> None:
     print("=" * 60)
 
     check_exists(POLICIA_INPUT, "policia_santander")
-    df = pd.read_parquet(POLICIA_INPUT)
+    df = pd.read_parquet(POLICIA_INPUT).copy()
+
+    # 👉 NUEVO: asegurar codigo_municipio como Int64
+    if "codigo_municipio" in df.columns:
+        df["codigo_municipio"] = (
+            pd.to_numeric(df["codigo_municipio"], errors="coerce").astype("Int64")
+        )
 
     df = add_temporal_features(df, date_col="fecha", prefix_log="   ")
 
@@ -258,11 +285,109 @@ def build_fecha_from_parts(
 
     return fecha_full
 
+# (todo lo de map_delito_bucaramanga y process_delitos_bucaramanga
+# se mantiene igual que ya lo tenías)
+
+def map_delito_bucaramanga(valor: str) -> str:
+    """
+    Clasifica el delito detallado en una categoría estándar:
+        - DELITOS SEXUALES
+        - DELITOS
+        - EXTORSION
+        - HOMICIDIOS
+        - HURTOS
+        - LESIONES
+
+    Si no encuentra coincidencia, devuelve el valor original.
+    """
+    if not isinstance(valor, str):
+        return valor
+
+    v = valor.strip().upper()
+
+    delitos_sexuales = {
+        "ACCESO CARNAL ABUSIVO CON MENOR DE 14 AÑOS",
+        "ACCESO CARNAL ABUSIVO CON MENOR DE 14 AÑOS (CIRCUNSTANCIAS AGRAVACIÓN)",
+        "ACCESO CARNAL O ACTO SEXUAL ABUSIVO CON INCAPAZ DE RESISTIR",
+        "ACCESO CARNAL O ACTO SEXUAL ABUSIVO CON INCAPAZ DE RESISTIR (CIRCUNSTANCIAS AGRAVACIÓN)",
+        "ACCESO CARNAL O ACTO SEXUAL EN PERSONA PUESTA EN INCAPACIDAD DE RESISTIR",
+        "ACCESO CARNAL O ACTO SEXUAL EN PERSONA PUESTA EN INCAPACIDAD DE RESISTIR  (CIRCUNSTANC",
+        "ACCESO CARNAL VIOLENTO",
+        "ACCESO CARNAL VIOLENTO (CIRCUNSTANCIAS AGRAVACIÓN)",
+        "ACOSO SEXUAL",
+        "ACTO SEXUAL VIOLENTO",
+        "ACTO SEXUAL VIOLENTO (CIRCUNSTANCIAS DE AGRAVACIÓN)",
+        "ACTOS SEXUALES CON MENOR DE 14 AÑOS",
+        "ACTOS SEXUALES CON MENOR DE 14 AÑOS (CIRCUNSTANCIAS DE AGRAVACIÓN)",
+        "CONSTREÑIMIENTO A LA PROSTITUCIÓN",
+        "DEMANDA DE EXPLOTACION SEXUAL COMERCIAL DE PERSONA MENOR DE 18 AÑOS DE EDAD",
+        "ESTÍMULO A LA PROSTITUCIÓN DE MENORES",
+        "INDUCCIÓN A LA PROSTITUCIÓN",
+        "PORNOGRAFÍA CON MENORES",
+        "PROXENETISMO CON MENOR DE EDAD",
+        "UTILIZACIÓN O FACILITACIÓN DE MEDIOS DE COMUNICACIÓN PARA OFRECER SERVICIOS SEXUALES DE MENORES",
+        "VIOLENCIA SEXUAL",
+    }
+
+    delitos_generales = {
+        "DAÑO EN BIEN AJENO",
+        "INCENDIO",
+        "VIOLENCIA CONTRA SERVIDOR PÚBLICO",
+        "TERRORISMO",
+    }
+
+    extorsion = {
+        "EXTORSIÓN",
+    }
+
+    homicidios = {
+        "HOMICIDIO CULPOSO ( EN ACCIDENTE DE TRÁNSITO)",
+        "HOMICIDIO",
+        "FEMINICIDIO",
+        "MUERTE EN ACCIDENTE DE TRANSITO",
+    }
+
+    hurtos = {
+        "HURTO AUTOMOTORES",
+        "HURTO ENTIDADES COMERCIALES",
+        "HURTO MOTOCICLETAS",
+        "HURTO PERSONAS",
+        "HURTO RESIDENCIAS",
+    }
+
+    lesiones = {
+        "LESION ACCIDENTAL EN TRANSITO",
+        "LESIONES AL FETO",
+        "LESIONES CULPOSAS",
+        "LESIONES CULPOSAS ( EN ACCIDENTE DE TRANSITO )",
+        "LESIONES FATALES",
+        "LESIONES NO FATALES",
+        "LESIONES PERSONALES",
+        "LESIONES PERSONALES ( CIRCUNSTANCIAS DE AGRAVACIÓN)",
+    }
+
+    if v in delitos_sexuales:
+        return "DELITOS SEXUALES"
+    if v in delitos_generales:
+        return "DELITOS"
+    if v in extorsion:
+        return "EXTORSION"
+    if v in homicidios:
+        return "HOMICIDIOS"
+    if v in hurtos:
+        return "HURTOS"
+    if v in lesiones:
+        return "LESIONES"
+
+    return v
+
 
 def process_delitos_bucaramanga() -> None:
     """
     Procesa data/silver/socrata_api/delitos_bucaramanga.parquet:
 
+    - Limpia y clasifica la columna 'delito' en categorías estándar.
+    - Elimina registros donde el delito sea NO REPORTA u OMISIÓN DE DENUNCIA.
     - Completa/usa 'fecha' con información de anio/mes/dia si es necesario.
     - Agrega campos temporales (anio, mes, dia, es_dia_semana, etc.).
     - Agrega codigo_municipio = 68001 y municipio = "BUCARAMANGA".
@@ -275,17 +400,31 @@ def process_delitos_bucaramanga() -> None:
     check_exists(DELITOS_BUCA_INPUT, "delitos_bucaramanga")
     df = pd.read_parquet(DELITOS_BUCA_INPUT).copy()
 
-    # 👉 NUEVO: agregar código y nombre de municipio ANTES de ir a Gold
+    if "delito" in df.columns:
+        df["delito"] = df["delito"].astype(str).str.strip().str.upper()
+
+        mask_drop = (
+            df["delito"].str.contains("NO REPORTA", case=False, na=False)
+            | df["delito"].str.contains("OMISIÓN DE DENUNCIA", case=False, na=False)
+            | df["delito"].str.contains("OMISION DE DENUNCIA", case=False, na=False)
+        )
+        before = len(df)
+        df = df[~mask_drop].copy()
+        removed = before - len(df)
+        print(f"   Registros eliminados por NO REPORTA / OMISIÓN DE DENUNCIA: {removed:,}")
+
+        df["delito"] = df["delito"].apply(map_delito_bucaramanga)
+    else:
+        print("   ⚠ La tabla delitos_bucaramanga no tiene columna 'delito'.")
+
     df["codigo_municipio"] = pd.Series(68001, index=df.index, dtype="Int64")
     df["municipio"] = "BUCARAMANGA"
 
-    # 1) Intentar usar la columna 'fecha' si existe
     if "fecha" in df.columns:
         fecha = pd.to_datetime(df["fecha"], errors="coerce")
     else:
         fecha = pd.Series(pd.NaT, index=df.index)
 
-    # 2) Para filas donde fecha es NaT, intentar construirla con anio/mes/dia
     mask_fecha_na = fecha.isna()
     has_ymd_cols = all(col in df.columns for col in ["anio", "mes", "dia"])
 
@@ -294,10 +433,8 @@ def process_delitos_bucaramanga() -> None:
         fecha_from_parts = build_fecha_from_parts(df)
         fecha.loc[mask_fecha_na] = fecha_from_parts.loc[mask_fecha_na]
 
-    # 3) Asignar columna fecha_final
     df["fecha"] = fecha
 
-    # 4) Agregar campos temporales usando 'fecha'
     df = add_temporal_features(df, date_col="fecha", prefix_log="   ")
 
     save_parquet(df, DELITOS_BUCA_OUTPUT)

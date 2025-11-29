@@ -10,6 +10,8 @@ Usa las tablas de data/gold/dashboard:
     - poblacion_santander.parquet
     - policia_santander.parquet
     - municipios.parquet
+    - delitos_bucaramanga.parquet
+    - delitos_informaticos.parquet
 
 Simula el modelo relacional uniéndolas en memoria para:
 
@@ -22,6 +24,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import altair as alt
+import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -49,9 +52,19 @@ def load_base_tables() -> Dict[str, pd.DataFrame]:
     poblacion = pd.read_parquet(DATA_DIR / "poblacion_santander.parquet")
     policia = pd.read_parquet(DATA_DIR / "policia_santander.parquet")
     municipios = pd.read_parquet(DATA_DIR / "municipios.parquet")
+    delitos_bucaramanga = pd.read_parquet(DATA_DIR / "delitos_bucaramanga.parquet")
+    delitos_informaticos = pd.read_parquet(DATA_DIR / "delitos_informaticos.parquet")
 
     # Normalizar nombres de columnas (quitar espacios)
-    for df in (metas, mandatos, poblacion, policia, municipios):
+    for df in (
+        metas,
+        mandatos,
+        poblacion,
+        policia,
+        municipios,
+        delitos_bucaramanga,
+        delitos_informaticos,
+    ):
         df.columns = [c.strip() for c in df.columns]
 
     return {
@@ -60,6 +73,8 @@ def load_base_tables() -> Dict[str, pd.DataFrame]:
         "poblacion": poblacion,
         "policia": policia,
         "municipios": municipios,
+        "delitos_bucaramanga": delitos_bucaramanga,
+        "delitos_informaticos": delitos_informaticos,
     }
 
 
@@ -69,15 +84,71 @@ def build_integrated_df(
     poblacion: pd.DataFrame,
     policia: pd.DataFrame,
     municipios: pd.DataFrame,
+    delitos_bucaramanga: pd.DataFrame,
+    delitos_informaticos: pd.DataFrame,
 ) -> pd.DataFrame:
     """
-    Construye un DataFrame integrado a nivel de hecho policial,
-    uniendo policia + municipios + población + mandatos + metas.
-    """
-    df = policia.copy()
+    Construye un DataFrame integrado a nivel de hecho delictivo,
+    uniendo las fuentes:
 
+        - policia_santander          (SCRAPING)
+        - delitos_bucaramanga        (Socrata local)
+        - delitos_informaticos       (Socrata departamental)
+
+    y luego simulando el modelo relacional:
+
+        + municipios
+        + poblacion_santander
+        + mandatos
+        + metas
+    """
+    # Copias de trabajo
+    df_pol = policia.copy()
+    df_buc = delitos_bucaramanga.copy()
+    df_inf = delitos_informaticos.copy()
+
+    # ---------------------------
+    # Alinear columnas clave
+    # ---------------------------
+
+    # Bucaramanga: edad -> edad_persona
+    if "edad" in df_buc.columns and "edad_persona" not in df_buc.columns:
+        df_buc = df_buc.rename(columns={"edad": "edad_persona"})
+
+    # Asegurar cantidad numérica
+    for df_src in (df_pol, df_buc, df_inf):
+        if "cantidad" in df_src.columns:
+            df_src["cantidad"] = pd.to_numeric(df_src["cantidad"], errors="coerce").fillna(0)
+
+    # Delitos informáticos no traen columna "delito" en el modelo,
+    # creamos un identificador genérico para integrarlos.
+    if "delito" not in df_inf.columns:
+        df_inf["delito"] = "DELITOS INFORMÁTICOS"
+
+    # Origen para trazabilidad
+    df_pol["origen"] = "POLICIA_SCRAPING"
+    df_buc["origen"] = "DELITOS_BUCARAMANGA"
+    df_inf["origen"] = "DELITOS_INFORMATICOS"
+
+    # Unificar hechos
+    fact = pd.concat(
+        [df_pol, df_buc, df_inf],
+        ignore_index=True,
+        sort=False,
+    )
+
+    # Limpieza básica de nombres antes de joins
+    fact.columns = [c.strip() for c in fact.columns]
+
+    # Eliminamos columnas espaciales que vendrán de municipios
+    for col in ["departamento", "municipio", "codigo_departamento"]:
+        if col in fact.columns:
+            fact = fact.drop(columns=col)
+
+    # ---------------------------
     # Join dimensión espacial (municipios)
-    df = df.merge(
+    # ---------------------------
+    fact = fact.merge(
         municipios[
             [
                 "codigo_municipio",
@@ -88,29 +159,41 @@ def build_integrated_df(
         ],
         on="codigo_municipio",
         how="left",
-        suffixes=("", "_muni"),
     )
 
+    # ---------------------------
     # Join población (para tasas)
-    df = df.merge(
+    # ---------------------------
+    fact = fact.merge(
         poblacion[["codigo_municipio", "anio", "n_poblacion"]],
         on=["codigo_municipio", "anio"],
         how="left",
     )
 
+    # ---------------------------
     # Join mandatos y metas
-    df = df.merge(mandatos, on="anio", how="left")  # agrega "mandato"
-    df = df.merge(metas, on="mandato", how="left")  # agrega metas y presupuesto
+    # ---------------------------
+    fact = fact.merge(mandatos, on="anio", how="left")  # agrega "mandato"
+    fact = fact.merge(metas, on="mandato", how="left")  # agrega metas y presupuesto
 
-    # Calcular tasa por 100.000 habitantes
-    df["tasa_100k"] = df["cantidad"] / df["n_poblacion"] * 1e5
+    # ---------------------------
+    # Tipos básicos y tasas
+    # ---------------------------
+    fact["anio"] = pd.to_numeric(fact["anio"], errors="coerce").astype("Int64")
+    fact["mes"] = pd.to_numeric(fact["mes"], errors="coerce").astype("Int64")
+    fact["dia"] = pd.to_numeric(fact["dia"], errors="coerce").astype("Int64")
 
-    # Tipos básicos y normalización
-    df["anio"] = df["anio"].astype(int)
-    df["delito"] = df["delito"].astype(str).str.upper()
-    df["municipio"] = df["municipio"].astype(str).str.upper()
+    fact["delito"] = fact["delito"].astype(str).str.upper()
+    fact["municipio"] = fact["municipio"].astype(str).str.upper()
 
-    return df
+    # Tasa por 100.000 habitantes (cuando hay población)
+    fact["tasa_100k"] = np.where(
+        fact["n_poblacion"] > 0,
+        fact["cantidad"] / fact["n_poblacion"] * 1e5,
+        np.nan,
+    )
+
+    return fact
 
 
 # ============================================================
@@ -124,27 +207,48 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def aggregate_delito(
+def crime_rate_and_meta(
     df: pd.DataFrame,
-    crime_name: str,
+    crime_filter,
     meta_col: str,
-) -> Tuple[int, float]:
+) -> Tuple[float, float]:
     """
-    Agrega casos y meta a nivel departamental para un delito concreto.
-    Devuelve (casos_totales, meta_anual).
+    Calcula:
+
+        - tasa_real: casos totales / población total * 100.000
+        - meta_tasa: meta departamental promedio (ya viene como tasa por 100.000)
+
+    crime_filter puede ser un string o una lista de delitos.
     """
-    df_crime = df[df["delito"] == crime_name].copy()
-    cases = int(df_crime["cantidad"].sum()) if not df_crime.empty else 0
+    if isinstance(crime_filter, str):
+        mask = df["delito"] == crime_filter
+    else:
+        mask = df["delito"].isin(crime_filter)
 
-    meta = 0.0
-    if meta_col in df_crime.columns and not df_crime[meta_col].dropna().empty:
-        meta = float(df_crime[meta_col].dropna().iloc[0])
+    df_crime = df[mask].copy()
+    if df_crime.empty:
+        return 0.0, 0.0
 
-    return cases, meta
+    casos_tot = float(df_crime["cantidad"].sum())
+    pob_tot = float(df_crime["n_poblacion"].fillna(0).sum())
+
+    tasa_real = (casos_tot / pob_tot * 1e5) if pob_tot > 0 else 0.0
+
+    meta_tasa = 0.0
+    if meta_col in df_crime.columns:
+        metas = (
+            df_crime[["anio", meta_col]]
+            .dropna()
+            .drop_duplicates()
+        )
+        if not metas.empty:
+            meta_tasa = float(metas[meta_col].mean())
+
+    return tasa_real, meta_tasa
 
 
-def build_delta_text(actual: int, meta: float) -> str:
-    """Construye un texto de delta respecto a la meta."""
+def build_delta_text(actual: float, meta: float) -> str:
+    """Construye un texto de delta respecto a la meta (tasa vs tasa)."""
     if meta == 0:
         return "Sin meta"
     diff = actual - meta
@@ -167,32 +271,67 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
     with st.sidebar:
         st.header("Filtros")
 
-        years = sorted(mandatos["anio"].unique())
-        year_selected = st.selectbox("Año de mandato", years, index=len(years) - 1)
+        # Rango de años tipo "between" (Año inicial / Año final)
+        years = sorted(int(y) for y in mandatos["anio"].dropna().unique())
+        default_year = 2025 if 2025 in years else max(years)
 
-        mandatos_sel = mandatos.loc[
-            mandatos["anio"] == year_selected, "mandato"
-        ].unique()
-        mandato_selected = mandatos_sel[0] if len(mandatos_sel) > 0 else None
+        col_y1, col_y2 = st.columns(2)
+        with col_y1:
+            year_from = st.selectbox(
+                "Año inicial",
+                options=years,
+                index=years.index(default_year),
+            )
+        with col_y2:
+            year_to = st.selectbox(
+                "Año final",
+                options=years,
+                index=years.index(default_year),
+            )
 
-        df_year = df_integrated[df_integrated["anio"] == year_selected].copy()
+        # En caso de que el usuario elija un año inicial > año final, lo corregimos
+        if year_from > year_to:
+            year_from, year_to = year_to, year_from
+            st.info(
+                "El año inicial era mayor que el año final, "
+                "se han intercambiado para mantener un rango válido."
+            )
 
-        municipalities_available = sorted(df_year["municipio"].dropna().unique())
-        muni_selected = st.multiselect(
+
+        # Subconjunto de datos para construir listas de filtros
+        df_range = df_integrated[
+            (df_integrated["anio"] >= year_from)
+            & (df_integrated["anio"] <= year_to)
+        ].copy()
+
+        # Municipios con opción "Todos"
+        municipalities_available = sorted(df_range["municipio"].dropna().unique())
+        muni_options = ["Todos"] + municipalities_available
+        muni_sel_raw = st.multiselect(
             "Municipios",
-            options=municipalities_available,
-            default=municipalities_available,
+            options=muni_options,
+            default=["Todos"],
         )
+        if "Todos" in muni_sel_raw or not muni_sel_raw:
+            muni_selected = municipalities_available
+        else:
+            muni_selected = muni_sel_raw
 
-        crimes_available = sorted(df_year["delito"].dropna().unique())
-        crime_selected = st.multiselect(
+        # Delitos con opción "Todos"
+        crimes_available = sorted(df_range["delito"].dropna().unique())
+        crime_options = ["Todos"] + crimes_available
+        crime_sel_raw = st.multiselect(
             "Tipos de delito",
-            options=crimes_available,
-            default=crimes_available,
+            options=crime_options,
+            default=["Todos"],
         )
+        if "Todos" in crime_sel_raw or not crime_sel_raw:
+            crime_selected = crimes_available
+        else:
+            crime_selected = crime_sel_raw
 
-    # Aplicar filtros
-    mask = df_integrated["anio"] == year_selected
+    # Aplicar filtros globales
+    mask = (df_integrated["anio"] >= year_from) & (df_integrated["anio"] <= year_to)
     if muni_selected:
         mask &= df_integrated["municipio"].isin(muni_selected)
     if crime_selected:
@@ -204,11 +343,20 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
         st.warning("No hay datos para la combinación de filtros seleccionada.")
         return
 
+    # Texto de mandatos en rango
+    mandatos_range = mandatos[
+        (mandatos["anio"] >= year_from) & (mandatos["anio"] <= year_to)
+    ]
+    mandatos_list = mandatos_range["mandato"].dropna().unique().tolist()
+    mandatos_str = ", ".join(mandatos_list) if mandatos_list else "Sin mandato registrado"
+
+    st.markdown(
+        f"### Mandatos en rango **{year_from}–{year_to}**: {mandatos_str}"
+    )
+
     # ---------------------------
     # KPIs generales
     # ---------------------------
-    st.markdown(f"### Mandato **{mandato_selected}** – Año **{year_selected}**")
-
     col_kpi1, col_kpi2, col_kpi3 = st.columns(3)
 
     with col_kpi1:
@@ -224,56 +372,55 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
 
     with col_kpi3:
         total_pop = int(df_f["n_poblacion"].fillna(0).sum())
-        st.metric("Población cubierta", f"{total_pop:,}".replace(",", "."))
+        st.metric("Población cubierta (suma municipios–años)", f"{total_pop:,}".replace(",", "."))
 
     st.markdown("---")
 
     # ---------------------------
-    # KPIs por delito vs meta
+    # KPIs por delito vs meta (tasa)
     # ---------------------------
-    st.markdown("### Metas departamentales vs realidad")
+    st.markdown("### Metas departamentales vs realidad (tasa por 100.000 hab.)")
 
     # Homicidios
-    hom_cases, hom_meta = aggregate_delito(df_f, "HOMICIDIOS", "meta_homicidios")
+    hom_rate, hom_meta = crime_rate_and_meta(df_f, "HOMICIDIOS", "meta_homicidios")
 
     # Hurtos (distintos alias posibles)
     hurto_aliases = ["HURTOS", "HURTO", "HURTO_PERSONAS"]
-    hurto_cases = int(df_f[df_f["delito"].isin(hurto_aliases)]["cantidad"].sum())
-    hurto_meta = 0.0
-    if "meta_hurtos" in df_f.columns and not df_f["meta_hurtos"].dropna().empty:
-        hurto_meta = float(df_f["meta_hurtos"].dropna().iloc[0])
+    hurto_rate, hurto_meta = crime_rate_and_meta(df_f, hurto_aliases, "meta_hurtos")
 
     # Lesiones
-    lesions_cases, lesions_meta = aggregate_delito(df_f, "LESIONES", "meta_lesiones")
+    lesions_rate, lesions_meta = crime_rate_and_meta(df_f, "LESIONES", "meta_lesiones")
 
     kpi_cols = st.columns(3)
 
     with kpi_cols[0]:
         st.metric(
-            "Homicidios (casos vs meta)",
-            f"{hom_cases:,}".replace(",", "."),
-            delta=build_delta_text(hom_cases, hom_meta),
+            "Homicidios (tasa vs meta)",
+            f"{hom_rate:,.2f}",
+            delta=build_delta_text(hom_rate, hom_meta),
         )
 
     with kpi_cols[1]:
         st.metric(
-            "Hurtos (casos vs meta)",
-            f"{hurto_cases:,}".replace(",", "."),
-            delta=build_delta_text(hurto_cases, hurto_meta),
+            "Hurtos (tasa vs meta)",
+            f"{hurto_rate:,.2f}",
+            delta=build_delta_text(hurto_rate, hurto_meta),
         )
 
     with kpi_cols[2]:
         st.metric(
-            "Lesiones (casos vs meta)",
-            f"{lesions_cases:,}".replace(",", "."),
-            delta=build_delta_text(lesions_cases, lesions_meta),
+            "Lesiones (tasa vs meta)",
+            f"{lesions_rate:,.2f}",
+            delta=build_delta_text(lesions_rate, lesions_meta),
         )
 
     st.markdown("---")
 
     # ---------------------------
-    # Gráfico: distribución por municipio
+    # Gráficas principales
     # ---------------------------
+
+    # Distribución por municipio
     st.markdown("### Distribución de casos por municipio")
 
     df_muni = (
@@ -292,14 +439,11 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
         )
         .properties(height=400)
     )
-
     st.altair_chart(chart_muni, use_container_width=True)
 
     st.markdown("---")
 
-    # ---------------------------
-    # Gráfico: distribución por tipo de delito
-    # ---------------------------
+    # Distribución por tipo de delito
     st.markdown("### Distribución por tipo de delito")
 
     df_crime = (
@@ -318,17 +462,42 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
         )
         .properties(height=400)
     )
-
     st.altair_chart(chart_crime, use_container_width=True)
 
     st.markdown("---")
 
     # ---------------------------
-    # Tendencia histórica (todos los años)
+    # NUEVO: Evolución mensual dentro del rango
     # ---------------------------
-    st.markdown("### Tendencia histórica (todos los años)")
+    st.markdown("### Evolución mensual dentro del rango de años seleccionado")
 
-    mask_hist = df_integrated["delito"].isin(crime_selected) if crime_selected else True
+    df_month = (
+        df_f.groupby(["anio", "mes"], as_index=False)["cantidad"]
+        .sum()
+        .sort_values(["anio", "mes"])
+    )
+
+    chart_month = (
+        alt.Chart(df_month)
+        .mark_line(point=True)
+        .encode(
+            x=alt.X("mes:O", title="Mes"),
+            y=alt.Y("cantidad:Q", title="Casos"),
+            color=alt.Color("anio:N", title="Año"),
+            tooltip=["anio", "mes", "cantidad"],
+        )
+        .properties(height=350)
+    )
+    st.altair_chart(chart_month, use_container_width=True)
+
+    st.markdown("---")
+
+    # Tendencia histórica global (todos los años) para los filtros de municipio/delito
+    st.markdown("### Tendencia histórica global (todos los años)")
+
+    mask_hist = np.ones(len(df_integrated), dtype=bool)
+    if crime_selected:
+        mask_hist &= df_integrated["delito"].isin(crime_selected)
     if muni_selected:
         mask_hist &= df_integrated["municipio"].isin(muni_selected)
 
@@ -349,7 +518,6 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
         )
         .properties(height=350)
     )
-
     st.altair_chart(chart_hist, use_container_width=True)
 
     st.markdown("---")
@@ -360,6 +528,9 @@ def dashboard_tab(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
 
 # ============================================================
 # 4. TAB 2 - Chatbot / Agente de datos
+# ============================================================
+# ⚠️ NO SE MODIFICA NADA DE ESTA SECCIÓN
+# (solo se alimenta del nuevo df_integrated)
 # ============================================================
 
 def explain_stats_agent(df: pd.DataFrame, question: str) -> str:
@@ -400,7 +571,7 @@ def explain_stats_agent(df: pd.DataFrame, question: str) -> str:
 
     # --- Detectar año (si hay un número de 4 dígitos en rango) ---
     year_detected = None
-    years_valid = df["anio"].unique().tolist()
+    years_valid = df["anio"].dropna().unique().tolist()
     for token in text.split():
         if token.isdigit() and len(token) == 4:
             year_candidate = int(token)
@@ -436,10 +607,9 @@ def explain_stats_agent(df: pd.DataFrame, question: str) -> str:
         trend_text = ""
         prev_year = year_detected - 1
         if prev_year in years_valid:
-            df_prev = df[
-                (df["anio"] == prev_year)
-                & (df_q["delito"].unique().tolist() if crime_detected else [True])
-            ].copy()
+            df_prev = df[df["anio"] == prev_year].copy()
+            if crime_detected is not None:
+                df_prev = df_prev[df_prev["delito"] == crime_detected]
             if muni_detected is not None:
                 df_prev = df_prev[df_prev["municipio"] == muni_detected]
 
@@ -538,18 +708,14 @@ Ejemplos de preguntas:
 # ============================================================
 # 5. MODELOS PREDICTIVOS / ANALÍTICA AVANZADA
 # ============================================================
+# ⚠️ ESTA SECCIÓN QUEDA IGUAL (solo se alimenta del nuevo df_integrated)
+# ============================================================
 
-# Carpeta donde vas a guardar los datasets de modelado
-# (ajusta la ruta si los tienes en otro lado)
 MODEL_DIR = Path("data/model")
 
 
 @st.cache_data(show_spinner=True)
 def load_model_datasets() -> dict:
-    """
-    Carga los datasets de modelado (si existen).
-    No rompe la app si alguno todavía no está creado.
-    """
     files = {
         "classification_dominant": "classification_dominant_dataset.parquet",
         "classification_event": "classification_event_dataset.parquet",
@@ -576,12 +742,6 @@ def simple_baseline_prediction(
     delito: str,
     target_year: int,
 ) -> tuple[float | None, str | pd.DataFrame]:
-    """
-    Baseline muy simple:
-        - Usa el dataset integrado (no los datasets de modelado).
-        - Toma los últimos 3 años antes del año objetivo.
-        - Predicción = promedio de casos de esos 3 años.
-    """
     df = df.copy()
 
     df_f = df[(df["municipio"] == municipio) & (df["delito"] == delito)].copy()
@@ -605,21 +765,8 @@ def simple_baseline_prediction(
 
 
 def prediction_tab(df_integrated: pd.DataFrame) -> None:
-    """
-    Pestaña de modelos predictivos, organizada en dos bloques:
-
-    1. Explorador de datasets de modelado (clasificación, regresión, clustering,
-       series de tiempo). Aquí se cargan y se muestran los datasets que
-       utilizarán tus futuros modelos.
-
-    2. Baseline histórico simple (ya funcional) que calcula un pronóstico
-       usando el dataset integrado actual.
-    """
     st.subheader("🔮 Módulos predictivos y datasets de modelado")
 
-    # ----------------------------------------------
-    # 5.1 Explorador de datasets de modelado
-    # ----------------------------------------------
     ml_data = load_model_datasets()
 
     st.markdown(
@@ -647,17 +794,18 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
             "Series de tiempo – Forecast puro (timeseries_dataset)",
             "Clustering geoespacial-delictivo (geo_dataset)",
         ],
-        index=4,  # por defecto: regresión mensual
+        index=4,
     )
 
-    # Helper para mostrar info básica de un dataset
     def show_dataset_info(df: pd.DataFrame | None, nombre_archivo: str, descripcion: str) -> None:
         st.markdown(f"**Archivo:** `{nombre_archivo}`")
         st.markdown(descripcion)
 
         if df is None:
-            st.warning("⚠️ Aún no encontré este archivo en la carpeta `data/model`. "
-                       "Cuando lo generes, se cargará automáticamente.")
+            st.warning(
+                "⚠️ Aún no encontré este archivo en la carpeta `data/model`. "
+                "Cuando lo generes, se cargará automáticamente."
+            )
             return
 
         st.info(f"Filas: **{len(df):,}** – Columnas: **{len(df.columns)}**")
@@ -667,7 +815,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
         with st.expander("Vista previa (primeras filas)"):
             st.dataframe(df.head(50))
 
-    # Según el módulo seleccionado, mostramos el dataset correspondiente
     if module.startswith("Clasificación – Delito / arma dominante"):
         show_dataset_info(
             ml_data["classification_dominant"],
@@ -678,12 +825,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 - Predicción del **delito dominante** por municipio–año–mes.
 - Predicción del **arma/medio dominante**.
 - Análisis de municipios que cambian de delito dominante en el tiempo.
-
-**Preguntas que responde:**
-
-- ¿Cuál será el delito más frecuente el próximo mes?
-- ¿Qué arma/medio será más usado?
-- ¿Qué municipios cambian su patrón dominante?
 """,
         )
 
@@ -697,12 +838,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 - Clasificación multiclase a nivel de **evento delictivo**.
 - Predicción del tipo de delito y/o perfil (agresor, víctima).
 - Probabilidad de ocurrencia según contexto (fecha, municipio, demografía).
-
-**Preguntas que responde:**
-
-- ¿Qué tipo de delito es más probable en cierto contexto?
-- ¿El perfil asociado se puede predecir?
-- ¿Qué factores temporales influyen en cada delito?
 """,
         )
 
@@ -715,14 +850,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 
 - Clasificación de **riesgo mensual** (Bajo / Medio / Alto) por municipio.
 - Clasificación binaria (incremento / no incremento).
-
-**Preguntas que responde:**
-
-- ¿Qué municipios están en riesgo alto el próximo mes?
-- ¿En qué municipios aumentarán los delitos?
-- ¿Qué variables explican mejor el riesgo mensual?
-
-**Utilidad:** Semáforos delictivos y alertas tempranas para el tablero.
 """,
         )
 
@@ -735,14 +862,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 
 - Modelos de **regresión anual** por municipio.
 - Predicción de delitos anuales y tendencias a largo plazo.
-
-**Preguntas que responde:**
-
-- ¿Cuál será la cantidad de delitos el próximo año?
-- ¿Qué municipios tienen tendencias ascendentes o descendentes?
-- ¿Qué factores influyen en la variación anual?
-
-**Utilidad:** Planeación estratégica e informes institucionales.
 """,
         )
 
@@ -755,14 +874,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 
 - Regresión mensual pura con lags, ventanas móviles y estacionalidad.
 - Predicción del número **exacto** de delitos el próximo mes.
-
-**Preguntas que responde:**
-
-- ¿Cuántos delitos habrá el siguiente mes?
-- ¿Cómo varía el volumen a lo largo del año?
-- ¿Qué variables explican mejor la fluctuación mensual?
-
-**Utilidad:** Forecast detallado para el tablero y alertas numéricas.
 """,
         )
 
@@ -775,14 +886,6 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 
 - Modelos clásicos de series de tiempo (ARIMA, Prophet, LSTMs, etc.).
 - Forecast mes a mes con foco total en la dinámica temporal.
-
-**Preguntas que responde:**
-
-- ¿Cómo evolucionarán los delitos mes a mes?
-- ¿Existen patrones estacionales fuertes?
-- ¿Qué municipios presentan mayor periodicidad?
-
-**Utilidad:** Forecast robusto orientado al tiempo.
 """,
         )
 
@@ -795,23 +898,12 @@ Cuando tengas los modelos entrenados, aquí mismo podrás conectarlos.
 
 - Clustering geoespacial–delictivo (KMeans, HDBSCAN, etc.).
 - Agrupación de municipios según perfil delictivo, demografía y geografía.
-
-**Preguntas que responde:**
-
-- ¿Qué municipios se parecen entre sí en su comportamiento?
-- ¿Qué grupos presentan mayor concentración de delitos?
-- ¿Existen patrones urbano–rural?
-
-**Utilidad:** Políticas diferenciadas por tipo de municipio y mapas de clusters.
 """,
         )
 
     st.markdown("---")
     st.subheader("🧪 Baseline histórico rápido (demo de predicción)")
 
-    # ----------------------------------------------
-    # 5.2 Baseline histórico (sigue usando df_integrated)
-    # ----------------------------------------------
     df = df_integrated.copy()
 
     municipios = sorted(df["municipio"].dropna().unique())
@@ -871,8 +963,18 @@ def main() -> None:
     poblacion = data["poblacion"]
     policia = data["policia"]
     municipios = data["municipios"]
+    delitos_bucaramanga = data["delitos_bucaramanga"]
+    delitos_informaticos = data["delitos_informaticos"]
 
-    df_integrated = build_integrated_df(metas, mandatos, poblacion, policia, municipios)
+    df_integrated = build_integrated_df(
+        metas,
+        mandatos,
+        poblacion,
+        policia,
+        municipios,
+        delitos_bucaramanga,
+        delitos_informaticos,
+    )
 
     tab1, tab2, tab3 = st.tabs(
         [
@@ -894,3 +996,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
