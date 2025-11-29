@@ -16,11 +16,30 @@ python scripts/00_setup.py
 
 ## Scripts de extracción
 
-| Script | Fuente | Salida |
-|--------|--------|--------|
-| `01_extract_bronze.py` | Socrata API, DANE | JSON, Excel |
-| `01_generate_polygon_santander.py` | GitHub (GeoJSON Colombia) | GeoJSON |
-| `01_scrape_policia_estadistica.py` | Policía Nacional | Excel (.xlsx) |
+| Script | Fuente | Salida | Orden |
+|--------|--------|--------|-------|
+| `01_extract_bronze.py` | Socrata API, DANE | JSON, Excel | 1 |
+| `01_generate_polygon_santander.py` | GitHub (GeoJSON Colombia) | GeoJSON | 2 |
+| `01_scrape_policia_estadistica.py` | Policía Nacional | Excel (.xlsx) | 3 |
+
+> **Nota**: Los scripts `01_*` pueden ejecutarse en cualquier orden o en paralelo, ya que no tienen dependencias entre sí.
+
+---
+
+## 0. Datos de Población DANE (Manual)
+
+**Ubicación:** `data/bronze/poblacion_dane/`
+
+Los datos de población del DANE se obtienen manualmente desde [TerriData](https://terridata.dnp.gov.co/) y deben colocarse en la carpeta `poblacion_dane/`.
+
+### Archivos requeridos
+
+| Archivo | Descripción | Período |
+|---------|-------------|---------|
+| `TerriData_Pob_2005.zip` | Proyecciones de población DANE | 2005-2017 |
+| `TerriData_Pob_2018.zip` | Proyecciones de población DANE | 2018-2035 |
+
+> ⚠️ **Importante**: Estos archivos deben descargarse manualmente y colocarse en `data/bronze/poblacion_dane/` antes de ejecutar los scripts de la capa Silver.
 
 ---
 
@@ -28,15 +47,19 @@ python scripts/00_setup.py
 
 **Script:** `scripts/01_extract_bronze.py`
 
-Descarga datasets desde [datos.gov.co](https://www.datos.gov.co/) usando la API de Socrata, además del archivo DIVIPOLA desde el DANE.
+Descarga datasets desde [datos.gov.co](https://www.datos.gov.co/) usando la API de Socrata, además del archivo DIVIPOLA desde el DANE. **Filtra automáticamente solo registros del departamento de Santander.**
 
 ### Datasets descargados
 
 | Dataset | ID Socrata | Descripción |
 |---------|------------|-------------|
-| `delitos_sexuales` | fpe5-yrmw | Delitos sexuales a nivel nacional |
-| `violencia_intrafamiliar` | vuyt-mqpw | Casos de violencia intrafamiliar |
-| `hurto_modalidades` | d4fr-sbn2 | Modalidades de hurto |
+| `homicidios` | m8fd-ahd9 | Homicidios intencionales |
+| `extorsion` | q2ib-t9am | Casos de extorsión |
+| `hurto_personas` | 4rxi-8m8d | Hurto a personas |
+| `lesiones` | jr6v-i33g | Lesiones personales |
+| `amenazas` | meew-mguv | Amenazas |
+| `delitos_sexuales` | fpe5-yrmw | Delitos sexuales |
+| `violencia_intrafamiliar` | vuyt-mqpw | Violencia intrafamiliar |
 | `bucaramanga_delictiva_150` | x46e-abhz | Actividad delictiva Bucaramanga |
 | `bucaramanga_delitos_40` | 75fz-q98y | Delitos Bucaramanga |
 | `delitos_informaticos` | 4v6r-wu98 | Delitos informáticos |
@@ -58,9 +81,13 @@ python scripts/01_extract_bronze.py
 ```
 data/bronze/
 ├── socrata_api/
+│   ├── homicidios.json
+│   ├── extorsion.json
+│   ├── hurto_personas.json
+│   ├── lesiones.json
+│   ├── amenazas.json
 │   ├── delitos_sexuales.json
 │   ├── violencia_intrafamiliar.json
-│   ├── hurto_modalidades.json
 │   ├── bucaramanga_delictiva_150.json
 │   ├── bucaramanga_delitos_40.json
 │   └── delitos_informaticos.json
@@ -147,12 +174,15 @@ Total: ~241 archivos Excel
 ```
 data/bronze/
 ├── dane_geo/
-│   ├── divipola_2010.xls           # Códigos DIVIPOLA
+│   ├── divipola_2010.xls            # Códigos DIVIPOLA
 │   └── santander_municipios.geojson # Geometrías municipios
+├── poblacion_dane/
+│   ├── TerriData_Pob_2005.zip       # Población 2005-2017 (manual)
+│   └── TerriData_Pob_2018.zip       # Población 2018-2035 (manual)
 ├── policia_scraping/
-│   └── *.xlsx                       # 241 archivos de estadísticas a NOV 2025
+│   └── *.xlsx                       # ~265 archivos de estadísticas a NOV 2025
 └── socrata_api/
-    └── *.json                       # 6 datasets de datos.gov.co
+    └── *.json                       # 10 datasets de datos.gov.co (Santander)
 ```
 
 ---
