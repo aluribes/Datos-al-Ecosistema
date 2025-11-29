@@ -1,2 +1,6 @@
 .venv
 /test
+
+# Bronze data directories - downloaded from internet during setup
+data/bronze/policia_scraping/
+data/bronze/socrata_api/
