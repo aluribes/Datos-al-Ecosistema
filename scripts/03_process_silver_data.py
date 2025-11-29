@@ -212,11 +212,11 @@ def clean_socrata(df: pd.DataFrame) -> pd.DataFrame:
 
         # --- Día de la semana y fin de semana ---
         dia_semana = df["fecha"].dt.dayofweek
-        df["es_dia_semana"] = (dia_semana < 5).astype(int)
-        df["es_fin_de_semana"] = (dia_semana >= 5).astype(int)
+        df["es_dia_semana"] = (dia_semana < 5).fillna(False).astype(int)
+        df["es_fin_de_semana"] = (dia_semana >= 5).fillna(False).astype(int)
 
         # --- Fin de mes ---
-        df["es_fin_mes"] = (df["dia"] == df["fecha"].dt.days_in_month).astype(int)
+        df["es_fin_mes"] = (df["dia"] == df["fecha"].dt.days_in_month).fillna(False).astype(int)
 
         # --- Festivos colombianos ---
         anios = df["anio"].dropna().unique().tolist()
