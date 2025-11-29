@@ -4,11 +4,11 @@ La capa Gold contiene los datos integrados y listos para análisis o modelado. A
 
 ## Scripts de integración
 
-| Script | Entrada | Salida |
-|--------|---------|--------|
-| `03_process_silver_data.py` | Silver: todos | Gold/base: datasets limpios |
-| `03_generate_gold.py` | Gold/base | Gold: dataset integrado |
-| `04_generate_analytics.py` | Gold integrado | Gold/analytics: indicadores |
+| Script | Entrada | Salida | Orden |
+|--------|---------|--------|-------|
+| `03_process_silver_data.py` | Silver: todos | Gold/base: datasets limpios | 1 |
+| `03_generate_gold.py` | Gold/base | Gold: dataset integrado | 2 |
+| `04_generate_analytics.py` | Gold integrado | Gold/analytics: indicadores | 3 |
 
 ---
 
@@ -16,7 +16,7 @@ La capa Gold contiene los datos integrados y listos para análisis o modelado. A
 
 **Script:** `scripts/03_process_silver_data.py`
 
-Aplica limpieza final a los datos Silver y los prepara para integración.
+Aplica limpieza final a los datos Silver y los prepara para integración. También **complementa datos faltantes** de Policía con datos de Socrata.
 
 ### Transformaciones aplicadas
 
@@ -25,9 +25,12 @@ Aplica limpieza final a los datos Silver y los prepara para integración.
 - Normalización de nombres de municipios
 - Estandarización de códigos DANE
 - Conversión de tipos de datos
-- **Generación de columnas temporales y festivos** (policia_gold)
+- **Generación de columnas temporales y festivos** (policia_gold y socrata_gold)
+- **Complementación de gaps** en datos de Policía con Socrata:
+  - DELITOS SEXUALES 2021 (faltante en Policía)
+  - HURTOS 2022 (incompleto en Policía)
 
-### Columnas temporales generadas en `policia_gold`
+### Columnas temporales generadas
 
 | Columna | Descripción |
 |---------|-------------|
@@ -36,6 +39,7 @@ Aplica limpieza final a los datos Silver y los prepara para integración.
 | `es_festivo` | 1 si es festivo colombiano, 0 si no |
 | `nombre_festivo` | Nombre del festivo o cadena vacía |
 | `es_dia_laboral` | 1 si es día hábil (no festivo ni fin de semana) |
+| `origen` | Trazabilidad: "SCRAPING", "SOCRATA", "SOCRATA_COMPLEMENTO" |
 
 ### Librerías utilizadas
 
@@ -55,7 +59,8 @@ python scripts/03_process_silver_data.py
 ```
 data/gold/base/
 ├── geo_gold.parquet        # Geometrías limpias
-├── policia_gold.parquet    # Delitos estandarizados
+├── policia_gold.parquet    # Delitos estandarizados (con complementos Socrata)
+├── socrata_gold.parquet    # Delitos Socrata procesados
 ├── poblacion_gold.parquet  # Población normalizada
 └── divipola_gold.parquet   # Códigos DIVIPOLA
 ```
@@ -164,13 +169,14 @@ data/gold/analytics/
 ```
 data/gold/
 ├── base/
-│   ├── geo_gold.parquet
-│   ├── policia_gold.parquet
-│   ├── poblacion_gold.parquet
-│   └── divipola_gold.parquet
+│   ├── geo_gold.parquet        # Geometrías municipios
+│   ├── policia_gold.parquet    # Delitos Policía + complementos
+│   ├── socrata_gold.parquet    # Delitos Socrata procesados
+│   ├── poblacion_gold.parquet  # Población normalizada
+│   └── divipola_gold.parquet   # Códigos DIVIPOLA
 ├── analytics/
-│   └── gold_analytics.parquet   # Con tasas e indicadores
-└── gold_integrado.parquet       # Dataset principal
+│   └── gold_analytics.parquet  # Con tasas e indicadores
+└── gold_integrado.parquet      # Dataset principal
 ```
 
 ---
