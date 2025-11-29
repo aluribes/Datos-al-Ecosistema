@@ -16,8 +16,8 @@ shapely==2.1.2
 # --- Lectura/escritura de archivos ---
 openpyxl==3.1.5          # Excel .xlsx
 xlrd==2.0.2              # Excel .xls (legacy)
-pyarrow==22.0.0          # Parquet
-rarfile==4.2             # Archivos RAR comprimidos
+pyarrow==22.0.0          # Parquet (engine por defecto)
+fastparquet==2024.11.0   # Parquet (engine alternativo)
 
 # --- HTTP y APIs ---
 requests==2.32.5
