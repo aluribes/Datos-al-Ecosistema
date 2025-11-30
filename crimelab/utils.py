@@ -1,173 +1,164 @@
 import streamlit as st
 import json
 import os
-import pandas as pd
-import numpy as np
 import joblib 
-import datetime
+from PIL import Image
 
 # ============================
 # CONFIGURACIÓN DE RUTAS
 # ============================
-# Asumimos que utils.py está al mismo nivel que app.py y 1_Visor_Analitico.py
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# BASE_DIR siempre apunta al directorio donde reside utils.py 
+# (Asumimos: La carpeta 'crimelab' o la raíz del proyecto)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
 
-def get_file_path(relative_path):
+# Función de construcción de rutas robusta y multiplataforma
+def get_file_path(base_dir, *relative_path_components):
     """Genera una ruta normalizada para cualquier sistema operativo."""
-    # Los archivos de datos están en la carpeta superior ('..') desde el script de ejecución.
-    return os.path.normpath(os.path.join(BASE_DIR, *relative_path))
-
-MODEL_PATH = os.path.normpath(
-    os.path.join(BASE_DIR, "models", "predictivos", "classification_dominant")
-)
+    return os.path.normpath(os.path.join(base_dir, *relative_path_components))
 
 # ============================
-# FUNCIONES DE CARGA (Usadas en todos los scripts)
+# FUNCIONES DE CARGA DE MODELOS
 # ============================
 
 @st.cache_resource(show_spinner="Cargando modelos predictivos...") 
 def load_predictive_models():
-    """Carga los modelos de predicción."""
+    """Carga los modelos de predicción (joblib) y sus componentes."""
+    modelos = {}
     try:
-        # Nota: La ruta real debe ser ajustada si su estructura de carpetas es diferente
-        # Aquí asumimos que los joblib están en una carpeta 'models/predictivos/...'
-        model = joblib.load(get_file_path(["models", "predictivos", "classification_dominant", "xgb_multioutput.joblib"]))
-        le_delito = joblib.load(get_file_path(["models", "predictivos", "classification_dominant", "label_encoder_delito.joblib"]))
-        le_arma = joblib.load(get_file_path(["models", "predictivos", "classification_dominant", "label_encoder_arma.joblib"]))
-        scaler = joblib.load(get_file_path(["models", "predictivos", "classification_dominant", "scaler.joblib"]))
+        # Rutas de Modelos Predictivos
+        model_path = get_file_path(BASE_DIR, ".." ,"models", "predictivos", "classification_dominant", "xgb_multioutput.joblib")
+        le_delito_path = get_file_path(BASE_DIR, ".." ,"models", "predictivos", "classification_dominant", "label_encoder_delito.joblib")
+        le_arma_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "classification_dominant", "label_encoder_arma.joblib")
+        scaler_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "classification_dominant", "scaler.joblib")
+
+        # st.info(f"DEBUG: Intentando cargar modelo desde: {model_path}") # <-- Úsalo para depurar la ruta
         
+        modelos["model"] = joblib.load(model_path)
+        modelos["le_delito"] = joblib.load(le_delito_path)
+        modelos["le_arma"] = joblib.load(le_arma_path)
+        modelos["scaler"] = joblib.load(scaler_path)
+        
+        return modelos
     except FileNotFoundError as e:
-        st.error(f"Error al cargar joblib. Asegúrese de que los archivos estén en la ruta correcta. Detalles: {e}")
-        return None
+        # Aquí se captura el error y se detiene la aplicación con el mensaje
+        st.error(f"Error al cargar archivos .joblib: Asegúrese de que la ruta sea correcta. Detalles: {e}")
+        st.stop()
     except Exception as e:
         st.error(f"Error crítico al cargar componentes del modelo. Detalles: {e}")
-        return None
-    
-    return {
-        "model": model,
-        "le_delito": le_delito,
-        "le_arma": le_arma,
-        "scaler": scaler
-    }
+        st.stop()
 
-@st.cache_data(show_spinner="Cargando datos descriptivos...")
+
+# ============================
+# FUNCIONES DE CARGA DE DATOS DESCRIPTIVOS Y GEOGRÁFICOS
+# ============================
+
+@st.cache_data(show_spinner="Cargando datos descriptivos y geográficos...")
 def load_descriptive_data():
-    """Carga todos los archivos JSON descriptivos."""
+    """Carga todos los archivos JSON y GeoJSON descriptivos."""
+    stats, mun_resumen, geojson_data, tendencias = {}, {}, {}, {}
+    municipio_name_map = {}
+    
     try:
-        with open(get_file_path(["models", "descriptivo", "classification_dominant", "estadisticas_generales.json"]), "r", encoding="utf-8") as f:
+        # Rutas de Datos Descriptivos y Geoespaciales
+        stats_path = get_file_path(BASE_DIR, ".." ,"models", "descriptivo", "classification_dominant", "estadisticas_generales.json")
+        mun_resumen_path = get_file_path(BASE_DIR, ".." ,"models", "descriptivo", "classification_dominant", "municipios_resumen.json")
+        tendencias_path = get_file_path(BASE_DIR, ".." ,"models", "descriptivo", "classification_dominant", "tendencias_anuales.json")
+        geojson_path = get_file_path(BASE_DIR, "..", "data", "silver", "dane_geo", "geografia_silver.geojson")
+
+        # 1. Carga de JSONs Descriptivos
+        with open(stats_path, "r", encoding="utf-8") as f:
             stats = json.load(f)
-        with open(get_file_path(["models", "descriptivo", "classification_dominant", "municipios_resumen.json"]), "r", encoding="utf-8") as f:
+        with open(mun_resumen_path, "r", encoding="utf-8") as f:
             mun_resumen = json.load(f)
+        with open(tendencias_path, "r", encoding="utf-8") as f:
+            tendencias = json.load(f)
         
-        return stats, mun_resumen
+        # 2. Carga de GeoJSON 
+        with open(geojson_path, "r", encoding="utf-8") as f:
+            geojson_data = json.load(f)
+
+        # 3. Crear mapeo de nombres (La lógica ya era correcta)
+        for feature in geojson_data.get("features", []):
+            codigo = str(feature["properties"].get("codigo_municipio"))
+            nombre = feature["properties"].get("municipio")
+            if codigo and nombre:
+                nombre_upper = nombre.upper()
+                municipio_name_map[codigo] = nombre_upper
+                if codigo in mun_resumen and 'nombre' not in mun_resumen[codigo]:
+                    mun_resumen[codigo]['nombre'] = nombre_upper
+        
+        return stats, mun_resumen, tendencias, geojson_data, municipio_name_map
+
     except FileNotFoundError as e:
-        st.error(f"Error al cargar JSON descriptivos. Detalles: {e}")
-        return {}, {}
-
-
-# ============================
-# FUNCIONES DE PREDICCIÓN Y RESPUESTA (Reutilizables)
-# ============================
-
-def predecir_delito_arma(codigo_municipio, anio, mes, modelos, mun_resumen):
-    """
-    Función predictiva (extraída del visor analítico) para ser usada por el chatbot.
-    Requiere que los modelos y el resumen municipal estén cargados.
-    """
-    if modelos is None or "model" not in modelos:
-        return "Modelos predictivos no cargados. No puedo predecir el futuro."
-
-    model = modelos["model"]
-    scaler = modelos["scaler"]
-
-    # Simulación de features (Usando el total_delitos del municipio como base)
-    if codigo_municipio not in mun_resumen:
-        base_count = 100 # Default si no se encuentra
-    else:
-        base_count = mun_resumen[codigo_municipio]["total_delitos"] / 10 
-
-    features = {
-        'anio': anio, 'mes': mes, 'codigo_municipio': int(codigo_municipio),
-        'count_delito': base_count * np.random.uniform(0.9, 1.1),
-        'count_arma': base_count * np.random.uniform(0.7, 1.3),
-        'mes_sin': np.sin(2 * np.pi * mes / 12),
-        'mes_cos': np.cos(2 * np.pi * mes / 12),
-        'count_delito_lag1': base_count * np.random.uniform(0.9, 1.1),
-        'count_delito_lag2': base_count * np.random.uniform(0.9, 1.1),
-        'count_delito_lag3': base_count * np.random.uniform(0.9, 1.1),
-        'count_arma_lag1': base_count * np.random.uniform(0.7, 1.3),
-        'count_arma_lag2': base_count * np.random.uniform(0.7, 1.3),
-        'count_arma_lag3': base_count * np.random.uniform(0.7, 1.3),
-        'count_delito_ma3': base_count, 
-        'count_arma_ma3': base_count, 
-    }
-    
-    X = pd.DataFrame([features])
-    feature_order = scaler.feature_names_in_.tolist()
-    X = X[feature_order]
-
-    try:
-        X_scaled = scaler.transform(X)
-        predicciones = model.predict(X_scaled)
-        
-        delito_pred = modelos["le_delito"].inverse_transform(predicciones[0, 0:1].astype(int).tolist())[0]
-        arma_pred = modelos["le_arma"].inverse_transform(predicciones[0, 1:2].astype(int).tolist())[0]
-        
-        return {
-            "delito_predicho": delito_pred.strip(),
-            "arma_predicha": arma_pred.strip(),
-        }
+        st.error(f"Error al cargar archivos descriptivos/geográficos: Revise las rutas. Detalles: {e}")
+        st.stop()
     except Exception as e:
-        return {"error": f"Error durante la predicción: {e}"}
+        st.error(f"Error inesperado durante la carga de datos descriptivos. Detalles: {e}")
+        st.stop()
 
 
-def generar_respuesta_chatbot(pregunta: str, codigo_municipio: str, stats: dict, mun_resumen: dict, modelos: dict) -> str:
-    """
-    Genera una respuesta descriptiva (JSON) o predictiva (ML) basada en la pregunta.
-    """
-    pregunta = pregunta.lower()
+# ============================
+# FUNCIONES DE ESTILOS (Inyección CSS desde archivo)
+# ============================
+
+def inject_styles():
+    """Lee el contenido del archivo CSS y lo inyecta en la página de Streamlit."""
     
-    municipio_data = mun_resumen.get(codigo_municipio)
-
-    # --- 1. Preguntas Predictivas (Futuro) ---
-    if any(keyword in pregunta for keyword in ["futuro", "próximo mes", "pasará", "proyección"]):
-        
-        today = datetime.date.today()
-        # Predecir el mes siguiente
-        mes_pred = today.month % 12 + 1
-        anio_pred = today.year + (1 if today.month == 12 else 0)
-        
-        pred = predecir_delito_arma(codigo_municipio, anio_pred, mes_pred, modelos, mun_resumen)
-        
-        if "error" in pred:
-            return f"Lo siento, ocurrió un error al calcular la predicción para {municipio_data.get('nombre', 'el municipio')}: {pred['error']}"
-        
-        return f"Para el próximo mes ({mes_pred}/{anio_pred}), la proyección indica que el delito más frecuente será **{pred['delito_predicho']}**, con **{pred['arma_predicha']}** como arma dominante."
-
-    # --- 2. Preguntas Descriptivas por Municipio (Pasado/Actual) ---
-    if municipio_data:
-        mun_name = municipio_data.get('nombre', 'Este municipio') # Necesita el nombre del municipio
-        
-        if 'delito' in pregunta and 'común' in pregunta:
-            return f"El delito más frecuente en {mun_name} es **{municipio_data['delito_mas_frecuente']}**."
-        
-        elif 'riesgo' in pregunta or 'seguro' in pregunta:
-            return f"{mun_name} tiene un nivel de riesgo **{municipio_data['categoria_riesgo']}** y ocupa el puesto **#{municipio_data['ranking_departamental']}**."
-        
-        elif 'aumentado' in pregunta or 'tendencia' in pregunta:
-            dir = municipio_data['tendencia']['direccion']
-            cambio = municipio_data['tendencia']['cambio_vs_anio_anterior']
-            return f"La criminalidad en {mun_name} está **{dir}** ({cambio:+.1f}% vs. año anterior)."
-        
-        elif 'información' in pregunta or 'general' in pregunta:
-            return municipio_data['descripcion_chatbot']
+    # 1. Usamos get_file_path para encontrar el archivo de forma robusta
+    css_file_path = get_file_path(BASE_DIR, "assets", "styles.css")
+    
+    if os.path.exists(css_file_path):
+        try:
+            with open(css_file_path, "r", encoding="utf-8") as f:
+                css = f.read()
             
-    # --- 3. Preguntas Descriptivas Globales (Santander) ---
-    if any(keyword in pregunta for keyword in ["santander", "departamento", "global"]):
-        if 'delito' in pregunta and 'común' in pregunta:
-            return f"El delito más frecuente en Santander es **{stats['delito_mas_frecuente']['nombre']}** ({stats['delito_mas_frecuente']['porcentaje']:.1f}% del total)."
-        
-        elif 'arma' in pregunta and 'común' in pregunta:
-            return f"El arma más utilizada en Santander es **{stats['arma_mas_frecuente']['nombre']}** ({stats['arma_mas_frecuente']['porcentaje']:.1f}% del total)."
+            # 2. Inyectamos el CSS con la etiqueta <style>
+            st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
             
-    return "Lo siento, no tengo información sobre esa pregunta específica. Intenta preguntar sobre el riesgo, el delito más común o la tendencia de un municipio."
+        except Exception as e:
+            st.error(f"Error al inyectar estilos desde assets/styles.css: {e}")
+    else:
+        # Esto ayuda a diagnosticar si el archivo no está en la ruta correcta
+        st.warning(f"No se encontró el archivo de estilos en: {css_file_path}")
+
+# ============================
+# FUNCIONES DE UI / MENÚ
+# ============================
+
+def draw_sidebar_menu():
+    """Dibuja el menú lateral de navegación en todas las páginas."""
+    
+    # --- 1. Logo ---
+    # La llamada a get_file_path ahora funciona correctamente.
+    logo_path = get_file_path(BASE_DIR, "assets", "logo_crimelab.png")
+
+    if os.path.exists(logo_path):
+        try:
+            logo = Image.open(logo_path)
+            st.sidebar.markdown("<div class='logo-container'>", unsafe_allow_html=True)
+            st.sidebar.image(logo, use_container_width=False, width=150)
+            st.sidebar.markdown("</div>", unsafe_allow_html=True)
+        except Exception:
+            st.sidebar.write("⚠️ Error al cargar el logo. Revisa el archivo 'assets/logo_crimelab.png'.")
+    else:
+        st.sidebar.write("⚠️ Agrega tu logo en assets/logo_crimelab.png")
+
+    # --- 2. Links ---
+    st.sidebar.markdown("## Navegación")
+
+    def sidebar_link(emoji, label, page):
+        st.sidebar.markdown(
+            f"""
+            <a href="/{page}" target="_self" style="text-decoration:none; font-size:17px;">
+                {emoji} &nbsp; <span style="color:white;">{label}</span>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+
+    # Nota: Los links deben apuntar a los nombres de archivo sin la extensión .py
+    sidebar_link("🏠", "Inicio", "")
+    sidebar_link(" 📊 ", "Visor Analítico", "1_Visor_Analitico")
+    sidebar_link(" 🤖 ", "ALBA", "2_Chatbot")
+    sidebar_link("📁", "Datos", "3_Datos")
+    sidebar_link("ℹ️", "Información", "4_Información")

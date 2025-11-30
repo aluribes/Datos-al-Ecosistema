@@ -7,119 +7,35 @@ import folium
 from streamlit_folium import st_folium
 from branca.element import MacroElement, Template
 import numpy as np 
-import joblib 
 import datetime
 
-# ------------------------------------------------------------------------------
-# 1. Lógica de Carga de Archivos y Corrección de Rutas
-# ------------------------------------------------------------------------------
+from utils import draw_sidebar_menu, load_predictive_models, load_descriptive_data, inject_styles
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Definir la ruta donde se encuentran todos los archivos .joblib
-MODEL_PATH = os.path.normpath(
-    os.path.join(BASE_DIR, "..", "models", "predictivos", "classification_dominant")
-)
-
-def get_file_path(relative_path):
-    """Genera una ruta normalizada para cualquier sistema operativo."""
-    return os.path.normpath(os.path.join(BASE_DIR, *relative_path))
-
-# Funciones de carga (usando la ruta robusta)
-def load_stats():
-    ruta_json = get_file_path(["..", "models", "descriptivo", "classification_dominant", "estadisticas_generales.json"])
-    with open(ruta_json, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-def load_tendencias():
-    ruta_json = get_file_path(["..", "models", "descriptivo", "classification_dominant", "tendencias_anuales.json"])
-    with open(ruta_json, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-def load_municipios():
-    json_path = get_file_path(["..", "models", "descriptivo", "classification_dominant", "municipios_resumen.json"])
-    with open(json_path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-def load_geojson():
-    geojson_path = get_file_path(["..", "data", "silver", "dane_geo", "geografia_silver.geojson"])
-    with open(geojson_path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-@st.cache_resource(show_spinner="Cargando modelos predictivos...") 
-def load_predictive_models(model_path):
-    """Carga los modelos Predictivos usando la ruta explícita o el nombre simple si falla la ruta."""
-    try:
-        # Intento 1: Usar la ruta completa proporcionada por el usuario
-        model = joblib.load(os.path.join(model_path, "xgb_multioutput.joblib"))
-        le_delito = joblib.load(os.path.join(model_path, "label_encoder_delito.joblib"))
-        le_arma = joblib.load(os.path.join(model_path, "label_encoder_arma.joblib"))
-        scaler = joblib.load(os.path.join(model_path, "scaler.joblib"))
-        
-    except FileNotFoundError:
-        # Intento 2 (Fallback): Si falla la ruta completa, intentar cargarlos directamente por nombre de archivo
-        st.warning("Ruta de modelo compleja fallida. Intentando cargar modelos directamente por nombre de archivo.")
-        model = joblib.load("xgb_multioutput.joblib")
-        le_delito = joblib.load("label_encoder_delito.joblib")
-        le_arma = joblib.load("label_encoder_arma.joblib")
-        scaler = joblib.load("scaler.joblib")
-    except Exception as e:
-        st.error(f"Error crítico al cargar componentes del modelo. Detalles: {e}")
-        return None
-    
-    return {
-        "model": model,
-        "le_delito": le_delito,
-        "le_arma": le_arma,
-        "scaler": scaler
-    }
-
-# Cargamos los modelos predictivos una sola vez al inicio.
-model_components = load_predictive_models(MODEL_PATH)
-
-
-# Cachear la carga de datos
-@st.cache_data(show_spinner="Cargando datos...")
-def get_data(_modelos_cargados):
-    stats = load_stats()
-    tendencias = load_tendencias()
-    mun_resumen = load_municipios()
-    geojson_data = load_geojson()
-
-    municipio_name_map = {}
-    for feature in geojson_data["features"]:
-        codigo = str(feature["properties"].get("codigo_municipio"))
-        nombre = feature["properties"].get("municipio")
-        if codigo and nombre:
-            municipio_name_map[codigo] = nombre
-    
-    if "68001" in mun_resumen and "68001" not in municipio_name_map:
-        municipio_name_map["68001"] = "BUCARAMANGA" 
-    
-    return {
-        "stats": stats,
-        "tendencias": tendencias,
-        "municipios_resumen": mun_resumen,
-        "geojson": geojson_data,
-        "municipio_name_map": municipio_name_map,
-        "modelos_predictivos": _modelos_cargados
-    }
-
-# Pasamos los modelos cargados a la función de caché de datos.
-data = get_data(model_components)
-
-stats = data["stats"]
-tendencias_raw = data["tendencias"]
-mun_resumen = data["municipios_resumen"]
-geojson_data = data["geojson"]
-municipio_name_map = data["municipio_name_map"]
-modelos_predictivos = data["modelos_predictivos"]
 
 # ------------------------------------------------------------------------------
-# 2. Funciones de Visualización y Lógica
+# 1. Carga de Datos y Modelos (Centralizado en utils.py)
+# ------------------------------------------------------------------------------
+
+# Carga de Modelos Predictivos (se realiza UNA sola vez gracias a st.cache_resource en utils)
+modelos_predictivos = load_predictive_models()
+
+# Carga de Datos Descriptivos y Geoespaciales (se realiza UNA sola vez gracias a st.cache_data en utils)
+# La función load_descriptive_data devuelve: 
+# stats, mun_resumen, tendencias, geojson_data, municipio_name_map
+stats, mun_resumen, tendencias_raw, geojson_data, municipio_name_map = load_descriptive_data()
+
+# Verificación de carga
+if not stats or not modelos_predictivos or not geojson_data:
+    st.error("🚨 **Error Crítico:** No se pudo cargar la información esencial (stats, modelos o datos geográficos). Revise las rutas de los archivos en 'utils.py'.")
+    st.stop() # Detener la ejecución si faltan datos cruciales.
+
+
+# ------------------------------------------------------------------------------
+# 2. Funciones de Visualización y Lógica (Se mantienen aquí)
 # ------------------------------------------------------------------------------
 
 def plot_tendencia_anual(tendencias_data, año_referencia):
+    # La lógica de esta función se mantiene sin cambios
     df_tend = pd.DataFrame({
         "Año": list(tendencias_data["delitos_por_anio"].keys()),
         "Delitos": list(tendencias_data["delitos_por_anio"].values())
@@ -127,6 +43,7 @@ def plot_tendencia_anual(tendencias_data, año_referencia):
     df_tend["Año"] = df_tend["Año"].astype(int)
     max_anio_historico = df_tend["Año"].max()
     
+    # Manejo del caso donde el año de referencia es el último año cargado (proyección)
     df_tend["Tipo"] = np.where(df_tend["Año"] > max_anio_historico - 1, "Proyección", "Histórico")
 
     fig = px.line(df_tend, x="Año", y="Delitos", title=f"Tendencia Histórica de Delitos (Resaltando Año {año_referencia})", markers=True, color="Tipo", color_discrete_map={"Histórico": "#1f77b4", "Proyección": "#e74c3c"})
@@ -140,22 +57,22 @@ def plot_tendencia_anual(tendencias_data, año_referencia):
 
 
 def plot_distribucion_delitos(stats_data):
-    # CORRECCIÓN IMPORTANTE: Extraemos solo el porcentaje del diccionario anidado.
+    # La lógica de esta función se mantiene sin cambios
     if "distribucion_delitos" not in stats_data or not stats_data["distribucion_delitos"]: 
         return None
         
-    # Extraer el nombre del delito y su porcentaje.
     delitos_data = {
         delito: data.get("porcentaje", 0) 
         for delito, data in stats_data["distribucion_delitos"].items()
     }
 
-    # Convertir a DataFrame
     df_dist = pd.DataFrame(list(delitos_data.items()), columns=['Delito', 'Porcentaje'])
     
-    # Aseguramos el tipo float para el porcentaje y normalizamos si es necesario
     df_dist['Porcentaje'] = df_dist['Porcentaje'].astype(float) 
-    df_dist['Porcentaje'] = df_dist['Porcentaje'] / df_dist['Porcentaje'].sum()
+    # Normalizar para asegurar que sume 100% si los datos ya no están normalizados (aunque no se necesita si ya son porcentajes)
+    if df_dist['Porcentaje'].sum() > 100 or df_dist['Porcentaje'].sum() < 90:
+        # Se asume que el porcentaje en el JSON está en formato XX.XX (%)
+        df_dist['Porcentaje'] = df_dist['Porcentaje'] / 100.0 # Ajuste si fuera necesario usar la proporción para Plotly
     
     fig = px.pie(df_dist, values='Porcentaje', names='Delito', title='Distribución Global de Delitos Dominantes en Santander', hole=0.4)
     fig.update_traces(textposition='inside', textinfo='percent+label')
@@ -167,16 +84,18 @@ def get_color(riesgo):
     return COLOR_RIESGO.get(riesgo, "#bdc3c7")
 
 def predecir_delito_arma(codigo_municipio, anio, mes, modelos):
-    """Ejecuta el modelo predictivo con features simuladas."""
+    """Ejecuta el modelo predictivo con features simuladas. Usa el mun_resumen cargado globalmente."""
     
     if modelos is None or "model" not in modelos:
         return {"error": "Modelos predictivos no cargados correctamente."}
 
+    # Acceso directo a los componentes del modelo
     model = modelos["model"]
     scaler = modelos["scaler"]
     le_delito = modelos["le_delito"]
     le_arma = modelos["le_arma"]
     
+    # mun_resumen y otros datos se acceden desde el ámbito global de este script
     if codigo_municipio not in mun_resumen:
         return {"error": "Municipio no encontrado en el resumen descriptivo."}
 
@@ -202,11 +121,11 @@ def predecir_delito_arma(codigo_municipio, anio, mes, modelos):
     
     X = pd.DataFrame([features])
     
-    # Asegurar el orden de las columnas según el scaler
-    feature_order = scaler.feature_names_in_.tolist()
-    X = X[feature_order]
-
     try:
+        # Asegurar el orden de las columnas según el scaler (CRÍTICO)
+        feature_order = scaler.feature_names_in_.tolist()
+        X = X[feature_order]
+
         X_scaled = scaler.transform(X)
         predicciones = model.predict(X_scaled)
         
@@ -232,12 +151,16 @@ st.set_page_config(
     layout="wide"
 )
 
+# Aplicar estilos y menú (se ejecuta en cada página)
+inject_styles()
+draw_sidebar_menu()
+
 st.title("🗺️ Visor Analítico de Seguridad Ciudadana")
 
 # Definir Pestañas
 tab_descriptivo, tab_predictivo = st.tabs(["Históricos", "Proyecciones"])
 
-# Generar DataFrame de municipios para el ranking y el mapa (se hace una sola vez)
+# Generar DataFrame de municipios para el ranking y el mapa (una sola vez)
 df_mun = pd.DataFrame([
     {
         "Código DANE": k,
@@ -252,25 +175,25 @@ df_mun = pd.DataFrame([
 
 
 # ------------------------------------------------------------------------------
-# PESTAÑA 1: MODELO DESCRIPTIVO (Orden Corregido)
+# PESTAÑA 1: MODELO DESCRIPTIVO
 # ------------------------------------------------------------------------------
 with tab_descriptivo:
     
-    # === 1. INDICADORES GLOBALES (PRIMERO) ===
+    # === 1. INDICADORES GLOBALES ===
     st.header("📊 Indicadores Globales de Santander")
     
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Delito más frecuente", stats["delito_mas_frecuente"]["nombre"], delta=f"{stats['delito_mas_frecuente']['porcentaje']:.1f}% del total")
     col2.metric("Arma más frecuente", stats["arma_mas_frecuente"]["nombre"], delta=f"{stats['arma_mas_frecuente']['porcentaje']:.1f}% del total")
     col3.metric("Total delitos dominantes", f"{stats['suma_delitos_dominantes']:,}")
-    # Nota: Se usa el año anterior al final del periodo para la tendencia general. 
-    # El dato de 'cambio_porcentual' es un diccionario, se accede con la clave del año.
-    cambio_vs_anterior = tendencias_raw['cambio_porcentual'].get(str(stats['periodo']['fin']-1), 0)
+    
+    # Tendencia General
+    cambio_vs_anterior = tendencias_raw['cambio_porcentual'].get(str(stats['periodo']['fin'] - 1), 0)
     col4.metric("Tendencia General", tendencias_raw['tendencia_general'].capitalize(), delta=f"Cambio vs año anterior: {cambio_vs_anterior:.1f}%")
 
     st.markdown("---")
 
-    # === 2. MAPA DE RIESGO (SEGUNDO, POSICIÓN ORIGINAL DE DISTRIBUCIÓN) ===
+    # === 2. MAPA DE RIESGO ===
     st.header("🗺️ Mapa de Clasificación de Riesgo - Santander")
     
     m = folium.Map(location=[7.12539, -73.1198], zoom_start=8, tiles="CartoDB positron")
@@ -310,7 +233,7 @@ with tab_descriptivo:
             tooltip=folium.Tooltip(popup_html, sticky=True)
         ).add_to(m)
 
-    # Leyenda (MacroElement)
+    # Leyenda (MacroElement) - La lógica se mantiene sin cambios
     template = """
     {% macro html(this, kwargs) %}
     <div style="position: fixed; bottom: 50px; left: 50px; width: 140px; height: 140px; background-color: white; border: 1px solid gray; padding: 5px; z-index:9999; font-size:14px;">
@@ -375,10 +298,10 @@ with tab_descriptivo:
 # PESTAÑA 2: MODELO PREDICTIVO
 # ------------------------------------------------------------------------------
 with tab_predictivo:
-    st.header("🔮 Predicción del Delito y Arma Dominante por Municipio")
+    st.header("Predicción del Delito y Arma Dominante por Municipio")
 
     if modelos_predictivos is None:
-        st.warning("⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos `.joblib` no pudieron ser cargados correctamente. Consulte los mensajes de error al inicio para verificar la ruta.")
+        st.warning("⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos `.joblib` no pudieron ser cargados correctamente. Verifique si los archivos están en las rutas definidas en `utils.py`.")
     else:
         # F I L T R O S P R E D I C T I V O S
         with st.container(border=True):
@@ -388,9 +311,10 @@ with tab_predictivo:
             municipios_predict = sorted(list(municipio_name_map.values()))
             municipio_pred_name = col_mun.selectbox("Selecciona un municipio para predecir:", municipios_predict, key="mun_pred")
             
+            # Obtener el código DANE del municipio seleccionado
             codigo_municipio_pred = next((k for k, v in municipio_name_map.items() if v == municipio_pred_name), None)
 
-            # Cálculo de fecha de predicción (mes siguiente)
+            # Cálculo de fecha de predicción (mes siguiente por defecto)
             today = datetime.date.today()
             mes_pred_val = today.month % 12 + 1
             anio_pred_val = today.year + (1 if today.month == 12 else 0)
@@ -405,6 +329,7 @@ with tab_predictivo:
             if col_btn.button("Ejecutar Predicción 🚀"):
                 if codigo_municipio_pred and codigo_municipio_pred in mun_resumen:
                     with st.spinner(f"Calculando predicción para **{municipio_pred_name}** en **{meses_disp.get(mes_pred)}/{anio_pred}**..."):
+                        # Llamada a la función predictiva (que usa los modelos cargados)
                         resultado = predecir_delito_arma(str(codigo_municipio_pred), int(anio_pred), int(mes_pred), modelos_predictivos)
                         st.session_state["prediccion_actual"] = resultado
                 else:
@@ -433,7 +358,7 @@ with tab_predictivo:
                 puesto = mun_info.get("ranking_departamental", "N/A")
 
                 col_desc.info(f"""
-                **Análisis Descriptivo (Actual):**
+                **Análisis Descriptivo (Histórico):**
                 * Riesgo: **{riesgo}**
                 * Puesto: **#{puesto}**
                 * Delito Histórico: **{mun_info.get("delito_mas_frecuente", "N/A")}**
@@ -443,7 +368,3 @@ with tab_predictivo:
 
         else:
             st.info("Utiliza los controles de predicción de arriba para obtener el resultado del modelo predictivo.")
-
-
-
-
