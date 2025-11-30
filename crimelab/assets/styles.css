@@ -1,0 +1,80 @@
+/* ====== PALETA INSTITUCIONAL ====== */
+:root {
+    --gov-blue: #0033A0;
+    --gov-light-blue: #E5ECF8;
+    --gov-dark-gray: #3A3A3A;
+    --gov-shadow: rgba(0, 0, 0, 0.08);
+    --gov-bg: #F4F6F9;
+    --gov-card-bg: #FFFFFF;
+}
+
+/* ====== TIPOGRAFÍA ====== */
+html, body, [class*="css"] {
+    font-family: 'Arial', sans-serif !important;
+    color: var(--gov-dark-gray);
+}
+
+/* ====== FONDO GENERAL ====== */
+body {
+    background-color: var(--gov-bg) !important;
+}
+
+/* ====== TARJETAS INSTITUCIONALES ====== */
+.card {
+    background: var(--gov-card-bg);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px var(--gov-shadow);
+    margin-bottom: 25px;
+}
+
+/* ====== TÍTULOS ====== */
+h1 {
+    color: var(--gov-blue) !important;
+    font-size: 34px !important;
+}
+
+h2, h3 {
+    color: var(--gov-blue) !important;
+}
+
+/* ====== SIDEBAR ====== */
+section[data-testid="stSidebar"] {
+    background-color: var(--gov-blue) !important;
+}
+
+section[data-testid="stSidebar"] h2, 
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] p {
+    color: white !important;
+}
+
+/* ====== BOTONES ====== */
+.stButton > button {
+    background-color: var(--gov-blue) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+}
+
+.stButton > button:hover {
+    background-color: #00256E !important;
+}
+
+/* ====== INPUTS / SELECTS ====== */
+.stSelectbox, .stTextInput, .stNumberInput, .stDateInput {
+    background-color: var(--gov-light-blue) !important;
+}
+
+/* ====== LOGO SUPERIOR ====== */
+.logo-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo-image {
+    width: 180px;
+    height: auto;
+}
