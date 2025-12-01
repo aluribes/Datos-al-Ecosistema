@@ -22,7 +22,7 @@ def get_file_path(base_dir, *relative_path_components):
 # ============================
 
 @st.cache_resource(show_spinner="Cargando modelos predictivos...") 
-def load_predictive_models():
+def load_predictive_dominant():
     """Load prediction models (joblib) and their components for the Dominant model."""
     import joblib
     modelos = {}
@@ -253,7 +253,7 @@ def plot_perfiles(data_global, cruces_data, filtro_delito="Delitos Totales"):
     df_grouped['porcentaje_label'] = df_grouped['porcentaje'].round(1).astype(str) + '%'
     df_grouped = df_grouped.sort_values(by='porcentaje', ascending=True)
 
-    titulo_grafico = f'Distribución de Perfiles Agrupados: **{filtro_delito}**'
+    titulo_grafico = f'Distribución de Perfiles Agrupados: {filtro_delito.upper()}'
     
     fig = px.bar(df_grouped, x='porcentaje', y='perfil_agrupado', 
                  orientation='h',
@@ -301,7 +301,7 @@ def plot_demografico_etario(demografico_data, cruces_data, filtro_delito="Delito
 
     df_edad['cantidad'] = df_edad['cantidad'].astype(int)
     
-    titulo_grafico = f'Eventos por Grupo Etario: **{filtro_delito}**'
+    titulo_grafico = f'Eventos por Grupo Etario: {filtro_delito.upper()}'
 
     fig_edad = px.bar(df_edad, x='grupo_etario', y='cantidad', 
                       title=titulo_grafico,
@@ -320,7 +320,7 @@ def render():
     """Render the dashboard page."""
     
     # Load data and models
-    modelos_predictivos = load_predictive_models()
+    modelos_predictivos = load_predictive_dominant()
     data_load_result = load_descriptive_data()
     data_dominant, data_event, geojson_data, municipio_name_map = data_load_result
 
@@ -398,7 +398,7 @@ def render():
             if fig_edad:
                 st.plotly_chart(fig_edad, use_container_width=True)
             else:
-                st.info(f"No hay datos disponibles para el análisis demográfico o el delito: **{filtro_delito_demo}**.")
+                st.info(f"No hay datos disponibles para el análisis demográfico o el delito: {filtro_delito_demo.upper()}.")
 
             st.markdown("---")
             
@@ -420,7 +420,7 @@ def render():
                 if fig_perfil:
                     st.plotly_chart(fig_perfil, use_container_width=True)
                 else:
-                    st.info(f"No hay datos de distribución de perfiles o el delito: **{filtro_delito_perfil}**.")
+                    st.info(f"No hay datos de distribución de perfiles o el delito: {filtro_delito_perfil.upper()}.")
 
         st.markdown("""<hr style="height:5px;border:none;color:#333;background-color:#333;" />""", unsafe_allow_html=True)
         
@@ -573,7 +573,7 @@ def render():
 
                     if col_btn.button("Ejecutar Predicción 🚀"):
                         if codigo_municipio_pred and codigo_municipio_pred in mun_resumen:
-                            with st.spinner(f"Calculando predicción para **{municipio_pred_name}** en **{meses_disp.get(mes_pred)}/{anio_pred}**..."):
+                            with st.spinner(f"Calculando predicción para {municipio_pred_name.upper()} en {meses_disp.get(mes_pred)}/{anio_pred}..."):
                                 resultado = predecir_delito_arma(str(codigo_municipio_pred), int(anio_pred), int(mes_pred), modelos_predictivos, mun_resumen)
                                 st.session_state["prediccion_actual"] = resultado
                         else:
@@ -589,7 +589,7 @@ def render():
                     if "error" in pred:
                         st.error(f"Error en el modelo: {pred['error']}")
                     else:
-                        st.success(f"Predicción exitosa para **{municipio_pred_name}** en **{meses_disp.get(pred['mes'])}/{pred['anio']}**:")
+                        st.success(f"Predicción exitosa para {municipio_pred_name.upper()} en {meses_disp.get(pred['mes'])}/{pred['anio']}:")
                         
                         col_delito, col_arma, col_desc = st.columns(3)
                         
@@ -599,15 +599,16 @@ def render():
                         mun_info = mun_resumen.get(codigo_municipio_pred, {})
                         riesgo = mun_info.get("categoria_riesgo", "N/A")
                         puesto = mun_info.get("ranking_departamental", "N/A")
+                        delito_hist = mun_info.get("delito_mas_frecuente", "N/A")
 
                         col_desc.info(f"""
-                        **Análisis Descriptivo (Histórico):**
-                        * Riesgo: **{riesgo}**
-                        * Puesto: **#{puesto}**
-                        * Delito Histórico: **{mun_info.get("delito_mas_frecuente", "N/A")}**
+                        ANÁLISIS DESCRIPTIVO (HISTÓRICO):
+                        • Riesgo: {riesgo.upper() if riesgo != "N/A" else riesgo}
+                        • Puesto: #{puesto}
+                        • Delito Histórico: {delito_hist.upper() if delito_hist != "N/A" else delito_hist}
                         """)
                         
-                        st.warning(f"🚨 **ALERTA:** Se predice que el **{pred['delito_predicho']}** será el mayor riesgo para este municipio, principalmente usando **{pred['arma_predicha']}**.")
+                        st.warning(f"🚨 ALERTA: Se predice que el {pred['delito_predicho'].upper()} será el mayor riesgo para este municipio, principalmente usando {pred['arma_predicha'].upper()}.")
 
                 else:
                     st.info("Utiliza los controles de predicción de arriba para obtener el resultado del modelo predictivo.")

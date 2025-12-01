@@ -5,76 +5,93 @@ def render():
     
     st.title("Información del Proyecto CrimeLab")
 
-    st.markdown("""
-    <div class="card">
-        <h3>Documentación general</h3>
-        <p>
-        Esta sección contiene la descripción del proyecto, arquitectura,
-        metodología, fuentes de datos y lineamientos técnicos.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
     # ============================
-    # Arquitectura
+    # Metodología y Fuentes (moved to top)
     # ============================
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.subheader("Arquitectura del ecosistema")
-
-    st.write("""
-    El sistema implementa una arquitectura tipo **Medallion** compuesta por:
-    - **Bronze:** ingestión de datos crudos.  
-    - **Silver:** transformación y estandarización.  
-    - **Gold:** datos optimizados para analítica, dashboards y modelos.  
-    """)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # ============================
-    # Metodología
-    # ============================
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Metodología y fuentes")
 
     st.write("""
     Se utilizan fuentes oficiales como:
-    - Policía Nacional  
-    - Medicina Legal  
-    - DANE  
-    - Datos Abiertos  
+    - **Policía Nacional** – Estadísticas delictivas y reportes de seguridad
+    - **Medicina Legal** – Datos forenses y de violencia
+    - **DANE** – Información geográfica, demográfica y división política
+    - **Datos Abiertos** – Datasets gubernamentales de acceso público
     """)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    # ============================
+    # Arquitectura
+    # ============================
+    st.subheader("Arquitectura del ecosistema")
+
+    st.write("""
+    CrimeLab sigue un proceso estructurado para transformar datos crudos en información accionable:
     
+    **1. Consulta e Ingesta de Datos**  
+    Se recopilan datos de múltiples fuentes oficiales mediante APIs, web scraping y descargas directas.
+    
+    **2. Procesamiento con Arquitectura Medallion**  
+    Los datos pasan por tres capas de transformación:
+    - **Bronze:** Datos crudos tal como llegan de las fuentes.
+    - **Silver:** Datos limpios, validados y estandarizados.
+    - **Gold:** Datos agregados, enriquecidos y listos para análisis.
+    
+    **3. Modelado Analítico**  
+    Se desarrollan modelos descriptivos y predictivos utilizando técnicas de Machine Learning 
+    para identificar patrones, clasificar riesgos y proyectar tendencias.
+    
+    **4. Visualización e Interacción**  
+    La información se presenta a través de esta aplicación Streamlit, que incluye dashboards 
+    interactivos, mapas geoespaciales y un asistente conversacional.
+    """)
+
+    st.markdown("---")
+
     # ============================
     # Modelos
     # ============================
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Modelos Analíticos")
 
     st.write("""
     CrimeLab incorpora múltiples modelos de Machine Learning:
     
-    ### Modelos Descriptivos
+    **Modelos Descriptivos**
     - **Clasificación Dominante:** Identifica el delito y arma más frecuentes por municipio.
     - **Clasificación de Eventos:** Analiza perfiles demográficos y contextuales.
     
-    ### Modelos Predictivos
+    **Modelos Predictivos**
     - **Proyección Temporal:** Predicción de tendencias futuras basada en series de tiempo.
     - **Clasificación de Riesgo:** Categorización municipal según indicadores de criminalidad.
     """)
 
-    st.markdown("</div>", unsafe_allow_html=True)
-    
+    st.markdown("---")
+
     # ============================
     # Equipo
     # ============================
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Equipo de Desarrollo")
 
     st.write("""
-    Este proyecto fue desarrollado como parte de una iniciativa de analítica 
-    de datos para la seguridad ciudadana en el departamento de Santander.
+    Este proyecto fue desarrollado por un equipo de 4 integrantes comprometidos 
+    con el uso de datos para el impacto social en el departamento de Santander.
     """)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        **Alejandra Uribe Sierra**  
+        [LinkedIn](https://www.linkedin.com/in/alejandra-uribe-sierra)
+        
+        **Shorly López Pérez**  
+        [LinkedIn](https://www.linkedin.com/in/shorly-lopez-perez)
+        """)
+    
+    with col2:
+        st.markdown("""
+        **Sergio Luis López Verbel**  
+        [LinkedIn](https://www.linkedin.com/in/sergio-luis-lopez-verbel)
+        
+        **Mateo Arenas Montoya**
+        """)
