@@ -1,9 +1,22 @@
+"""
+CrimeLab: Seguridad Ciudadana - Santander
+==========================================
+
+Main entrypoint for the Streamlit multipage application.
+Uses st.Page and st.navigation for proper URL routing.
+
+Routes:
+- /           : Home page (presentation)
+- /dashboard  : Analytical dashboard with maps and charts
+- /chatbot    : ALBA chatbot assistant
+- /about      : Project information
+"""
+
 import streamlit as st
-from PIL import Image
 import os
 
 # ============================
-# CONFIGURACIÓN GENERAL
+# PAGE CONFIGURATION
 # ============================
 st.set_page_config(
     page_title="CrimeLab: Seguridad Ciudadana – Santander",
@@ -12,115 +25,66 @@ st.set_page_config(
 )
 
 # ============================
-# CARGAR ESTILOS EXTERNOS
+# LOAD STYLES
 # ============================
-styles_path = os.path.join("assets", "styles.css")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+styles_path = os.path.join(BASE_DIR, "assets", "styles.css")
 
 if os.path.exists(styles_path):
     with open(styles_path, "r", encoding="utf-8", errors="ignore") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-else:
-    st.warning("⚠️ No se encontró assets/styles.css")
 
 # ============================
-# LOGO EN EL SIDEBAR
+# DEFINE PAGES
 # ============================
-logo_path = os.path.join("assets", "logo_crimelab.png")
+# Import page render functions
+from pages.home import render as home_render
+from pages.dashboard import render as dashboard_render
+from pages.chatbot import render as chatbot_render
+from pages.about import render as about_render
 
-if os.path.exists(logo_path):
-    logo = Image.open(logo_path)
-    st.sidebar.markdown("<div class='logo-container'>", unsafe_allow_html=True)
-    st.sidebar.image(logo, use_container_width=False, width=150)
-    st.sidebar.markdown("</div>", unsafe_allow_html=True)
-else:
-    st.sidebar.write("⚠️ Agrega tu logo en assets/logo.png")
+# Define pages with st.Page
+home_page = st.Page(
+    home_render,
+    title="Inicio",
+    icon="🏠",
+    url_path="",  # Root path
+    default=True
+)
 
-# ============================
-# MENÚ LATERAL 
-# ============================
-def sidebar_link(icon, label, page):
-    st.sidebar.markdown(
-        f"""
-        <a href="/{page}" target="_self" style="text-decoration:none;">
-            <img src="assets/{icon}" class="menu-icon" style="width:22px;vertical-align:middle;margin-right:10px;">
-            <span style="color:white;">{label}</span>
-        </a><br><br>
-        """,
-        unsafe_allow_html=True
-    )
+dashboard_page = st.Page(
+    dashboard_render,
+    title="Visor Analítico",
+    icon="📊",
+    url_path="dashboard"
+)
 
-st.sidebar.markdown("## Navegación")
+chatbot_page = st.Page(
+    chatbot_render,
+    title="ALBA Chatbot",
+    icon="🤖",
+    url_path="chatbot"
+)
 
-def sidebar_link(emoji, label, page):
-    st.sidebar.markdown(
-        f"""
-        <a href="/{page}" target="_self" style="text-decoration:none; font-size:17px;">
-            {emoji} &nbsp; <span style="color:white;">{label}</span>
-        </a>
-        """,
-        unsafe_allow_html=True
-    )
-
-sidebar_link("🏠", "Inicio", "")
-sidebar_link(" 📊 ", "Visor Analítico", "1_Visor_Analitico")
-sidebar_link(" 🤖 ", "ALBA", "2_Chatbot")
-sidebar_link("📁", "Datos", "3_Datos")
-sidebar_link("ℹ️", "Información", "4_Información")
+about_page = st.Page(
+    about_render,
+    title="Información",
+    icon="ℹ️",
+    url_path="about"
+)
 
 # ============================
-# CONTENIDO PRINCIPAL: INICIO
+# NAVIGATION
 # ============================
+pg = st.navigation(
+    {
+        "Principal": [home_page],
+        "Herramientas": [dashboard_page, chatbot_page],
+        "Documentación": [about_page],
+    }
+)
 
-st.title("CrimeLab: Seguridad Ciudadana – Santander")
-
-st.markdown("""
-**CrimeLab** es la plataforma analítica diseñada para fortalecer la toma de decisiones 
-en materia de seguridad ciudadana en los 87 municipios del departamento de Santander.
-
-Integra datos oficiales, analítica geoespacial, modelos predictivos y un asistente inteligente 
-para facilitar el acceso a información confiable y actualizada.
-""")
-
-# ------------------------------
-# TARJETA 1 – ¿Qué es CrimeLab?
-# ------------------------------
-st.markdown("## 🔍 ¿Qué es CrimeLab?")
-st.markdown("""
-CrimeLab es un ecosistema de datos y herramientas diseñado para:
-
-- Analizar dinámicas de criminalidad y convivencia.
-- Brindar visualizaciones claras e interactivas.
-- Unificar fuentes de datos en un solo entorno.
-- Apoyar la gestión pública con analítica avanzada.
-""")
-
-# ------------------------------
-# TARJETA 2 – Secciones del Tablero
-# ------------------------------
-st.markdown("## 📌 Secciones del Tablero")
-
-st.markdown("""
-### 📊 **Visor Analítico**  
-Mapas interactivos, series temporales y filtros por municipio, tipo de delito y tendencia histórica.
-
-### 🤖 **Chatbot ALBA**  
-ALBA (**Asistente Local de Búsqueda y Análisis**) responde preguntas sobre seguridad ciudadana,  
-estadísticas, territorio, delitos y comparativos entre municipios.
-
-### 📁 **Datos del Ecosistema**  
-Accede a las bases procesadas, oro/silver/bronze, catálogo de datos y descargas.
-
-### 📘 **Información del Proyecto**  
-Arquitectura del sistema, metodología, modelos, fuentes y documentación técnica.
-""")
-
-# ------------------------------
-# TARJETA 3 – Invitación
-# ------------------------------
-st.markdown("## 🚀 Explora CrimeLab")
-
-st.markdown("""
-Usa el menú lateral para navegar por las herramientas disponibles.  
-Cada módulo ha sido diseñado para brindar claridad, precisión y utilidad
-a quienes toman decisiones en temas de seguridad territorial.
-""")
+# ============================
+# RUN SELECTED PAGE
+# ============================
+pg.run()

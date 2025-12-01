@@ -5,3 +5,10 @@
 # Bronze data directories - downloaded from internet during setup
 data/bronze/policia_scraping/
 data/bronze/socrata_api/
+
+# Silver data directories - keep only dane_geo
+data/silver/delitos/
+data/silver/metas/
+data/silver/poblacion/
+data/silver/policia_scraping/
+data/silver/socrata_api/
