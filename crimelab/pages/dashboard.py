@@ -21,28 +21,61 @@ def get_file_path(base_dir, *relative_path_components):
 # DATA LOADING FUNCTIONS
 # ============================
 
-@st.cache_resource(show_spinner="Cargando modelos predictivos...") 
-def load_predictive_dominant():
-    """Load prediction models (joblib) and their components for the Dominant model."""
+@st.cache_resource(show_spinner="Cargando modelo de regresión mensual...")
+def load_regression_monthly():
+    """Load the monthly regression model and its components."""
     import joblib
     modelos = {}
     try:
-        model_path = get_file_path(BASE_DIR, ".." ,"models", "predictivos", "classification_dominant", "xgb_multioutput.joblib")
-        le_delito_path = get_file_path(BASE_DIR, ".." ,"models", "predictivos", "classification_dominant", "label_encoder_delito.joblib")
-        le_arma_path = get_file_path(BASE_DIR, ".." ,"models", "predictivos", "classification_dominant", "label_encoder_arma.joblib")
-        scaler_path = get_file_path(BASE_DIR, ".." ,"models", "predictivos", "classification_dominant", "scaler.joblib")
+        model_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "regression_monthly", "xgb_regressor.joblib")
+        scaler_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "regression_monthly", "scaler.joblib")
+        metadata_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "regression_monthly", "metadata.json")
         
         modelos["model"] = joblib.load(model_path)
-        modelos["le_delito"] = joblib.load(le_delito_path)
-        modelos["le_arma"] = joblib.load(le_arma_path)
         modelos["scaler"] = joblib.load(scaler_path)
+        
+        with open(metadata_path, "r", encoding="utf-8") as f:
+            modelos["metadata"] = json.load(f)
         
         return modelos
     except FileNotFoundError as e:
-        st.error(f"Error al cargar archivos .joblib (Dominante): Asegúrese de que la ruta sea correcta. Detalles: {e}")
         return None
     except Exception as e:
-        st.error(f"Error crítico al cargar componentes del modelo Dominante. Detalles: {e}")
+        return None
+
+
+@st.cache_resource(show_spinner="Cargando modelo de regresión anual...")
+def load_regression_annual():
+    """Load the annual regression model and its components."""
+    import joblib
+    import glob
+    modelos = {}
+    try:
+        annual_dir = get_file_path(BASE_DIR, "..", "models", "regression", "annual")
+        
+        # Find the most recent model files
+        model_files = glob.glob(os.path.join(annual_dir, "regression_annual_randomforest_*.joblib"))
+        scaler_files = glob.glob(os.path.join(annual_dir, "scaler_*.joblib"))
+        metadata_files = glob.glob(os.path.join(annual_dir, "regression_annual_metadata_*.json"))
+        
+        if not model_files or not scaler_files or not metadata_files:
+            return None
+        
+        # Use the most recent (sorted by name which includes timestamp)
+        model_path = sorted(model_files)[-1]
+        scaler_path = sorted(scaler_files)[-1]
+        metadata_path = sorted(metadata_files)[-1]
+        
+        modelos["model"] = joblib.load(model_path)
+        modelos["scaler"] = joblib.load(scaler_path)
+        
+        with open(metadata_path, "r", encoding="utf-8") as f:
+            modelos["metadata"] = json.load(f)
+        
+        return modelos
+    except FileNotFoundError as e:
+        return None
+    except Exception as e:
         return None
 
 
@@ -152,35 +185,65 @@ def plot_distribucion_delitos(stats_data):
     return fig
 
 
-def predecir_delito_arma(codigo_municipio, anio, mes, modelos, mun_resumen):
-    """Execute the predictive model with simulated features (Dominant Model)."""
+def predecir_regression_monthly(codigo_municipio, anio, mes, modelos, mun_resumen):
+    """Execute the monthly regression model prediction."""
     if modelos is None or "model" not in modelos:
-        return {"error": "Modelos predictivos no cargados correctamente."}
+        return {"error": "Modelo de regresión mensual no cargado correctamente."}
 
     model = modelos["model"]
     scaler = modelos["scaler"]
-    le_delito = modelos["le_delito"]
-    le_arma = modelos["le_arma"]
     
     if codigo_municipio not in mun_resumen:
         return {"error": "Municipio no encontrado en el resumen descriptivo."}
 
-    base_count = mun_resumen[codigo_municipio]["total_delitos"] / 10 
-
+    # Base historical data for the municipality
+    base_count = mun_resumen[codigo_municipio]["total_delitos"] / 12  # Monthly average
+    
+    # Calculate calendar features
+    import calendar
+    _, days_in_month = calendar.monthrange(anio, mes)
+    
+    # Estimate working days and weekends
+    first_day = datetime.date(anio, mes, 1)
+    weekdays = sum(1 for day in range(1, days_in_month + 1) 
+                   if datetime.date(anio, mes, day).weekday() < 5)
+    weekends = days_in_month - weekdays
+    
+    # Colombian holidays approximation (rough estimate)
+    festivos = 1 if mes in [1, 3, 4, 5, 6, 7, 8, 10, 11, 12] else 0
+    
+    # Simulated demographic/geographic features based on municipality data
+    poblacion_base = base_count * 1000  # Rough estimation
+    area_km2 = 500  # Default area
+    
     features = {
-        'anio': anio, 'mes': mes, 'codigo_municipio': int(codigo_municipio),
-        'count_delito': base_count * np.random.uniform(0.9, 1.1),
-        'count_arma': base_count * np.random.uniform(0.7, 1.3),
+        'anio': anio,
+        'mes': mes,
+        'trimestre': (mes - 1) // 3 + 1,
         'mes_sin': np.sin(2 * np.pi * mes / 12),
         'mes_cos': np.cos(2 * np.pi * mes / 12),
-        'count_delito_lag1': base_count * np.random.uniform(0.9, 1.1),
-        'count_delito_lag2': base_count * np.random.uniform(0.9, 1.1),
-        'count_delito_lag3': base_count * np.random.uniform(0.9, 1.1),
-        'count_arma_lag1': base_count * np.random.uniform(0.7, 1.3),
-        'count_arma_lag2': base_count * np.random.uniform(0.7, 1.3),
-        'count_arma_lag3': base_count * np.random.uniform(0.7, 1.3),
-        'count_delito_ma3': base_count, 
-        'count_arma_ma3': base_count, 
+        'n_dias_laborales': weekdays,
+        'n_fines_de_semana': weekends,
+        'n_festivos': festivos,
+        'es_fin_ano': 1 if mes == 12 else 0,
+        'codigo_municipio': int(codigo_municipio),
+        'area_km2': area_km2,
+        'densidad_poblacional': poblacion_base / area_km2,
+        'n_centros_poblados': 5,
+        'poblacion_total': poblacion_base,
+        'proporcion_menores': 0.25,
+        'proporcion_adultos': 0.60,
+        'proporcion_adolescentes': 0.15,
+        'lag_1': base_count * np.random.uniform(0.9, 1.1),
+        'lag_3': base_count * np.random.uniform(0.85, 1.15),
+        'lag_12': base_count * np.random.uniform(0.8, 1.2),
+        'roll_mean_3': base_count,
+        'roll_mean_12': base_count,
+        'roll_std_3': base_count * 0.1,
+        'roll_std_12': base_count * 0.15,
+        'pct_change_1': np.random.uniform(-0.1, 0.1),
+        'pct_change_3': np.random.uniform(-0.15, 0.15),
+        'pct_change_12': np.random.uniform(-0.2, 0.2),
     }
     
     X = pd.DataFrame([features])
@@ -188,17 +251,66 @@ def predecir_delito_arma(codigo_municipio, anio, mes, modelos, mun_resumen):
     try:
         feature_order = scaler.feature_names_in_.tolist()
         X = X[feature_order]
-
         X_scaled = scaler.transform(X)
-        predicciones = model.predict(X_scaled)
-        
-        delito_pred = le_delito.inverse_transform(predicciones[0, 0:1].astype(int).tolist())[0]
-        arma_pred = le_arma.inverse_transform(predicciones[0, 1:2].astype(int).tolist())[0]
+        prediccion = model.predict(X_scaled)[0]
         
         return {
-            "delito_predicho": delito_pred.strip(),
-            "arma_predicha": arma_pred.strip(),
+            "total_delitos_predicho": max(0, round(prediccion)),
             "mes": mes,
+            "anio": anio
+        }
+    except Exception as e:
+        return {"error": f"Error durante la predicción: {e}"}
+
+
+def predecir_regression_annual(codigo_municipio, anio, modelos, mun_resumen):
+    """Execute the annual regression model prediction."""
+    if modelos is None or "model" not in modelos:
+        return {"error": "Modelo de regresión anual no cargado correctamente."}
+
+    model = modelos["model"]
+    scaler = modelos["scaler"]
+    
+    if codigo_municipio not in mun_resumen:
+        return {"error": "Municipio no encontrado en el resumen descriptivo."}
+
+    # Base historical data for the municipality
+    base_count = mun_resumen[codigo_municipio]["total_delitos"]
+    poblacion_base = base_count * 100  # Rough estimation
+    
+    # Simulated features for annual prediction
+    features = {
+        'poblacion_total': poblacion_base,
+        'poblacion_menores': poblacion_base * 0.25,
+        'poblacion_adultos': poblacion_base * 0.60,
+        'poblacion_adolescentes': poblacion_base * 0.15,
+        'area_km2': 500,
+        'densidad_poblacional': poblacion_base / 500,
+        'centros_por_km2': 0.01,
+        'ABIGEATO': base_count * 0.02,
+        'HURTOS': base_count * 0.30,
+        'LESIONES': base_count * 0.25,
+        'VIOLENCIA INTRAFAMILIAR': base_count * 0.20,
+        'AMENAZAS': base_count * 0.08,
+        'DELITOS SEXUALES': base_count * 0.05,
+        'EXTORSION': base_count * 0.02,
+        'HOMICIDIOS': base_count * 0.03,
+        'es_post_2020': 1 if anio > 2020 else 0,
+        'total_delitos_lag1': base_count * np.random.uniform(0.9, 1.1),
+        'total_delitos_lag2': base_count * np.random.uniform(0.85, 1.15),
+        'delitos_media_movil_3': base_count,
+    }
+    
+    X = pd.DataFrame([features])
+    
+    try:
+        feature_order = scaler.feature_names_in_.tolist()
+        X = X[feature_order]
+        X_scaled = scaler.transform(X)
+        prediccion = model.predict(X_scaled)[0]
+        
+        return {
+            "total_delitos_predicho": max(0, round(prediccion)),
             "anio": anio
         }
     except Exception as e:
@@ -320,7 +432,6 @@ def render():
     """Render the dashboard page."""
     
     # Load data and models
-    modelos_predictivos = load_predictive_dominant()
     data_load_result = load_descriptive_data()
     data_dominant, data_event, geojson_data, municipio_name_map = data_load_result
 
@@ -535,49 +646,89 @@ def render():
     # TAB 2: PREDICTIONS
     # ------------------------------------------------------------------------------
     with tab_predictivo:
+        # Load all models
+        modelos_regression_monthly = load_regression_monthly()
+        modelos_regression_annual = load_regression_annual()
+        
+        st.header("Proyección y Simulación de Riesgo")
+        
+        # Model options (define before checking availability)
+        MODELOS_OPCIONES = {
+            "Regresión: Delitos Mensuales": {"key": "regression_monthly", "tipo": "regresion"},
+            "Regresión: Delitos Anuales": {"key": "regression_annual", "tipo": "regresion"},
+        }
+        
         col_controls, col_selector = st.columns([3, 1])
 
         with col_selector:
-            st.markdown("#### Selección de Modelos")
-            st.markdown("---")
-            modelo_dominante_selected = st.checkbox("Dominante: Delito/Arma", value=True, key="chk_dominante")
-            modelo_eventos_selected = st.checkbox("Eventos: Perfil/Contexto", value=False, key="chk_eventos", disabled=True)
-            st.info("Solo el modelo **Dominante** está implementado para predicción por ahora.")
+            modelo_seleccionado = st.selectbox(
+                "Modelo predictivo:",
+                options=list(MODELOS_OPCIONES.keys()),
+                index=0,
+                key="modelo_pred_select",
+                help="Selecciona el modelo de predicción a utilizar"
+            )
+            
+            modelo_info = MODELOS_OPCIONES[modelo_seleccionado]
+            modelo_key = modelo_info["key"]
+            
+            # Check model availability
+            modelo_disponible = False
+            if modelo_key == "regression_monthly" and modelos_regression_monthly is not None:
+                modelo_disponible = True
+            elif modelo_key == "regression_annual" and modelos_regression_annual is not None:
+                modelo_disponible = True
+            
+            if not modelo_disponible:
+                st.warning(f"El modelo no pudo ser cargado. Verifique los archivos.")
 
         with col_controls:
-            st.header("Proyección y Simulación de Riesgo")
-            
-            if not modelo_dominante_selected:
-                st.warning("Selecciona el modelo **Dominante** en el panel derecho para activar las predicciones.")
-            elif modelos_predictivos is None:
-                st.warning("⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos `.joblib` no pudieron ser cargados correctamente.")
+            if not modelo_disponible:
+                st.warning("⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos del modelo no pudieron ser cargados correctamente.")
             else:
-                with st.container(border=True):
-                    st.subheader("Controles de Predicción")
+                municipios_predict = sorted(list(municipio_name_map.values()))
+                today = datetime.date.today()
+                next_month = today.month % 12 + 1
+                next_year = today.year + (1 if today.month == 12 else 0)
+                
+                meses_disp = {1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
+                              7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"}
+                
+                # Different layouts based on model type
+                if modelo_key == "regression_annual":
+                    # Annual model: Municipality + Year only
+                    col_mun, col_anio, col_empty, col_btn = st.columns([2, 1, 1, 1])
+                    
+                    municipio_pred_name = col_mun.selectbox("Selecciona un municipio para predecir:", municipios_predict, key="mun_pred")
+                    codigo_municipio_pred = next((k for k, v in municipio_name_map.items() if v == municipio_pred_name), None)
+                    
+                    anio_pred = col_anio.number_input("Año", min_value=today.year, max_value=today.year + 10, value=next_year, key="anio_pred")
+                    mes_pred = None  # Not used for annual model
+                    
+                else:
+                    # Monthly Regression: Municipality + Month + Year
                     col_mun, col_mes, col_anio, col_btn = st.columns([2, 1, 1, 1])
                     
-                    municipios_predict = sorted(list(municipio_name_map.values()))
                     municipio_pred_name = col_mun.selectbox("Selecciona un municipio para predecir:", municipios_predict, key="mun_pred")
-                    
                     codigo_municipio_pred = next((k for k, v in municipio_name_map.items() if v == municipio_pred_name), None)
-
-                    today = datetime.date.today()
-                    next_month = today.month % 12 + 1
-                    next_year = today.year + (1 if today.month == 12 else 0)
                     
-                    meses_disp = {1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
-                                  7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"}
-
                     mes_pred = col_mes.number_input(f"Mes ({meses_disp.get(next_month)})", min_value=1, max_value=12, value=next_month, key="mes_pred")
                     anio_pred = col_anio.number_input("Año", min_value=today.year, max_value=today.year + 10, value=next_year, key="anio_pred")
 
-                    if col_btn.button("Ejecutar Predicción 🚀"):
-                        if codigo_municipio_pred and codigo_municipio_pred in mun_resumen:
-                            with st.spinner(f"Calculando predicción para {municipio_pred_name.upper()} en {meses_disp.get(mes_pred)}/{anio_pred}..."):
-                                resultado = predecir_delito_arma(str(codigo_municipio_pred), int(anio_pred), int(mes_pred), modelos_predictivos, mun_resumen)
+                if col_btn.button("Ejecutar Predicción 🚀"):
+                    if codigo_municipio_pred and codigo_municipio_pred in mun_resumen:
+                        if modelo_key == "regression_annual":
+                            with st.spinner(f"Calculando predicción para {municipio_pred_name.upper()} en {anio_pred}..."):
+                                resultado = predecir_regression_annual(str(codigo_municipio_pred), int(anio_pred), modelos_regression_annual, mun_resumen)
+                                resultado["modelo"] = modelo_key
                                 st.session_state["prediccion_actual"] = resultado
-                        else:
-                            st.error("Selecciona un municipio válido o uno con datos descriptivos.")
+                        else:  # regression_monthly
+                            with st.spinner(f"Calculando predicción para {municipio_pred_name.upper()} en {meses_disp.get(mes_pred)}/{anio_pred}..."):
+                                resultado = predecir_regression_monthly(str(codigo_municipio_pred), int(anio_pred), int(mes_pred), modelos_regression_monthly, mun_resumen)
+                                resultado["modelo"] = modelo_key
+                                st.session_state["prediccion_actual"] = resultado
+                    else:
+                        st.error("Selecciona un municipio válido o uno con datos descriptivos.")
 
                 st.markdown("---")
 
@@ -589,26 +740,45 @@ def render():
                     if "error" in pred:
                         st.error(f"Error en el modelo: {pred['error']}")
                     else:
-                        st.success(f"Predicción exitosa para {municipio_pred_name.upper()} en {meses_disp.get(pred['mes'])}/{pred['anio']}:")
+                        pred_modelo = pred.get("modelo", "regression_monthly")
                         
-                        col_delito, col_arma, col_desc = st.columns(3)
-                        
-                        col_delito.metric("Delito Dominante Predicho", pred["delito_predicho"])
-                        col_arma.metric("Arma Dominante Predicha", pred["arma_predicha"])
-                        
-                        mun_info = mun_resumen.get(codigo_municipio_pred, {})
-                        riesgo = mun_info.get("categoria_riesgo", "N/A")
-                        puesto = mun_info.get("ranking_departamental", "N/A")
-                        delito_hist = mun_info.get("delito_mas_frecuente", "N/A")
-
-                        col_desc.info(f"""
-                        ANÁLISIS DESCRIPTIVO (HISTÓRICO):
-                        • Riesgo: {riesgo.upper() if riesgo != "N/A" else riesgo}
-                        • Puesto: #{puesto}
-                        • Delito Histórico: {delito_hist.upper() if delito_hist != "N/A" else delito_hist}
-                        """)
-                        
-                        st.warning(f"🚨 ALERTA: Se predice que el {pred['delito_predicho'].upper()} será el mayor riesgo para este municipio, principalmente usando {pred['arma_predicha'].upper()}.")
+                        if pred_modelo == "regression_monthly":
+                            # Monthly regression result
+                            st.success(f"Predicción exitosa para {municipio_pred_name.upper()} en {meses_disp.get(pred['mes'])}/{pred['anio']}:")
+                            
+                            col_total, col_desc = st.columns([1, 2])
+                            
+                            col_total.metric("Total Delitos Predichos", f"{pred['total_delitos_predicho']:,}")
+                            
+                            mun_info = mun_resumen.get(codigo_municipio_pred, {})
+                            riesgo = mun_info.get("categoria_riesgo", "N/A")
+                            promedio_mensual = mun_info.get("total_delitos", 0) / 12
+                            
+                            col_desc.info(f"""
+                            CONTEXTO HISTÓRICO:
+                            • Categoría de Riesgo: {riesgo.upper() if riesgo != "N/A" else riesgo}
+                            • Promedio Mensual Histórico: ~{promedio_mensual:.0f} delitos
+                            • Predicción vs Promedio: {((pred['total_delitos_predicho'] / promedio_mensual - 1) * 100):+.1f}%
+                            """)
+                            
+                        elif pred_modelo == "regression_annual":
+                            # Annual regression result
+                            st.success(f"Predicción exitosa para {municipio_pred_name.upper()} en el año {pred['anio']}:")
+                            
+                            col_total, col_desc = st.columns([1, 2])
+                            
+                            col_total.metric("Total Delitos Anuales Predichos", f"{pred['total_delitos_predicho']:,}")
+                            
+                            mun_info = mun_resumen.get(codigo_municipio_pred, {})
+                            riesgo = mun_info.get("categoria_riesgo", "N/A")
+                            total_historico = mun_info.get("total_delitos", 0)
+                            
+                            col_desc.info(f"""
+                            CONTEXTO HISTÓRICO:
+                            • Categoría de Riesgo: {riesgo.upper() if riesgo != "N/A" else riesgo}
+                            • Total Histórico Registrado: {total_historico:,} delitos
+                            • Predicción vs Histórico: {((pred['total_delitos_predicho'] / total_historico - 1) * 100) if total_historico > 0 else 0:+.1f}%
+                            """)
 
                 else:
                     st.info("Utiliza los controles de predicción de arriba para obtener el resultado del modelo predictivo.")
