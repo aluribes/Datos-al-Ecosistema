@@ -14,7 +14,6 @@ Routes:
 
 import streamlit as st
 import os
-from PIL import Image
 
 # ============================
 # PAGE CONFIGURATION
@@ -34,20 +33,6 @@ styles_path = os.path.join(BASE_DIR, "assets", "styles.css")
 if os.path.exists(styles_path):
     with open(styles_path, "r", encoding="utf-8", errors="ignore") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-# ============================
-# LOGO IN SIDEBAR
-# ============================
-logo_path = os.path.join(BASE_DIR, "assets", "logo_crimelab.png")
-
-if os.path.exists(logo_path):
-    try:
-        logo = Image.open(logo_path)
-        st.sidebar.markdown("<div class='logo-container'>", unsafe_allow_html=True)
-        st.sidebar.image(logo, use_container_width=False, width=150)
-        st.sidebar.markdown("</div>", unsafe_allow_html=True)
-    except Exception:
-        pass
 
 # ============================
 # DEFINE PAGES

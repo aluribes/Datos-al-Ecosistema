@@ -376,7 +376,7 @@ def render():
             st.subheader("Perfiles y Factores Contextuales")
             st.markdown("Análisis enfocado en la naturaleza de los eventos, perfiles involucrados y factores temporales/demográficos.")
 
-            st.subheader("📊 Resumen General")
+            st.subheader("Resumen General")
             col1, col2, col3, col4 = st.columns(4)
             
             periodo_event = f"{resumen_event['periodo']['anio_inicio']} - {resumen_event['periodo']['anio_fin']}"
@@ -388,7 +388,7 @@ def render():
             
             st.markdown("---")
 
-            st.subheader("👨‍👩‍👧‍👦 Análisis Demográfico por Grupo Etario")
+            st.subheader("Análisis Demográfico por Grupo Etario")
             
             opciones_delito_demo = ["Delitos Totales"] + listado_delitos
             filtro_delito_demo = st.selectbox("Filtrar Análisis Demográfico por Delito:", opciones_delito_demo, key="filtro_delito_demo")
@@ -439,7 +439,7 @@ def render():
 
             st.markdown("---")
             
-            st.header("🗺️ Mapa de Clasificación de Riesgo - Santander")
+            st.header("Mapa de Clasificación de Riesgo - Santander")
             
             m = folium.Map(location=[7.12539, -73.1198], zoom_start=8, tiles="CartoDB positron")
             
@@ -508,10 +508,10 @@ def render():
             
             st.markdown("---")
 
-            st.header("⏳ Análisis de Tendencia Anual (Histórica y Proyectada)")
+            st.header("Análisis de Tendencia Anual (Histórica y Proyectada)")
             
             with st.container(border=True): 
-                st.subheader("🎛️ Controles de Exploración")
+                st.subheader("Controles de Exploración")
                 col_anho, col_vacio = st.columns([1, 3])
 
                 años_disponibles = sorted(list(set(range(2010, 2026)))) 
@@ -522,7 +522,7 @@ def render():
 
             st.markdown("---")
 
-            st.header("🏅 Ranking de Criminalidad Municipal")
+            st.header("Ranking de Criminalidad Municipal")
             
             col_rank_settings, col_rank_table = st.columns([1, 3])
             with col_rank_settings:
@@ -545,7 +545,7 @@ def render():
             st.info("Solo el modelo **Dominante** está implementado para predicción por ahora.")
 
         with col_controls:
-            st.header("🔮 Proyección y Simulación de Riesgo")
+            st.header("Proyección y Simulación de Riesgo")
             
             if not modelo_dominante_selected:
                 st.warning("Selecciona el modelo **Dominante** en el panel derecho para activar las predicciones.")
@@ -553,7 +553,7 @@ def render():
                 st.warning("⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos `.joblib` no pudieron ser cargados correctamente.")
             else:
                 with st.container(border=True):
-                    st.subheader("📅 Controles de Predicción")
+                    st.subheader("Controles de Predicción")
                     col_mun, col_mes, col_anio, col_btn = st.columns([2, 1, 1, 1])
                     
                     municipios_predict = sorted(list(municipio_name_map.values()))

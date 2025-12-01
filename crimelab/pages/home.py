@@ -1,7 +1,17 @@
 import streamlit as st
+import os
 
 def render():
     """Render the home page content."""
+    
+    # Logo at top, centered
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    logo_path = os.path.join(BASE_DIR, "assets", "logo_crimelab.png")
+    
+    if os.path.exists(logo_path):
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image(logo_path, use_container_width=True)
     
     st.title("CrimeLab: Seguridad Ciudadana – Santander")
 
@@ -12,6 +22,8 @@ def render():
     Integra datos oficiales, analítica geoespacial, modelos predictivos y un asistente inteligente 
     para facilitar el acceso a información confiable y actualizada.
     """)
+
+    st.markdown("---")
 
     # ------------------------------
     # TARJETA 1 – ¿Qué es CrimeLab?
@@ -26,22 +38,26 @@ def render():
     - Apoyar la gestión pública con analítica avanzada.
     """)
 
+    st.markdown("---")
+
     # ------------------------------
     # TARJETA 2 – Secciones del Tablero
     # ------------------------------
     st.markdown("## 📌 Secciones del Tablero")
 
     st.markdown("""
-    ### 📊 **Visor Analítico**  
+    ### **Visor Analítico**  
     Mapas interactivos, series temporales y filtros por municipio, tipo de delito y tendencia histórica.
 
-    ### 🤖 **Chatbot ALBA**  
+    ### **Chatbot ALBA**  
     ALBA (**Asistente Local de Búsqueda y Análisis**) responde preguntas sobre seguridad ciudadana,  
     estadísticas, territorio, delitos y comparativos entre municipios.
 
-    ### 📘 **Información del Proyecto**  
+    ### **Información del Proyecto**  
     Arquitectura del sistema, metodología, modelos, fuentes y documentación técnica.
     """)
+
+    st.markdown("---")
 
     # ------------------------------
     # TARJETA 3 – Invitación

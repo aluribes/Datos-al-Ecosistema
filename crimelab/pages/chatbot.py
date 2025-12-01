@@ -229,18 +229,18 @@ def chat_with_alba(user_message, context_data, chat_history):
 def render():
     """Render the chatbot page."""
     
-    st.title("🤖 ALBA - Asistente de Seguridad Ciudadana")
+    st.title("ALBA - Asistente de Seguridad Ciudadana")
     
     st.markdown("""
     **ALBA** (Asistente Local de Búsqueda y Análisis) es un chatbot inteligente 
     diseñado para responder preguntas sobre seguridad ciudadana en Santander.
     
     Puedes preguntarle sobre:
-    - 📊 Estadísticas de criminalidad
-    - 🗺️ Información por municipio
-    - 📈 Tendencias y patrones
-    - 🔍 Tipos de delitos más comunes
-    - ⚠️ Clasificación de riesgo municipal
+    - Estadísticas de criminalidad
+    - Información por municipio
+    - Tendencias y patrones
+    - Tipos de delitos más comunes
+    - Clasificación de riesgo municipal
     """)
     
     st.markdown("---")
@@ -292,7 +292,7 @@ def render():
     
     # Sidebar with quick actions
     with st.sidebar:
-        st.markdown("### 💡 Preguntas sugeridas")
+        st.markdown("### Preguntas sugeridas")
         
         suggestions = [
             "¿Cuál es el delito más común en Santander?",
@@ -311,7 +311,7 @@ def render():
         
         st.markdown("---")
         
-        if st.button("🗑️ Limpiar conversación"):
+        if st.button("Limpiar conversación"):
             st.session_state.alba_messages = [
                 {
                     "role": "assistant",
