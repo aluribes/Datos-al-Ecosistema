@@ -1,6 +1,7 @@
-# 📊 Datos al Ecosistema - Reto Avanzado: Seguridad en Santander
+# 📊 CrimeLab Santander
+## Datos al Ecosistema - Reto Avanzado: Seguridad en Santander
 
-Este repositorio contiene el desarrollo de la solución para el reto **"Datos al Ecosistema"**, enfocado en el análisis y modelado de datos de seguridad y convivencia en el departamento de Santander.
+Este repositorio contiene el desarrollo de la solución para el reto **"Datos al Ecosistema 2025"**, enfocado en el análisis y modelado de datos de seguridad y convivencia en el departamento de Santander.
 
 | Sección | Descripción |
 | :--- | :--- |
@@ -14,10 +15,9 @@ Este repositorio contiene el desarrollo de la solución para el reto **"Datos al
 <a id="equipo"></a>
 ## 👥 Equipo
 
-Somos un equipo de **4 integrantes** comprometidos con el uso de datos para el impacto social:
+Somos un equipo de **3 integrantes** comprometidos con el uso de datos para el impacto social:
 - Alejandra Uribe Sierra 
 - Shorly López Pérez
-- Mateo Arenas Montoya
 - Sergio Luis López Verbel
 
 <a id="objetivos-generales"></a>
@@ -29,7 +29,7 @@ Para abordar el reto, hemos diseñado un plan de trabajo general compuesto por 6
 2.  ✅ **Creación de infraestructura de datos, limpieza y modelado.**
 3.  ✅ **Diseño de Dashboard.**
 4.  ✅ **Creación de modelos predictivos (descriptivos y ML).**
-5.  🚧 Desarrollo del Chatbot (en progreso).
+5.  ✅ **Desarrollo del Chatbot.**
 6.  ✅ **Documentación, validación y entrega.**
 
 <a id="estructura-general"></a>
@@ -79,7 +79,7 @@ Modelos desarrollados en notebooks con dos enfoques:
 
 Cada modelo tiene versiones **descriptivas** (análisis) y **predictivas** (ML con XGBoost, Random Forest, etc.).
 
-### 🚧 Chatbot Comunitario (En progreso)
+### ✅ Chatbot Comunitario
 - Prototipo funcional en el Dashboard (pestaña "Chatbot comunitario")
 - Agente basado en reglas que interpreta preguntas y filtra datos
 - Incluye rutas de atención (línea 123, 155, Fiscalía)
