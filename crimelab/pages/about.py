@@ -73,7 +73,7 @@ def render():
     st.subheader("Equipo de Desarrollo")
 
     st.write("""
-    Este proyecto fue desarrollado por un equipo de 4 integrantes comprometidos 
+    Este proyecto fue desarrollado por un equipo de 3 integrantes comprometidos 
     con el uso de datos para el impacto social en el departamento de Santander.
     """)
 
@@ -93,5 +93,4 @@ def render():
         **Sergio Luis López Verbel**  
         [LinkedIn](https://www.linkedin.com/in/sergio-luis-lopez-verbel)
         
-        **Mateo Arenas Montoya**
         """)
