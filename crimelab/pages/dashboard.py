@@ -6,11 +6,13 @@ import plotly.express as px
 import folium
 from streamlit_folium import st_folium
 from branca.element import MacroElement, Template
-import numpy as np 
+import numpy as np
 import datetime
+import altair as alt  # Para las visualizaciones históricas tipo app viejo
 
 # Get the base directory (crimelab folder)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 def get_file_path(base_dir, *relative_path_components):
     """Generates a normalized path for any operating system."""
@@ -18,7 +20,791 @@ def get_file_path(base_dir, *relative_path_components):
 
 
 # ============================
-# DATA LOADING FUNCTIONS
+# HISTÓRICO: DATAFRAME INTEGRADO (app viejo)
+# ============================
+
+# Carpeta de los datos del dashboard histórico
+DATA_DASHBOARD_DIR = get_file_path(BASE_DIR, "..", "data", "gold", "dashboard")
+
+
+@st.cache_data(show_spinner="Cargando datos históricos del dashboard...")
+def load_historical_data():
+    """
+    Carga las tablas base del dashboard histórico desde data/gold/dashboard
+    y construye el DataFrame integrado a nivel de hecho delictivo.
+    """
+    metas = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "metas.parquet"))
+    mandatos = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "mandatos.parquet"))
+    poblacion = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "poblacion_santander.parquet"))
+    policia = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "policia_santander.parquet"))
+    municipios = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "municipios.parquet"))
+    delitos_bucaramanga = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "delitos_bucaramanga.parquet"))
+    delitos_informaticos = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "delitos_informaticos.parquet"))
+
+    # Normalizar nombres de columnas
+    for df in (
+        metas,
+        mandatos,
+        poblacion,
+        policia,
+        municipios,
+        delitos_bucaramanga,
+        delitos_informaticos,
+    ):
+        df.columns = [c.strip() for c in df.columns]
+
+    df_integrated = build_integrated_df(
+        metas=metas,
+        mandatos=mandatos,
+        poblacion=poblacion,
+        policia=policia,
+        municipios=municipios,
+        delitos_bucaramanga=delitos_bucaramanga,
+        delitos_informaticos=delitos_informaticos,
+    )
+
+    return df_integrated, mandatos
+
+
+def build_integrated_df(
+    metas: pd.DataFrame,
+    mandatos: pd.DataFrame,
+    poblacion: pd.DataFrame,
+    policia: pd.DataFrame,
+    municipios: pd.DataFrame,
+    delitos_bucaramanga: pd.DataFrame,
+    delitos_informaticos: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Construye un DataFrame integrado a nivel de hecho delictivo,
+    uniendo las fuentes:
+
+        - policia_santander          (SCRAPING)
+        - delitos_bucaramanga        (Socrata local)
+        - delitos_informaticos       (Socrata departamental)
+
+    y luego simulando el modelo relacional:
+
+        + municipios
+        + poblacion_santander
+        + mandatos
+        + metas
+    """
+    # Copias de trabajo
+    df_pol = policia.copy()
+    df_buc = delitos_bucaramanga.copy()
+    df_inf = delitos_informaticos.copy()
+
+    # Bucaramanga: edad -> edad_persona
+    if "edad" in df_buc.columns and "edad_persona" not in df_buc.columns:
+        df_buc = df_buc.rename(columns={"edad": "edad_persona"})
+
+    # Asegurar cantidad numérica
+    for df_src in (df_pol, df_buc, df_inf):
+        if "cantidad" in df_src.columns:
+            df_src["cantidad"] = pd.to_numeric(df_src["cantidad"], errors="coerce").fillna(0)
+
+    # Delitos informáticos no traen columna "delito" en el modelo,
+    # creamos un identificador genérico para integrarlos.
+    if "delito" not in df_inf.columns:
+        df_inf["delito"] = "DELITOS INFORMÁTICOS"
+
+    # Origen para trazabilidad
+    df_pol["origen"] = "POLICIA_SCRAPING"
+    df_buc["origen"] = "DELITOS_BUCARAMANGA"
+    df_inf["origen"] = "DELITOS_INFORMATICOS"
+
+    # Unificar hechos
+    fact = pd.concat(
+        [df_pol, df_buc, df_inf],
+        ignore_index=True,
+        sort=False,
+    )
+
+    # Limpieza básica de nombres antes de joins
+    fact.columns = [c.strip() for c in fact.columns]
+
+    # Eliminamos columnas espaciales que vendrán de municipios
+    for col in ["departamento", "municipio", "codigo_departamento"]:
+        if col in fact.columns:
+            fact = fact.drop(columns=col)
+
+    # Join dimensión espacial (municipios)
+    fact = fact.merge(
+        municipios[
+            [
+                "codigo_municipio",
+                "codigo_departamento",
+                "departamento",
+                "municipio",
+            ]
+        ],
+        on="codigo_municipio",
+        how="left",
+    )
+
+    # Join población (para tasas)
+    fact = fact.merge(
+        poblacion[["codigo_municipio", "anio", "n_poblacion"]],
+        on=["codigo_municipio", "anio"],
+        how="left",
+    )
+
+    # Join mandatos y metas
+    fact = fact.merge(mandatos, on="anio", how="left")  # agrega "mandato"
+    fact = fact.merge(metas, on="mandato", how="left")  # agrega metas y presupuesto
+
+    # Tipos básicos y tasas
+    fact["anio"] = pd.to_numeric(fact["anio"], errors="coerce").astype("Int64")
+    fact["mes"] = pd.to_numeric(fact["mes"], errors="coerce").astype("Int64")
+    fact["dia"] = pd.to_numeric(fact["dia"], errors="coerce").astype("Int64")
+
+    fact["delito"] = fact["delito"].astype(str).str.upper()
+    fact["municipio"] = fact["municipio"].astype(str).str.upper()
+
+    # Tasa por 100.000 habitantes (cuando hay población)
+    fact["tasa_100k"] = np.where(
+        fact["n_poblacion"] > 0,
+        fact["cantidad"] / fact["n_poblacion"] * 1e5,
+        np.nan,
+    )
+
+    return fact
+
+
+def crime_rate_and_meta(
+    df: pd.DataFrame,
+    crime_filter,
+    meta_col: str,
+) -> tuple[float, float]:
+    """
+    Calcula:
+
+        - tasa_real: casos totales / población total * 100.000
+        - meta_tasa: meta departamental promedio (ya viene como tasa por 100.000)
+
+    crime_filter puede ser un string o una lista de delitos.
+    """
+    if isinstance(crime_filter, str):
+        mask = df["delito"] == crime_filter
+    else:
+        mask = df["delito"].isin(crime_filter)
+
+    df_crime = df[mask].copy()
+    if df_crime.empty:
+        return 0.0, 0.0
+
+    casos_tot = float(df_crime["cantidad"].sum())
+    pob_tot = float(df_crime["n_poblacion"].fillna(0).sum())
+
+    tasa_real = (casos_tot / pob_tot * 1e5) if pob_tot > 0 else 0.0
+
+    meta_tasa = 0.0
+    if meta_col in df_crime.columns:
+        metas = (
+            df_crime[["anio", meta_col]]
+            .dropna()
+            .drop_duplicates()
+        )
+        if not metas.empty:
+            meta_tasa = float(metas[meta_col].mean())
+
+    return tasa_real, meta_tasa
+
+
+def build_delta_text(actual: float, meta: float) -> str:
+    """Construye un texto de delta respecto a la meta (tasa vs tasa)."""
+    if meta == 0:
+        return "Sin meta"
+    diff = actual - meta
+    perc = diff / meta * 100
+    arrow = "↑" if diff > 0 else "↓"
+    return f"{arrow} {perc:,.1f}% vs meta"
+
+
+def render_historical_block(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
+    """
+    Bloque de dashboard histórico basado en la versión antigua:
+    1) Filtros Año inicial / Año final (between), por defecto 2025–2025.
+    2) Filtro por municipio (con opción "Todos").
+    3) Metas departamentales vs realidad (tasa por 100k).
+    4) Evolución mensual dentro del rango.
+    5) Tendencia histórica global (todos los años) respetando filtros.
+    """
+    st.markdown("## 🔍 Análisis histórico y metas departamentales")
+
+    # ---------------------------
+    # Filtros superiores (en la página, NO en sidebar)
+    # ---------------------------
+    years = sorted(int(y) for y in mandatos["anio"].dropna().unique())
+    default_year = 2025 if 2025 in years else max(years)
+
+    col_y1, col_y2, col_muni = st.columns([1, 1, 2])
+
+    with col_y1:
+        year_from = st.selectbox(
+            "Año inicial",
+            options=years,
+            index=years.index(default_year),
+        )
+
+    with col_y2:
+        year_to = st.selectbox(
+            "Año final",
+            options=years,
+            index=years.index(default_year),
+        )
+
+    # Corregir si el usuario invierte el rango
+    if year_from > year_to:
+        year_from, year_to = year_to, year_from
+        st.info(
+            "El año inicial era mayor que el año final, "
+            "se han intercambiado para mantener un rango válido."
+        )
+
+    # Subconjunto de datos para listas de filtros
+    df_range = df_integrated[
+        (df_integrated["anio"] >= year_from)
+        & (df_integrated["anio"] <= year_to)
+    ].copy()
+
+    municipalities_available = sorted(df_range["municipio"].dropna().unique())
+    muni_options = ["Todos"] + municipalities_available
+
+    with col_muni:
+        muni_sel_raw = st.multiselect(
+            "Municipios",
+            options=muni_options,
+            default=["Todos"],
+        )
+
+    if "Todos" in muni_sel_raw or not muni_sel_raw:
+        muni_selected = municipalities_available
+    else:
+        muni_selected = muni_sel_raw
+
+    # Filtro por delito (como en la versión vieja)
+    crimes_available = sorted(df_range["delito"].dropna().unique())
+    crime_options = ["Todos"] + crimes_available
+
+    crime_sel_raw = st.multiselect(
+        "Tipos de delito",
+        options=crime_options,
+        default=["Todos"],
+    )
+
+    if "Todos" in crime_sel_raw or not crime_sel_raw:
+        crime_selected = crimes_available
+    else:
+        crime_selected = crime_sel_raw
+
+    # ---------------------------
+    # Aplicar filtros globales
+    # ---------------------------
+    mask = (df_integrated["anio"] >= year_from) & (df_integrated["anio"] <= year_to)
+    if muni_selected:
+        mask &= df_integrated["municipio"].isin(muni_selected)
+    if crime_selected:
+        mask &= df_integrated["delito"].isin(crime_selected)
+
+    df_f = df_integrated[mask].copy()
+
+    if df_f.empty:
+        st.warning("No hay datos para la combinación de filtros seleccionada.")
+        return
+
+    # ---------------------------
+    # Mandatos en rango
+    # ---------------------------
+    mandatos_range = mandatos[
+        (mandatos["anio"] >= year_from) & (mandatos["anio"] <= year_to)
+    ]
+    mandatos_list = mandatos_range["mandato"].dropna().unique().tolist()
+    mandatos_str = ", ".join(mandatos_list) if mandatos_list else "Sin mandato registrado"
+
+    st.markdown(
+        f"**Mandatos en rango {year_from}–{year_to}:** {mandatos_str}"
+    )
+
+    st.markdown("---")
+
+    # ---------------------------
+    # Metas departamentales vs realidad (tasa por 100k)
+    # ---------------------------
+    st.markdown("### 🎯 Metas departamentales vs realidad (tasa por 100.000 hab.)")
+
+    hom_rate, hom_meta = crime_rate_and_meta(df_f, "HOMICIDIOS", "meta_homicidios")
+    hurto_aliases = ["HURTOS", "HURTO", "HURTO_PERSONAS"]
+    hurto_rate, hurto_meta = crime_rate_and_meta(df_f, hurto_aliases, "meta_hurtos")
+    lesions_rate, lesions_meta = crime_rate_and_meta(df_f, "LESIONES", "meta_lesiones")
+
+    kpi_cols = st.columns(3)
+
+    with kpi_cols[0]:
+        st.metric(
+            "Homicidios (tasa vs meta)",
+            f"{hom_rate:,.2f}",
+            delta=build_delta_text(hom_rate, hom_meta),
+        )
+
+    with kpi_cols[1]:
+        st.metric(
+            "Hurtos (tasa vs meta)",
+            f"{hurto_rate:,.2f}",
+            delta=build_delta_text(hurto_rate, hurto_meta),
+        )
+
+    with kpi_cols[2]:
+        st.metric(
+            "Lesiones (tasa vs meta)",
+            f"{lesions_rate:,.2f}",
+            delta=build_delta_text(lesions_rate, lesions_meta),
+        )
+
+    st.markdown("---")
+
+    # ---------------------------
+    # Distribución por tipo de delito
+    # ---------------------------
+    st.markdown("### ⚖️ Distribución por tipo de delito")
+
+    df_crime = (
+        df_f.groupby("delito", as_index=False)["cantidad"]
+        .sum()
+        .sort_values("cantidad", ascending=False)
+    )
+
+    chart_crime = (
+        alt.Chart(df_crime)
+        .mark_bar()
+        .encode(
+            x=alt.X("cantidad:Q", title="Número de casos"),
+            y=alt.Y("delito:N", sort="-x", title="Delito"),
+            tooltip=["delito", "cantidad"],
+        )
+        .properties(height=400)
+    )
+    st.altair_chart(chart_crime, use_container_width=True)
+
+    st.markdown("---")
+
+    # ---------------------------
+    # Evolución mensual dentro del rango
+    # ---------------------------
+    st.markdown("### 📈 Evolución mensual dentro del rango de años seleccionado")
+
+    df_month = (
+        df_f.groupby(["anio", "mes"], as_index=False)["cantidad"]
+        .sum()
+        .sort_values(["anio", "mes"])
+    )
+
+    chart_month = (
+        alt.Chart(df_month)
+        .mark_line(point=True)
+        .encode(
+            x=alt.X("mes:O", title="Mes"),
+            y=alt.Y("cantidad:Q", title="Casos"),
+            color=alt.Color("anio:N", title="Año"),
+            tooltip=["anio", "mes", "cantidad"],
+        )
+        .properties(height=350)
+    )
+    st.altair_chart(chart_month, use_container_width=True)
+
+    st.markdown("---")
+
+    # ---------------------------
+    # Tendencia histórica global (todos los años)
+    # ---------------------------
+    st.markdown("### 🕒 Tendencia histórica global (todos los años)")
+
+    mask_hist = np.ones(len(df_integrated), dtype=bool)
+    if crime_selected:
+        mask_hist &= df_integrated["delito"].isin(crime_selected)
+    if muni_selected:
+        mask_hist &= df_integrated["municipio"].isin(muni_selected)
+
+    df_hist = (
+        df_integrated[mask_hist]
+        .groupby("anio", as_index=False)["cantidad"]
+        .sum()
+        .sort_values("anio")
+    )
+
+    chart_hist = (
+        alt.Chart(df_hist)
+        .mark_line(point=True)
+        .encode(
+            x=alt.X("anio:O", title="Año"),
+            y=alt.Y("cantidad:Q", title="Casos totales"),
+            tooltip=["anio", "cantidad"],
+        )
+        .properties(height=350)
+    )
+    st.altair_chart(chart_hist, use_container_width=True)
+
+    st.markdown("---")
+
+# ============================
+# VISUALIZATION FUNCTIONS (NUEVO DASHBOARD)
+# ============================
+
+COLOR_RIESGO = {"Alto": "#e74c3c", "Medio-Alto": "#e67e22", "Medio-Bajo": "#f1c40f", "Bajo": "#2ecc71"}
+
+
+def get_color(riesgo):
+    return COLOR_RIESGO.get(riesgo, "#bdc3c7")
+
+
+def plot_tendencia_anual(tendencias_data, año_referencia):
+    df_tend = pd.DataFrame({
+        "Año": list(tendencias_data["delitos_por_anio"].keys()),
+        "Delitos": list(tendencias_data["delitos_por_anio"].values())
+    })
+    df_tend["Año"] = df_tend["Año"].astype(int)
+    max_anio_historico = df_tend["Año"].max()
+
+    df_tend["Tipo"] = np.where(df_tend["Año"] > max_anio_historico - 1, "Proyección", "Histórico")
+
+    fig = px.line(
+        df_tend,
+        x="Año",
+        y="Delitos",
+        title=f"Tendencia Histórica de Delitos (Resaltando Año {año_referencia})",
+        markers=True,
+        color="Tipo",
+        color_discrete_map={"Histórico": "#1f77b4", "Proyección": "#e74c3c"},
+    )
+
+    if año_referencia in df_tend["Año"].values:
+        fig.add_vline(
+            x=año_referencia,
+            line_width=2,
+            line_dash="dash",
+            line_color="gray",
+            annotation_text=f"Año de análisis: {año_referencia}",
+            annotation_position="top left",
+        )
+
+    fig.update_traces(marker=dict(size=8))
+    fig.update_layout(
+        title_font=dict(size=24, family="Arial", color="#333"),
+        xaxis_title="Año",
+        yaxis_title="Número de Delitos",
+        hovermode="x unified",
+        legend_title_text="Datos",
+        height=500,
+    )
+    return fig
+
+
+def plot_distribucion_delitos(stats_data):
+    if "distribucion_delitos" not in stats_data or not stats_data["distribucion_delitos"]:
+        return None
+
+    delitos_data = {
+        delito: data.get("porcentaje", 0)
+        for delito, data in stats_data["distribucion_delitos"].items()
+    }
+
+    df_dist = pd.DataFrame(list(delitos_data.items()), columns=["Delito", "Porcentaje"])
+    df_dist["Porcentaje"] = df_dist["Porcentaje"].astype(float)
+
+    if df_dist["Porcentaje"].sum() > 100 or df_dist["Porcentaje"].sum() < 90:
+        df_dist["Porcentaje"] = df_dist["Porcentaje"] / df_dist["Porcentaje"].sum()
+
+    fig = px.pie(
+        df_dist,
+        values="Porcentaje",
+        names="Delito",
+        title="Distribución Global de Delitos Dominantes en Santander",
+        hole=0.4,
+    )
+    fig.update_traces(textposition="inside", textinfo="percent+label")
+    fig.update_layout(
+        title_font=dict(size=22, family="Arial", color="#333"),
+        uniformtext_minsize=12,
+        uniformtext_mode="hide",
+        legend_title_text="Tipos de Delito",
+    )
+    return fig
+
+
+def predecir_regression_monthly(codigo_municipio, anio, mes, modelos, mun_resumen):
+    """Execute the monthly regression model prediction."""
+    if modelos is None or "model" not in modelos:
+        return {"error": "Modelo de regresión mensual no cargado correctamente."}
+
+    model = modelos["model"]
+    scaler = modelos["scaler"]
+
+    if codigo_municipio not in mun_resumen:
+        return {"error": "Municipio no encontrado en el resumen descriptivo."}
+
+    # Base historical data for the municipality
+    base_count = mun_resumen[codigo_municipio]["total_delitos"] / 12  # Monthly average
+
+    # Calculate calendar features
+    import calendar
+    _, days_in_month = calendar.monthrange(anio, mes)
+
+    # Estimate working days and weekends
+    first_day = datetime.date(anio, mes, 1)
+    weekdays = sum(
+        1
+        for day in range(1, days_in_month + 1)
+        if datetime.date(anio, mes, day).weekday() < 5
+    )
+    weekends = days_in_month - weekdays
+
+    # Colombian holidays approximation (rough estimate)
+    festivos = 1 if mes in [1, 3, 4, 5, 6, 7, 8, 10, 11, 12] else 0
+
+    # Simulated demographic/geographic features based on municipality data
+    poblacion_base = base_count * 1000  # Rough estimation
+    area_km2 = 500  # Default area
+
+    features = {
+        "anio": anio,
+        "mes": mes,
+        "trimestre": (mes - 1) // 3 + 1,
+        "mes_sin": np.sin(2 * np.pi * mes / 12),
+        "mes_cos": np.cos(2 * np.pi * mes / 12),
+        "n_dias_laborales": weekdays,
+        "n_fines_de_semana": weekends,
+        "n_festivos": festivos,
+        "es_fin_ano": 1 if mes == 12 else 0,
+        "codigo_municipio": int(codigo_municipio),
+        "area_km2": area_km2,
+        "densidad_poblacional": poblacion_base / area_km2,
+        "n_centros_poblados": 5,
+        "poblacion_total": poblacion_base,
+        "proporcion_menores": 0.25,
+        "proporcion_adultos": 0.60,
+        "proporcion_adolescentes": 0.15,
+        "lag_1": base_count * np.random.uniform(0.9, 1.1),
+        "lag_3": base_count * np.random.uniform(0.85, 1.15),
+        "lag_12": base_count * np.random.uniform(0.8, 1.2),
+        "roll_mean_3": base_count,
+        "roll_mean_12": base_count,
+        "roll_std_3": base_count * 0.1,
+        "roll_std_12": base_count * 0.15,
+        "pct_change_1": np.random.uniform(-0.1, 0.1),
+        "pct_change_3": np.random.uniform(-0.15, 0.15),
+        "pct_change_12": np.random.uniform(-0.2, 0.2),
+    }
+
+    X = pd.DataFrame([features])
+
+    try:
+        feature_order = scaler.feature_names_in_.tolist()
+        X = X[feature_order]
+        X_scaled = scaler.transform(X)
+        prediccion = model.predict(X_scaled)[0]
+
+        return {
+            "total_delitos_predicho": max(0, round(prediccion)),
+            "mes": mes,
+            "anio": anio,
+        }
+    except Exception as e:
+        return {"error": f"Error durante la predicción: {e}"}
+
+
+def predecir_regression_annual(codigo_municipio, anio, modelos, mun_resumen):
+    """Execute the annual regression model prediction."""
+    if modelos is None or "model" not in modelos:
+        return {"error": "Modelo de regresión anual no cargado correctamente."}
+
+    model = modelos["model"]
+    scaler = modelos["scaler"]
+
+    if codigo_municipio not in mun_resumen:
+        return {"error": "Municipio no encontrado en el resumen descriptivo."}
+
+    # Base historical data for the municipality
+    base_count = mun_resumen[codigo_municipio]["total_delitos"]
+    poblacion_base = base_count * 100  # Rough estimation
+
+    # Simulated features for annual prediction
+    features = {
+        "poblacion_total": poblacion_base,
+        "poblacion_menores": poblacion_base * 0.25,
+        "poblacion_adultos": poblacion_base * 0.60,
+        "poblacion_adolescentes": poblacion_base * 0.15,
+        "area_km2": 500,
+        "densidad_poblacional": poblacion_base / 500,
+        "centros_por_km2": 0.01,
+        "ABIGEATO": base_count * 0.02,
+        "HURTOS": base_count * 0.30,
+        "LESIONES": base_count * 0.25,
+        "VIOLENCIA INTRAFAMILIAR": base_count * 0.20,
+        "DELITOS SEXUALES": base_count * 0.05,
+        "AMENAZAS": base_count * 0.08,
+        "EXTORSION": base_count * 0.02,
+        "HOMICIDIOS": base_count * 0.03,
+        "es_post_2020": 1 if anio > 2020 else 0,
+        "total_delitos_lag1": base_count * np.random.uniform(0.9, 1.1),
+        "total_delitos_lag2": base_count * np.random.uniform(0.85, 1.15),
+        "delitos_media_movil_3": base_count,
+    }
+
+    X = pd.DataFrame([features])
+
+    try:
+        feature_order = scaler.feature_names_in_.tolist()
+        X = X[feature_order]
+        X_scaled = scaler.transform(X)
+        prediccion = model.predict(X_scaled)[0]
+
+        return {
+            "total_delitos_predicho": max(0, round(prediccion)),
+            "anio": anio,
+        }
+    except Exception as e:
+        return {"error": f"Error durante la predicción: {e}"}
+
+
+def plot_distribucion_event_delitos(data):
+    """Bar chart for crime distribution from Event Model."""
+    if "distribucion" not in data or not data["distribucion"]:
+        return None
+
+    df = pd.DataFrame(data["distribucion"])
+    df = df.sort_values(by="cantidad", ascending=False)
+
+    fig = px.bar(
+        df,
+        x="delito",
+        y="cantidad",
+        title="Distribución de Delitos - Clasificación de Eventos",
+        labels={"delito": "Tipo de Delito", "cantidad": "Cantidad"},
+        color="delito",
+        height=450,
+    )
+    fig.update_layout(xaxis={"categoryorder": "total descending"}, showlegend=False)
+    return fig
+
+
+def plot_perfiles(data_global, cruces_data, filtro_delito="Delitos Totales"):
+    """Horizontal bar chart for profile distribution (Aggressor/Victim)."""
+
+    def agrupar_perfil(perfil):
+        perfil = str(perfil).upper().strip()
+        if (
+            "NO REPORTADO" in perfil
+            or "NO REPORTA" in perfil
+            or "NAN" in perfil
+            or "NONE" in perfil
+        ):
+            return "NO REPORTADO/NO ESPECIFICADO"
+        return perfil
+
+    if filtro_delito == "Delitos Totales":
+        if "distribucion" not in data_global or not data_global["distribucion"]:
+            return None
+        df = pd.DataFrame(data_global["distribucion"])
+        df["porcentaje"] = df["porcentaje"].astype(float)
+        df["valor"] = df["porcentaje"]
+    else:
+        if "cruce_porcentual" not in cruces_data or filtro_delito not in cruces_data["cruce_porcentual"]:
+            return None
+
+        perfiles_porcentaje = cruces_data["cruce_porcentual"][filtro_delito]
+        df = pd.DataFrame(perfiles_porcentaje.items(), columns=["perfil", "porcentaje"])
+        df["valor"] = df["porcentaje"].astype(float)
+
+    df["perfil_agrupado"] = df["perfil"].apply(agrupar_perfil)
+
+    df_grouped = df.groupby("perfil_agrupado").agg(
+        valor=("valor", "sum")
+    ).reset_index()
+
+    df_grouped["porcentaje"] = df_grouped["valor"]
+    df_grouped["porcentaje_label"] = df_grouped["porcentaje"].round(1).astype(str) + "%"
+    df_grouped = df_grouped.sort_values(by="porcentaje", ascending=True)
+
+    titulo_grafico = f"Distribución de Perfiles Agrupados: {filtro_delito.upper()}"
+
+    fig = px.bar(
+        df_grouped,
+        x="porcentaje",
+        y="perfil_agrupado",
+        orientation="h",
+        title=titulo_grafico,
+        labels={
+            "perfil_agrupado": "Perfil (Género y Edad)",
+            "porcentaje": "Porcentaje",
+        },
+        height=500,
+        color="perfil_agrupado",
+    )
+
+    fig.update_traces(text=df_grouped["porcentaje_label"], textposition="outside")
+    fig.update_layout(
+        showlegend=False,
+        xaxis_title="Porcentaje",
+        yaxis_title="Perfiles Agrupados",
+        xaxis_tickformat=".1f",
+        uniformtext_minsize=12,
+        uniformtext_mode="hide",
+    )
+
+    return fig
+
+
+def plot_demografico_etario(demografico_data, cruces_data, filtro_delito="Delitos Totales"):
+    """Bar chart for age group distribution."""
+
+    if filtro_delito == "Delitos Totales":
+        if (
+            demografico_data
+            and "por_grupo_etario" in demografico_data
+            and "distribucion" in demografico_data["por_grupo_etario"]
+        ):
+            distribucion_edad = demografico_data["por_grupo_etario"]["distribucion"]
+            df_edad = pd.DataFrame(distribucion_edad.items(), columns=["grupo_etario", "cantidad"])
+        else:
+            return None
+    else:
+        if "delitos_por_grupo_etario" not in demografico_data:
+            return None
+
+        data_por_grupo_etario = demografico_data["delitos_por_grupo_etario"]
+
+        distribucion_edad_delito = {
+            grupo: data_por_grupo_etario[grupo].get(filtro_delito, 0)
+            for grupo in data_por_grupo_etario.keys()
+        }
+
+        distribucion_edad_delito = {k: v for k, v in distribucion_edad_delito.items() if v > 0}
+
+        if not distribucion_edad_delito:
+            return None
+
+        df_edad = pd.DataFrame(distribucion_edad_delito.items(), columns=["grupo_etario", "cantidad"])
+
+    df_edad["cantidad"] = df_edad["cantidad"].astype(int)
+
+    titulo_grafico = f"Eventos por Grupo Etario: {filtro_delito.upper()}"
+
+    fig_edad = px.bar(
+        df_edad,
+        x="grupo_etario",
+        y="cantidad",
+        title=titulo_grafico,
+        labels={"grupo_etario": "Grupo Etario", "cantidad": "Cantidad de Eventos"},
+        color="grupo_etario",
+        color_discrete_sequence=px.colors.qualitative.Pastel,
+    )
+    fig_edad.update_layout(xaxis={"categoryorder": "total descending"}, showlegend=False)
+    return fig_edad
+
+
+# ============================
+# DATA LOADING FUNCTIONS (NUEVO DASHBOARD)
 # ============================
 
 @st.cache_resource(show_spinner="Cargando modelo de regresión mensual...")
@@ -27,20 +813,41 @@ def load_regression_monthly():
     import joblib
     modelos = {}
     try:
-        model_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "regression_monthly", "xgb_regressor.joblib")
-        scaler_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "regression_monthly", "scaler.joblib")
-        metadata_path = get_file_path(BASE_DIR, "..", "models", "predictivos", "regression_monthly", "metadata.json")
-        
+        model_path = get_file_path(
+            BASE_DIR,
+            "..",
+            "models",
+            "predictivos",
+            "regression_monthly",
+            "xgb_regressor.joblib",
+        )
+        scaler_path = get_file_path(
+            BASE_DIR,
+            "..",
+            "models",
+            "predictivos",
+            "regression_monthly",
+            "scaler.joblib",
+        )
+        metadata_path = get_file_path(
+            BASE_DIR,
+            "..",
+            "models",
+            "predictivos",
+            "regression_monthly",
+            "metadata.json",
+        )
+
         modelos["model"] = joblib.load(model_path)
         modelos["scaler"] = joblib.load(scaler_path)
-        
+
         with open(metadata_path, "r", encoding="utf-8") as f:
             modelos["metadata"] = json.load(f)
-        
+
         return modelos
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         return None
-    except Exception as e:
+    except Exception:
         return None
 
 
@@ -49,33 +856,34 @@ def load_regression_annual():
     """Load the annual regression model and its components."""
     import joblib
     import glob
+
     modelos = {}
     try:
         annual_dir = get_file_path(BASE_DIR, "..", "models", "regression", "annual")
-        
+
         # Find the most recent model files
         model_files = glob.glob(os.path.join(annual_dir, "regression_annual_randomforest_*.joblib"))
         scaler_files = glob.glob(os.path.join(annual_dir, "scaler_*.joblib"))
         metadata_files = glob.glob(os.path.join(annual_dir, "regression_annual_metadata_*.json"))
-        
+
         if not model_files or not scaler_files or not metadata_files:
             return None
-        
+
         # Use the most recent (sorted by name which includes timestamp)
         model_path = sorted(model_files)[-1]
         scaler_path = sorted(scaler_files)[-1]
         metadata_path = sorted(metadata_files)[-1]
-        
+
         modelos["model"] = joblib.load(model_path)
         modelos["scaler"] = joblib.load(scaler_path)
-        
+
         with open(metadata_path, "r", encoding="utf-8") as f:
             modelos["metadata"] = json.load(f)
-        
+
         return modelos
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         return None
-    except Exception as e:
+    except Exception:
         return None
 
 
@@ -85,11 +893,11 @@ def load_descriptive_data():
     data_dominant, data_event = {}, {}
     geojson_data = {}
     municipio_name_map = {}
-    
-    dominant_dir = get_file_path(BASE_DIR, ".." ,"models", "descriptivo", "classification_dominant")
-    event_dir = get_file_path(BASE_DIR, ".." ,"models", "descriptivo", "classification_event")
-    geojson_path = get_file_path(BASE_DIR, ".." ,"data", "silver", "dane_geo", "geografia_silver.geojson")
-    
+
+    dominant_dir = get_file_path(BASE_DIR, "..", "models", "descriptivo", "classification_dominant")
+    event_dir = get_file_path(BASE_DIR, "..", "models", "descriptivo", "classification_event")
+    geojson_path = get_file_path(BASE_DIR, "..", "data", "silver", "dane_geo", "geografia_silver.geojson")
+
     files_to_load = {
         "stats_dom": get_file_path(dominant_dir, "estadisticas_generales.json"),
         "mun_resumen_dom": get_file_path(dominant_dir, "municipios_resumen.json"),
@@ -104,7 +912,7 @@ def load_descriptive_data():
         "top_combinaciones_event": get_file_path(event_dir, "top_combinaciones.json"),
         "respuestas_chatbot_event": get_file_path(event_dir, "respuestas_chatbot.json"),
     }
-    
+
     try:
         with open(geojson_path, "r", encoding="utf-8") as f:
             geojson_data = json.load(f)
@@ -112,7 +920,7 @@ def load_descriptive_data():
         for key, path in files_to_load.items():
             with open(path, "r", encoding="utf-8") as f:
                 content = json.load(f)
-                
+
                 if key.endswith("_dom"):
                     data_dominant[key.replace("_dom", "")] = content
                 elif key.endswith("_event"):
@@ -135,303 +943,13 @@ def load_descriptive_data():
 
 
 # ============================
-# VISUALIZATION FUNCTIONS
-# ============================
-
-COLOR_RIESGO = {"Alto": "#e74c3c", "Medio-Alto": "#e67e22", "Medio-Bajo": "#f1c40f", "Bajo": "#2ecc71"}
-
-def get_color(riesgo):
-    return COLOR_RIESGO.get(riesgo, "#bdc3c7")
-
-
-def plot_tendencia_anual(tendencias_data, año_referencia):
-    df_tend = pd.DataFrame({
-        "Año": list(tendencias_data["delitos_por_anio"].keys()),
-        "Delitos": list(tendencias_data["delitos_por_anio"].values())
-    })
-    df_tend["Año"] = df_tend["Año"].astype(int)
-    max_anio_historico = df_tend["Año"].max()
-    
-    df_tend["Tipo"] = np.where(df_tend["Año"] > max_anio_historico - 1, "Proyección", "Histórico")
-
-    fig = px.line(df_tend, x="Año", y="Delitos", title=f"Tendencia Histórica de Delitos (Resaltando Año {año_referencia})", markers=True, color="Tipo", color_discrete_map={"Histórico": "#1f77b4", "Proyección": "#e74c3c"})
-    
-    if año_referencia in df_tend["Año"].values:
-        fig.add_vline(x=año_referencia, line_width=2, line_dash="dash", line_color="gray", annotation_text=f"Año de análisis: {año_referencia}", annotation_position="top left")
-
-    fig.update_traces(marker=dict(size=8))
-    fig.update_layout(title_font=dict(size=24, family="Arial", color="#333"), xaxis_title="Año", yaxis_title="Número de Delitos", hovermode="x unified", legend_title_text='Datos', height=500)
-    return fig
-
-
-def plot_distribucion_delitos(stats_data):
-    if "distribucion_delitos" not in stats_data or not stats_data["distribucion_delitos"]: 
-        return None
-        
-    delitos_data = {
-        delito: data.get("porcentaje", 0) 
-        for delito, data in stats_data["distribucion_delitos"].items()
-    }
-
-    df_dist = pd.DataFrame(list(delitos_data.items()), columns=['Delito', 'Porcentaje'])
-    df_dist['Porcentaje'] = df_dist['Porcentaje'].astype(float) 
-    
-    if df_dist['Porcentaje'].sum() > 100 or df_dist['Porcentaje'].sum() < 90:
-        df_dist['Porcentaje'] = df_dist['Porcentaje'] / df_dist['Porcentaje'].sum()
-    
-    fig = px.pie(df_dist, values='Porcentaje', names='Delito', title='Distribución Global de Delitos Dominantes en Santander', hole=0.4)
-    fig.update_traces(textposition='inside', textinfo='percent+label')
-    fig.update_layout(title_font=dict(size=22, family="Arial", color="#333"), uniformtext_minsize=12, uniformtext_mode='hide', legend_title_text='Tipos de Delito')
-    return fig
-
-
-def predecir_regression_monthly(codigo_municipio, anio, mes, modelos, mun_resumen):
-    """Execute the monthly regression model prediction."""
-    if modelos is None or "model" not in modelos:
-        return {"error": "Modelo de regresión mensual no cargado correctamente."}
-
-    model = modelos["model"]
-    scaler = modelos["scaler"]
-    
-    if codigo_municipio not in mun_resumen:
-        return {"error": "Municipio no encontrado en el resumen descriptivo."}
-
-    # Base historical data for the municipality
-    base_count = mun_resumen[codigo_municipio]["total_delitos"] / 12  # Monthly average
-    
-    # Calculate calendar features
-    import calendar
-    _, days_in_month = calendar.monthrange(anio, mes)
-    
-    # Estimate working days and weekends
-    first_day = datetime.date(anio, mes, 1)
-    weekdays = sum(1 for day in range(1, days_in_month + 1) 
-                   if datetime.date(anio, mes, day).weekday() < 5)
-    weekends = days_in_month - weekdays
-    
-    # Colombian holidays approximation (rough estimate)
-    festivos = 1 if mes in [1, 3, 4, 5, 6, 7, 8, 10, 11, 12] else 0
-    
-    # Simulated demographic/geographic features based on municipality data
-    poblacion_base = base_count * 1000  # Rough estimation
-    area_km2 = 500  # Default area
-    
-    features = {
-        'anio': anio,
-        'mes': mes,
-        'trimestre': (mes - 1) // 3 + 1,
-        'mes_sin': np.sin(2 * np.pi * mes / 12),
-        'mes_cos': np.cos(2 * np.pi * mes / 12),
-        'n_dias_laborales': weekdays,
-        'n_fines_de_semana': weekends,
-        'n_festivos': festivos,
-        'es_fin_ano': 1 if mes == 12 else 0,
-        'codigo_municipio': int(codigo_municipio),
-        'area_km2': area_km2,
-        'densidad_poblacional': poblacion_base / area_km2,
-        'n_centros_poblados': 5,
-        'poblacion_total': poblacion_base,
-        'proporcion_menores': 0.25,
-        'proporcion_adultos': 0.60,
-        'proporcion_adolescentes': 0.15,
-        'lag_1': base_count * np.random.uniform(0.9, 1.1),
-        'lag_3': base_count * np.random.uniform(0.85, 1.15),
-        'lag_12': base_count * np.random.uniform(0.8, 1.2),
-        'roll_mean_3': base_count,
-        'roll_mean_12': base_count,
-        'roll_std_3': base_count * 0.1,
-        'roll_std_12': base_count * 0.15,
-        'pct_change_1': np.random.uniform(-0.1, 0.1),
-        'pct_change_3': np.random.uniform(-0.15, 0.15),
-        'pct_change_12': np.random.uniform(-0.2, 0.2),
-    }
-    
-    X = pd.DataFrame([features])
-    
-    try:
-        feature_order = scaler.feature_names_in_.tolist()
-        X = X[feature_order]
-        X_scaled = scaler.transform(X)
-        prediccion = model.predict(X_scaled)[0]
-        
-        return {
-            "total_delitos_predicho": max(0, round(prediccion)),
-            "mes": mes,
-            "anio": anio
-        }
-    except Exception as e:
-        return {"error": f"Error durante la predicción: {e}"}
-
-
-def predecir_regression_annual(codigo_municipio, anio, modelos, mun_resumen):
-    """Execute the annual regression model prediction."""
-    if modelos is None or "model" not in modelos:
-        return {"error": "Modelo de regresión anual no cargado correctamente."}
-
-    model = modelos["model"]
-    scaler = modelos["scaler"]
-    
-    if codigo_municipio not in mun_resumen:
-        return {"error": "Municipio no encontrado en el resumen descriptivo."}
-
-    # Base historical data for the municipality
-    base_count = mun_resumen[codigo_municipio]["total_delitos"]
-    poblacion_base = base_count * 100  # Rough estimation
-    
-    # Simulated features for annual prediction
-    features = {
-        'poblacion_total': poblacion_base,
-        'poblacion_menores': poblacion_base * 0.25,
-        'poblacion_adultos': poblacion_base * 0.60,
-        'poblacion_adolescentes': poblacion_base * 0.15,
-        'area_km2': 500,
-        'densidad_poblacional': poblacion_base / 500,
-        'centros_por_km2': 0.01,
-        'ABIGEATO': base_count * 0.02,
-        'HURTOS': base_count * 0.30,
-        'LESIONES': base_count * 0.25,
-        'VIOLENCIA INTRAFAMILIAR': base_count * 0.20,
-        'AMENAZAS': base_count * 0.08,
-        'DELITOS SEXUALES': base_count * 0.05,
-        'EXTORSION': base_count * 0.02,
-        'HOMICIDIOS': base_count * 0.03,
-        'es_post_2020': 1 if anio > 2020 else 0,
-        'total_delitos_lag1': base_count * np.random.uniform(0.9, 1.1),
-        'total_delitos_lag2': base_count * np.random.uniform(0.85, 1.15),
-        'delitos_media_movil_3': base_count,
-    }
-    
-    X = pd.DataFrame([features])
-    
-    try:
-        feature_order = scaler.feature_names_in_.tolist()
-        X = X[feature_order]
-        X_scaled = scaler.transform(X)
-        prediccion = model.predict(X_scaled)[0]
-        
-        return {
-            "total_delitos_predicho": max(0, round(prediccion)),
-            "anio": anio
-        }
-    except Exception as e:
-        return {"error": f"Error durante la predicción: {e}"}
-
-
-def plot_distribucion_event_delitos(data):
-    """Bar chart for crime distribution from Event Model."""
-    if 'distribucion' not in data or not data['distribucion']:
-        return None
-    
-    df = pd.DataFrame(data['distribucion'])
-    df = df.sort_values(by='cantidad', ascending=False)
-    
-    fig = px.bar(df, x='delito', y='cantidad', title='Distribución de Delitos - Clasificación de Eventos', 
-                 labels={'delito': 'Tipo de Delito', 'cantidad': 'Cantidad'},
-                 color='delito', height=450)
-    fig.update_layout(xaxis={'categoryorder':'total descending'}, showlegend=False)
-    return fig
-
-
-def plot_perfiles(data_global, cruces_data, filtro_delito="Delitos Totales"):
-    """Horizontal bar chart for profile distribution (Aggressor/Victim)."""
-    
-    def agrupar_perfil(perfil):
-        perfil = str(perfil).upper().strip()
-        if 'NO REPORTADO' in perfil or 'NO REPORTA' in perfil or 'NAN' in perfil or 'NONE' in perfil:
-            return 'NO REPORTADO/NO ESPECIFICADO'
-        return perfil
-        
-    if filtro_delito == "Delitos Totales":
-        if 'distribucion' not in data_global or not data_global['distribucion']:
-            return None
-        df = pd.DataFrame(data_global['distribucion'])
-        df['porcentaje'] = df['porcentaje'].astype(float)
-        df['valor'] = df['porcentaje']
-    else:
-        if 'cruce_porcentual' not in cruces_data or filtro_delito not in cruces_data['cruce_porcentual']:
-            return None
-        
-        perfiles_porcentaje = cruces_data['cruce_porcentual'][filtro_delito]
-        df = pd.DataFrame(perfiles_porcentaje.items(), columns=['perfil', 'porcentaje'])
-        df['valor'] = df['porcentaje'].astype(float)
-        
-    df['perfil_agrupado'] = df['perfil'].apply(agrupar_perfil)
-    
-    df_grouped = df.groupby('perfil_agrupado').agg(
-        valor=('valor', 'sum')
-    ).reset_index()
-
-    df_grouped['porcentaje'] = df_grouped['valor']
-    df_grouped['porcentaje_label'] = df_grouped['porcentaje'].round(1).astype(str) + '%'
-    df_grouped = df_grouped.sort_values(by='porcentaje', ascending=True)
-
-    titulo_grafico = f'Distribución de Perfiles Agrupados: {filtro_delito.upper()}'
-    
-    fig = px.bar(df_grouped, x='porcentaje', y='perfil_agrupado', 
-                 orientation='h',
-                 title=titulo_grafico, 
-                 labels={'perfil_agrupado': 'Perfil (Género y Edad)', 'porcentaje': 'Porcentaje'},
-                 height=500,
-                 color='perfil_agrupado')
-                 
-    fig.update_traces(text=df_grouped['porcentaje_label'], textposition='outside')
-    fig.update_layout(showlegend=False,
-                      xaxis_title="Porcentaje", 
-                      yaxis_title="Perfiles Agrupados",
-                      xaxis_tickformat=".1f", 
-                      uniformtext_minsize=12, uniformtext_mode='hide')
-                      
-    return fig
-
-
-def plot_demografico_etario(demografico_data, cruces_data, filtro_delito="Delitos Totales"):
-    """Bar chart for age group distribution."""
-    
-    if filtro_delito == "Delitos Totales":
-        if demografico_data and 'por_grupo_etario' in demografico_data and 'distribucion' in demografico_data['por_grupo_etario']:
-            distribucion_edad = demografico_data['por_grupo_etario']['distribucion']
-            df_edad = pd.DataFrame(distribucion_edad.items(), columns=['grupo_etario', 'cantidad'])
-        else:
-            return None
-    else:
-        if 'delitos_por_grupo_etario' not in demografico_data:
-            return None
-            
-        data_por_grupo_etario = demografico_data['delitos_por_grupo_etario']
-        
-        distribucion_edad_delito = {
-            grupo: data_por_grupo_etario[grupo].get(filtro_delito, 0)
-            for grupo in data_por_grupo_etario.keys()
-        }
-        
-        distribucion_edad_delito = {k: v for k, v in distribucion_edad_delito.items() if v > 0}
-        
-        if not distribucion_edad_delito:
-             return None 
-             
-        df_edad = pd.DataFrame(distribucion_edad_delito.items(), columns=['grupo_etario', 'cantidad'])
-
-    df_edad['cantidad'] = df_edad['cantidad'].astype(int)
-    
-    titulo_grafico = f'Eventos por Grupo Etario: {filtro_delito.upper()}'
-
-    fig_edad = px.bar(df_edad, x='grupo_etario', y='cantidad', 
-                      title=titulo_grafico,
-                      labels={'grupo_etario': 'Grupo Etario', 'cantidad': 'Cantidad de Eventos'},
-                      color='grupo_etario', 
-                      color_discrete_sequence=px.colors.qualitative.Pastel)
-    fig_edad.update_layout(xaxis={'categoryorder':'total descending'}, showlegend=False)
-    return fig_edad
-
-
-# ============================
 # MAIN RENDER FUNCTION
 # ============================
 
 def render():
     """Render the dashboard page."""
-    
-    # Load data and models
+
+    # Load data and models descriptivos
     data_load_result = load_descriptive_data()
     data_dominant, data_event, geojson_data, municipio_name_map = data_load_result
 
@@ -441,10 +959,10 @@ def render():
     tendencias_raw = data_dominant["tendencias"]
 
     # Assign for EVENT model
-    resumen_event = data_event["resumen"] 
+    resumen_event = data_event["resumen"]
     distribucion_delitos_event = data_event["distribucion_delitos"]
     distribucion_perfiles_event = data_event["distribucion_perfiles"]
-    demografico_event = data_event["demografico"] 
+    demografico_event = data_event["demografico"]
     cruces_delito_perfil_event = data_event["cruces_delito_perfil"]
 
     delito_mas_comun_event = distribucion_delitos_event["delito_mas_comun"]["nombre"]
@@ -454,7 +972,7 @@ def render():
     else:
         try:
             listado_delitos = sorted(list(distribucion_delitos_event["distribucion_delitos"].keys()))
-        except:
+        except Exception:
             listado_delitos = []
 
     st.title("🗺️ Visor Analítico de Seguridad Ciudadana")
@@ -462,98 +980,107 @@ def render():
     # Define Tabs
     tab_historicos, tab_predictivo = st.tabs(["📊 Históricos y Descriptivos", "🔮 Proyecciones"])
 
-    # Generate municipality DataFrame
-    df_mun = pd.DataFrame([
-        {
-            "Código DANE": k,
-            "Municipio": municipio_name_map.get(k, f"Código {k} (Sin nombre)"), 
-            "Ranking": v["ranking_departamental"],
-            "Riesgo": v["categoria_riesgo"],
-            "Delito Dominante": v["delito_mas_frecuente"], 
-            "Total Delitos": v["total_delitos"]
-        }
-        for k, v in mun_resumen.items()
-    ]).sort_values("Ranking")
+    # Generate municipality DataFrame para mapa/ranking
+    df_mun = pd.DataFrame(
+        [
+            {
+                "Código DANE": k,
+                "Municipio": municipio_name_map.get(k, f"Código {k} (Sin nombre)"),
+                "Ranking": v["ranking_departamental"],
+                "Riesgo": v["categoria_riesgo"],
+                "Delito Dominante": v["delito_mas_frecuente"],
+                "Total Delitos": v["total_delitos"],
+            }
+            for k, v in mun_resumen.items()
+        ]
+    ).sort_values("Ranking")
 
-    # ------------------------------------------------------------------------------
-    # TAB 1: HISTORICAL AND DESCRIPTIVE
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # TAB 1: HISTÓRICO + DESCRIPTIVO
+    # --------------------------------------------------------------------------
     with tab_historicos:
-        st.header("Análisis Histórico y Descriptivo de Seguridad Ciudadana")
-        st.markdown("---") 
+
+        # 🔹 NUEVO BLOQUE: HISTÓRICO (app viejo) con filtros año/municipio
+        df_integrated, mandatos_hist = load_historical_data()
+        render_historical_block(df_integrated, mandatos_hist)
+
+        st.markdown(
+            """<hr style="height:5px;border:none;color:#333;background-color:#333;" />""",
+            unsafe_allow_html=True,
+        )
 
         # SECTION 1.1: PROFILES AND CONTEXTUAL FACTORS (EVENT MODEL)
         with st.container(border=True):
             st.subheader("Perfiles y Factores Contextuales")
-            st.markdown("Análisis enfocado en la naturaleza de los eventos, perfiles involucrados y factores temporales/demográficos.")
+            st.markdown(
+                "Análisis enfocado en la naturaleza de los eventos, perfiles involucrados y factores temporales/demográficos."
+            )
 
             st.subheader("Resumen General")
             col1, col2, col3, col4 = st.columns(4)
-            
+
             periodo_event = f"{resumen_event['periodo']['anio_inicio']} - {resumen_event['periodo']['anio_fin']}"
-            
+
             col1.metric("Total de Eventos", f"{resumen_event['total_eventos']:,}")
             col2.metric("Período Analizado", periodo_event)
             col3.metric("Municipios Cubiertos", f"{resumen_event['geografia']['n_municipios']}")
-            col4.metric("Delito más Reportado", delito_mas_comun_event) 
-            
+            col4.metric("Delito más Reportado", delito_mas_comun_event)
+
             st.markdown("---")
 
             st.subheader("Análisis Demográfico por Grupo Etario")
-            
+
             opciones_delito_demo = ["Delitos Totales"] + listado_delitos
-            filtro_delito_demo = st.selectbox("Filtrar Análisis Demográfico por Delito:", opciones_delito_demo, key="filtro_delito_demo")
+            filtro_delito_demo = st.selectbox(
+                "Filtrar Análisis Demográfico por Delito:", opciones_delito_demo, key="filtro_delito_demo"
+            )
 
             fig_edad = plot_demografico_etario(demografico_event, demografico_event, filtro_delito_demo)
-            
+
             if fig_edad:
                 st.plotly_chart(fig_edad, use_container_width=True)
             else:
-                st.info(f"No hay datos disponibles para el análisis demográfico o el delito: {filtro_delito_demo.upper()}.")
+                st.info(
+                    f"No hay datos disponibles para el análisis demográfico o el delito: {filtro_delito_demo.upper()}."
+                )
 
             st.markdown("---")
-            
-            st.subheader("Distribuciones Clave")
-            col_delito, col_perfil = st.columns(2)
-            
-            with col_delito:
-                fig_delito = plot_distribucion_event_delitos(distribucion_delitos_event)
-                if fig_delito:
-                    st.plotly_chart(fig_delito, use_container_width=True)
-                else:
-                    st.info("No hay datos de distribución de delitos por evento.")
-                    
-            with col_perfil:
-                opciones_delito_perfil = ["Delitos Totales"] + listado_delitos
-                filtro_delito_perfil = st.selectbox("Filtrar Distribución de Perfiles por Delito:", opciones_delito_perfil, key="filtro_delito_perfil")
 
-                fig_perfil = plot_perfiles(distribucion_perfiles_event, cruces_delito_perfil_event, filtro_delito_perfil)
-                if fig_perfil:
-                    st.plotly_chart(fig_perfil, use_container_width=True)
-                else:
-                    st.info(f"No hay datos de distribución de perfiles o el delito: {filtro_delito_perfil.upper()}.")
-
-        st.markdown("""<hr style="height:5px;border:none;color:#333;background-color:#333;" />""", unsafe_allow_html=True)
-        
         # SECTION 1.2: RISK AND TREND (DOMINANT MODEL)
         with st.container(border=True):
             st.subheader("Riesgo y Tendencia")
-            st.markdown("Métricas enfocadas en la clasificación de riesgo municipal y la tendencia de los delitos dominantes.")
-            
+            st.markdown(
+                "Métricas enfocadas en la clasificación de riesgo municipal y la tendencia de los delitos dominantes."
+            )
+
             col1, col2, col3, col4 = st.columns(4)
-            col1.metric("Delito más frecuente", stats["delito_mas_frecuente"]["nombre"], delta=f"{stats['delito_mas_frecuente']['porcentaje']:.1f}% del total")
-            col2.metric("Arma más frecuente", stats["arma_mas_frecuente"]["nombre"], delta=f"{stats['arma_mas_frecuente']['porcentaje']:.1f}% del total")
+            col1.metric(
+                "Delito más frecuente",
+                stats["delito_mas_frecuente"]["nombre"],
+                delta=f"{stats['delito_mas_frecuente']['porcentaje']:.1f}% del total",
+            )
+            col2.metric(
+                "Arma más frecuente",
+                stats["arma_mas_frecuente"]["nombre"],
+                delta=f"{stats['arma_mas_frecuente']['porcentaje']:.1f}% del total",
+            )
             col3.metric("Total delitos dominantes", f"{stats['suma_delitos_dominantes']:,}")
-            
-            cambio_vs_anterior = tendencias_raw['cambio_porcentual'].get(str(stats['periodo']['fin'] - 1), 0)
-            col4.metric("Tendencia General", tendencias_raw['tendencia_general'].capitalize(), delta=f"Cambio vs año anterior: {cambio_vs_anterior:.1f}%")
+
+            cambio_vs_anterior = tendencias_raw["cambio_porcentual"].get(
+                str(stats["periodo"]["fin"] - 1), 0
+            )
+            col4.metric(
+                "Tendencia General",
+                tendencias_raw["tendencia_general"].capitalize(),
+                delta=f"Cambio vs año anterior: {cambio_vs_anterior:.1f}%",
+            )
 
             st.markdown("---")
-            
+
             st.header("Mapa de Clasificación de Riesgo - Santander")
-            
+
             m = folium.Map(location=[7.12539, -73.1198], zoom_start=8, tiles="CartoDB positron")
-            
+
             mun_dict = df_mun.set_index("Código DANE").T.to_dict()
 
             for feature in geojson_data["features"]:
@@ -582,11 +1109,15 @@ def render():
                 """
 
                 folium.GeoJson(
-                    feature, name=nombre_mun,
+                    feature,
+                    name=nombre_mun,
                     style_function=lambda x, col=color: {
-                        "fillColor": col, "color": "black", "weight": 1, "fillOpacity": 0.7
+                        "fillColor": col,
+                        "color": "black",
+                        "weight": 1,
+                        "fillOpacity": 0.7,
                     },
-                    tooltip=folium.Tooltip(popup_html, sticky=True)
+                    tooltip=folium.Tooltip(popup_html, sticky=True),
                 ).add_to(m)
 
             template = """
@@ -606,35 +1137,21 @@ def render():
             m.get_root().add_child(macro)
 
             st_folium(m, width=900, height=550)
-            
+
             st.markdown("---")
 
             st.subheader("Distribución Global de Delitos")
             fig_distribucion = plot_distribucion_delitos(stats)
-            
+
             if fig_distribucion:
                 st.plotly_chart(fig_distribucion, use_container_width=True)
             else:
                 st.info("La distribución global de delitos no está disponible.")
-            
-            st.markdown("---")
-
-            st.header("Análisis de Tendencia Anual (Histórica y Proyectada)")
-            
-            with st.container(border=True): 
-                st.subheader("Controles de Exploración")
-                col_anho, col_vacio = st.columns([1, 3])
-
-                años_disponibles = sorted(list(set(range(2010, 2026)))) 
-                año_selected = col_anho.selectbox("Año de Referencia:", años_disponibles, index=len(años_disponibles)-1, key="anio_desc")
-                
-            fig_tendencia = plot_tendencia_anual(tendencias_raw, año_selected)
-            st.plotly_chart(fig_tendencia, use_container_width=True)
 
             st.markdown("---")
 
             st.header("Ranking de Criminalidad Municipal")
-            
+
             col_rank_settings, col_rank_table = st.columns([1, 3])
             with col_rank_settings:
                 top_n = st.slider("Mostrar TOP N municipios", 5, 30, 10, key="top_n_desc")
@@ -642,22 +1159,22 @@ def render():
                 df_top = df_mun.head(top_n).set_index("Ranking")
                 st.dataframe(df_top, use_container_width=True)
 
-    # ------------------------------------------------------------------------------
-    # TAB 2: PREDICTIONS
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # TAB 2: PREDICCIONES
+    # --------------------------------------------------------------------------
     with tab_predictivo:
         # Load all models
         modelos_regression_monthly = load_regression_monthly()
         modelos_regression_annual = load_regression_annual()
-        
+
         st.header("Proyección y Simulación de Riesgo")
-        
+
         # Model options (define before checking availability)
         MODELOS_OPCIONES = {
             "Regresión: Delitos Mensuales": {"key": "regression_monthly", "tipo": "regresion"},
             "Regresión: Delitos Anuales": {"key": "regression_annual", "tipo": "regresion"},
         }
-        
+
         col_controls, col_selector = st.columns([3, 1])
 
         with col_selector:
@@ -666,65 +1183,126 @@ def render():
                 options=list(MODELOS_OPCIONES.keys()),
                 index=0,
                 key="modelo_pred_select",
-                help="Selecciona el modelo de predicción a utilizar"
+                help="Selecciona el modelo de predicción a utilizar",
             )
-            
+
             modelo_info = MODELOS_OPCIONES[modelo_seleccionado]
             modelo_key = modelo_info["key"]
-            
+
             # Check model availability
             modelo_disponible = False
             if modelo_key == "regression_monthly" and modelos_regression_monthly is not None:
                 modelo_disponible = True
             elif modelo_key == "regression_annual" and modelos_regression_annual is not None:
                 modelo_disponible = True
-            
+
             if not modelo_disponible:
-                st.warning(f"El modelo no pudo ser cargado. Verifique los archivos.")
+                st.warning("El modelo no pudo ser cargado. Verifique los archivos.")
 
         with col_controls:
             if not modelo_disponible:
-                st.warning("⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos del modelo no pudieron ser cargados correctamente.")
+                st.warning(
+                    "⚠️ **ATENCIÓN:** La predicción está deshabilitada porque los archivos del modelo no pudieron ser cargados correctamente."
+                )
             else:
                 municipios_predict = sorted(list(municipio_name_map.values()))
                 today = datetime.date.today()
                 next_month = today.month % 12 + 1
                 next_year = today.year + (1 if today.month == 12 else 0)
-                
-                meses_disp = {1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
-                              7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"}
-                
+
+                meses_disp = {
+                    1: "Enero",
+                    2: "Febrero",
+                    3: "Marzo",
+                    4: "Abril",
+                    5: "Mayo",
+                    6: "Junio",
+                    7: "Julio",
+                    8: "Agosto",
+                    9: "Septiembre",
+                    10: "Octubre",
+                    11: "Noviembre",
+                    12: "Diciembre",
+                }
+
                 # Different layouts based on model type
                 if modelo_key == "regression_annual":
                     # Annual model: Municipality + Year only
                     col_mun, col_anio, col_empty, col_btn = st.columns([2, 1, 1, 1])
-                    
-                    municipio_pred_name = col_mun.selectbox("Selecciona un municipio para predecir:", municipios_predict, key="mun_pred")
-                    codigo_municipio_pred = next((k for k, v in municipio_name_map.items() if v == municipio_pred_name), None)
-                    
-                    anio_pred = col_anio.number_input("Año", min_value=today.year, max_value=today.year + 10, value=next_year, key="anio_pred")
+
+                    municipio_pred_name = col_mun.selectbox(
+                        "Selecciona un municipio para predecir:",
+                        municipios_predict,
+                        key="mun_pred",
+                    )
+                    codigo_municipio_pred = next(
+                        (k for k, v in municipio_name_map.items() if v == municipio_pred_name),
+                        None,
+                    )
+
+                    anio_pred = col_anio.number_input(
+                        "Año",
+                        min_value=today.year,
+                        max_value=today.year + 10,
+                        value=next_year,
+                        key="anio_pred",
+                    )
                     mes_pred = None  # Not used for annual model
-                    
+
                 else:
                     # Monthly Regression: Municipality + Month + Year
                     col_mun, col_mes, col_anio, col_btn = st.columns([2, 1, 1, 1])
-                    
-                    municipio_pred_name = col_mun.selectbox("Selecciona un municipio para predecir:", municipios_predict, key="mun_pred")
-                    codigo_municipio_pred = next((k for k, v in municipio_name_map.items() if v == municipio_pred_name), None)
-                    
-                    mes_pred = col_mes.number_input(f"Mes ({meses_disp.get(next_month)})", min_value=1, max_value=12, value=next_month, key="mes_pred")
-                    anio_pred = col_anio.number_input("Año", min_value=today.year, max_value=today.year + 10, value=next_year, key="anio_pred")
+
+                    municipio_pred_name = col_mun.selectbox(
+                        "Selecciona un municipio para predecir:",
+                        municipios_predict,
+                        key="mun_pred",
+                    )
+                    codigo_municipio_pred = next(
+                        (k for k, v in municipio_name_map.items() if v == municipio_pred_name),
+                        None,
+                    )
+
+                    mes_pred = col_mes.number_input(
+                        f"Mes ({meses_disp.get(next_month)})",
+                        min_value=1,
+                        max_value=12,
+                        value=next_month,
+                        key="mes_pred",
+                    )
+                    anio_pred = col_anio.number_input(
+                        "Año",
+                        min_value=today.year,
+                        max_value=today.year + 10,
+                        value=next_year,
+                        key="anio_pred",
+                    )
 
                 if col_btn.button("Ejecutar Predicción 🚀"):
                     if codigo_municipio_pred and codigo_municipio_pred in mun_resumen:
                         if modelo_key == "regression_annual":
-                            with st.spinner(f"Calculando predicción para {municipio_pred_name.upper()} en {anio_pred}..."):
-                                resultado = predecir_regression_annual(str(codigo_municipio_pred), int(anio_pred), modelos_regression_annual, mun_resumen)
+                            with st.spinner(
+                                f"Calculando predicción para {municipio_pred_name.upper()} en {anio_pred}..."
+                            ):
+                                resultado = predecir_regression_annual(
+                                    str(codigo_municipio_pred),
+                                    int(anio_pred),
+                                    modelos_regression_annual,
+                                    mun_resumen,
+                                )
                                 resultado["modelo"] = modelo_key
                                 st.session_state["prediccion_actual"] = resultado
                         else:  # regression_monthly
-                            with st.spinner(f"Calculando predicción para {municipio_pred_name.upper()} en {meses_disp.get(mes_pred)}/{anio_pred}..."):
-                                resultado = predecir_regression_monthly(str(codigo_municipio_pred), int(anio_pred), int(mes_pred), modelos_regression_monthly, mun_resumen)
+                            with st.spinner(
+                                f"Calculando predicción para {municipio_pred_name.upper()} en {meses_disp.get(mes_pred)}/{anio_pred}..."
+                            ):
+                                resultado = predecir_regression_monthly(
+                                    str(codigo_municipio_pred),
+                                    int(anio_pred),
+                                    int(mes_pred),
+                                    modelos_regression_monthly,
+                                    mun_resumen,
+                                )
                                 resultado["modelo"] = modelo_key
                                 st.session_state["prediccion_actual"] = resultado
                     else:
@@ -733,52 +1311,67 @@ def render():
                 st.markdown("---")
 
                 st.subheader("Resultado de la Predicción")
-                
+
                 if "prediccion_actual" in st.session_state:
                     pred = st.session_state["prediccion_actual"]
-                    
+
                     if "error" in pred:
                         st.error(f"Error en el modelo: {pred['error']}")
                     else:
                         pred_modelo = pred.get("modelo", "regression_monthly")
-                        
+
                         if pred_modelo == "regression_monthly":
                             # Monthly regression result
-                            st.success(f"Predicción exitosa para {municipio_pred_name.upper()} en {meses_disp.get(pred['mes'])}/{pred['anio']}:")
-                            
+                            st.success(
+                                f"Predicción exitosa para {municipio_pred_name.upper()} en {meses_disp.get(pred['mes'])}/{pred['anio']}:"
+                            )
+
                             col_total, col_desc = st.columns([1, 2])
-                            
-                            col_total.metric("Total Delitos Predichos", f"{pred['total_delitos_predicho']:,}")
-                            
+
+                            col_total.metric(
+                                "Total Delitos Predichos", f"{pred['total_delitos_predicho']:,}"
+                            )
+
                             mun_info = mun_resumen.get(codigo_municipio_pred, {})
                             riesgo = mun_info.get("categoria_riesgo", "N/A")
                             promedio_mensual = mun_info.get("total_delitos", 0) / 12
-                            
-                            col_desc.info(f"""
+
+                            col_desc.info(
+                                f"""
                             CONTEXTO HISTÓRICO:
                             • Categoría de Riesgo: {riesgo.upper() if riesgo != "N/A" else riesgo}
                             • Promedio Mensual Histórico: ~{promedio_mensual:.0f} delitos
                             • Predicción vs Promedio: {((pred['total_delitos_predicho'] / promedio_mensual - 1) * 100):+.1f}%
-                            """)
-                            
+                            """
+                            )
+
                         elif pred_modelo == "regression_annual":
                             # Annual regression result
-                            st.success(f"Predicción exitosa para {municipio_pred_name.upper()} en el año {pred['anio']}:")
-                            
+                            st.success(
+                                f"Predicción exitosa para {municipio_pred_name.upper()} en el año {pred['anio']}:"
+                            )
+
                             col_total, col_desc = st.columns([1, 2])
-                            
-                            col_total.metric("Total Delitos Anuales Predichos", f"{pred['total_delitos_predicho']:,}")
-                            
+
+                            col_total.metric(
+                                "Total Delitos Anuales Predichos",
+                                f"{pred['total_delitos_predicho']:,}",
+                            )
+
                             mun_info = mun_resumen.get(codigo_municipio_pred, {})
                             riesgo = mun_info.get("categoria_riesgo", "N/A")
                             total_historico = mun_info.get("total_delitos", 0)
-                            
-                            col_desc.info(f"""
+
+                            col_desc.info(
+                                f"""
                             CONTEXTO HISTÓRICO:
                             • Categoría de Riesgo: {riesgo.upper() if riesgo != "N/A" else riesgo}
                             • Total Histórico Registrado: {total_historico:,} delitos
                             • Predicción vs Histórico: {((pred['total_delitos_predicho'] / total_historico - 1) * 100) if total_historico > 0 else 0:+.1f}%
-                            """)
+                            """
+                            )
 
                 else:
-                    st.info("Utiliza los controles de predicción de arriba para obtener el resultado del modelo predictivo.")
+                    st.info(
+                        "Utiliza los controles de predicción de arriba para obtener el resultado del modelo predictivo."
+                    )
