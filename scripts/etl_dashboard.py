@@ -7,10 +7,39 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DASHBOARD_DIR = os.path.join(BASE_DIR, "data", "gold", "dashboard")
 OUTPUT_FILE = os.path.join(DATA_DASHBOARD_DIR, "historico_integrado.parquet")
 
+def optimize_dtypes(df):
+    """
+    Reduce el uso de memoria convirtiendo objetos a categorías y
+    reduciendo el tamaño de los números (int64 -> int32/16, float64 -> float32).
+    """
+    print("   -> Optimizando tipos de datos para reducir RAM...")
+    
+    # 1. Convertir columnas de texto repetitivo a 'category'
+    # Esto es lo que MÁS memoria ahorra (puede bajar de 1GB a 100MB)
+    for col in df.select_dtypes(include=['object']).columns:
+        num_unique_values = len(df[col].unique())
+        num_total_values = len(df[col])
+        # Si menos del 50% de los valores son únicos, vale la pena convertir a categoría
+        if num_unique_values / num_total_values < 0.5:
+            df[col] = df[col].astype('category')
+            print(f"      Columna '{col}' convertida a category.")
+
+    # 2. Reducir tamaño de números (Downcasting)
+    # Pandas usa int64/float64 por defecto. A veces int16 o float32 es suficiente.
+    for col in df.select_dtypes(include=['int', 'float']).columns:
+        # Ignorar columnas como 'anio' si quieres mantenerlas como int estándar, 
+        # pero para conteos y tasas, downcast ayuda.
+        try:
+            if "int" in str(df[col].dtype):
+                df[col] = pd.to_numeric(df[col], downcast='integer')
+            else:
+                df[col] = pd.to_numeric(df[col], downcast='float')
+        except:
+            pass
+            
+    return df
+
 def build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos_informaticos):
-    """
-    Lógica de integración de datos (sin Bucaramanga local).
-    """
     print("   -> Iniciando integración de dataframes...")
     
     # Copias de trabajo
@@ -22,15 +51,13 @@ def build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos
         if "cantidad" in df_src.columns:
             df_src["cantidad"] = pd.to_numeric(df_src["cantidad"], errors="coerce").fillna(0)
 
-    # Normalización específica para informáticos
     if "delito" not in df_inf.columns:
         df_inf["delito"] = "DELITOS INFORMÁTICOS"
 
-    # Origen para trazabilidad
     df_pol["origen"] = "POLICIA_SCRAPING"
     df_inf["origen"] = "DELITOS_INFORMATICOS"
 
-    # Unificar hechos (Solo Policia + Informáticos)
+    # Unificar hechos
     fact = pd.concat([df_pol, df_inf], ignore_index=True, sort=False)
     fact.columns = [c.strip() for c in fact.columns]
 
@@ -57,53 +84,55 @@ def build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos
     fact = fact.merge(mandatos, on="anio", how="left")
     fact = fact.merge(metas, on="mandato", how="left")
 
-    # Tipos de datos
+    # Tipos de datos básicos
     fact["anio"] = pd.to_numeric(fact["anio"], errors="coerce").astype("Int64")
     fact["mes"] = pd.to_numeric(fact["mes"], errors="coerce").astype("Int64")
-    
-    # Manejo seguro de días (a veces vienen nulos o con ruido)
     fact["dia"] = pd.to_numeric(fact["dia"], errors="coerce").fillna(1).astype("Int64")
 
     fact["delito"] = fact["delito"].astype(str).str.upper()
     fact["municipio"] = fact["municipio"].astype(str).str.upper()
 
-    # Cálculo de tasa pre-procesado
+    # Cálculo de tasa
     fact["tasa_100k"] = np.where(
         fact["n_poblacion"] > 0,
         fact["cantidad"] / fact["n_poblacion"] * 1e5,
         np.nan,
     )
     
+    # --- APLICAR OPTIMIZACIÓN DE MEMORIA AQUÍ ---
+    fact = optimize_dtypes(fact)
+    
     return fact
 
 def main():
     print("--- INICIANDO PROCESO ETL ---")
     
-    # 1. Cargar fuentes raw
     print("1. Cargando archivos parquet base...")
     metas = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "metas.parquet"))
     mandatos = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "mandatos.parquet"))
     poblacion = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "poblacion_santander.parquet"))
     policia = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "policia_santander.parquet"))
     municipios = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "municipios.parquet"))
-    # Se eliminó la carga de delitos_bucaramanga
     delitos_informaticos = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "delitos_informaticos.parquet"))
 
-    # Limpieza de columnas inicial
     for df in (metas, mandatos, poblacion, policia, municipios, delitos_informaticos):
         df.columns = [c.strip() for c in df.columns]
 
-    # 2. Ejecutar integración
     print("2. Construyendo dataframe integrado...")
-    # Se eliminó el argumento delitos_bucaramanga
     df_final = build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos_informaticos)
 
-    # 3. Guardar resultado optimizado
     print(f"3. Guardando archivo optimizado en: {OUTPUT_FILE}")
-    # Usamos compresión snappy para velocidad de lectura posterior
-    df_final.to_parquet(OUTPUT_FILE, index=False, compression='snappy')
+    
+    # Opción A: Parquet (Equilibrio perfecto)
+    # compression='zstd' suele dar mejor compresión que snappy manteniendo buena velocidad
+    df_final.to_parquet(OUTPUT_FILE, index=False, compression='zstd')
+    
+    # Opción B (SOLO SI AÚN ES LENTO): Feather
+    # Feather lee más rápido, pero no comprime tanto en disco.
+    # df_final.to_feather(OUTPUT_FILE.replace('.parquet', '.feather'))
     
     print("--- PROCESO TERMINADO CON ÉXITO ---")
+    print("Nota: Ahora tu app cargará mucho más rápido y consumirá menos RAM.")
 
 if __name__ == "__main__":
     main()
