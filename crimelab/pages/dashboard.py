@@ -93,15 +93,14 @@ def build_delta_text(actual: float, meta: float) -> str:
 
 
 def render_historical_block(df_integrated: pd.DataFrame, mandatos: pd.DataFrame) -> None:
-    # ... (RESTO DE TU CÓDIGO DE render_historical_block PERMANECE IDÉNTICO) ...
-    # Simplemente pega aquí el contenido de la función render_historical_block original
-    
+    """
+    Bloque de dashboard histórico visualmente mejorado.
+    """
     st.markdown("## 🔍 Análisis histórico y metas departamentales")
 
     # ---------------------------
-    # Filtros superiores (en la página, NO en sidebar)
+    # Filtros superiores (fuera de contenedores)
     # ---------------------------
-    # Asegurar orden numérico
     years = sorted([int(y) for y in mandatos["anio"].dropna().unique()])
     default_year = 2025 if 2025 in years else (max(years) if years else 2024)
 
@@ -125,7 +124,6 @@ def render_historical_block(df_integrated: pd.DataFrame, mandatos: pd.DataFrame)
         year_from, year_to = year_to, year_from
         st.info("El año inicial era mayor que el final, se han ajustado.")
 
-    # Filtro previo para listas
     df_range = df_integrated[
         (df_integrated["anio"] >= year_from) & (df_integrated["anio"] <= year_to)
     ]
@@ -159,7 +157,7 @@ def render_historical_block(df_integrated: pd.DataFrame, mandatos: pd.DataFrame)
     else:
         crime_selected = crime_sel_raw
 
-    # Aplicar filtros globales
+    # Filtros globales
     mask = (df_integrated["anio"] >= year_from) & (df_integrated["anio"] <= year_to)
     if muni_selected:
         mask &= df_integrated["municipio"].isin(muni_selected)
@@ -180,62 +178,101 @@ def render_historical_block(df_integrated: pd.DataFrame, mandatos: pd.DataFrame)
     mandatos_str = ", ".join(mandatos_list) if mandatos_list else "Sin mandato registrado"
 
     st.markdown(f"**Mandatos en rango {year_from}–{year_to}:** {mandatos_str}")
-    st.markdown("---")
-
-    # Metas vs Realidad
-    st.markdown("### 🎯 Metas departamentales vs realidad (tasa por 100.000 hab.)")
-
-    hom_rate, hom_meta = crime_rate_and_meta(df_f, "HOMICIDIOS", "meta_homicidios")
-    hurto_aliases = ["HURTOS", "HURTO", "HURTO_PERSONAS"]
-    hurto_rate, hurto_meta = crime_rate_and_meta(df_f, hurto_aliases, "meta_hurtos")
-    lesions_rate, lesions_meta = crime_rate_and_meta(df_f, "LESIONES", "meta_lesiones")
-
-    kpi_cols = st.columns(3)
-    with kpi_cols[0]:
-        st.metric("Homicidios (tasa vs meta)", f"{hom_rate:,.2f}", delta=build_delta_text(hom_rate, hom_meta))
-    with kpi_cols[1]:
-        st.metric("Hurtos (tasa vs meta)", f"{hurto_rate:,.2f}", delta=build_delta_text(hurto_rate, hurto_meta))
-    with kpi_cols[2]:
-        st.metric("Lesiones (tasa vs meta)", f"{lesions_rate:,.2f}", delta=build_delta_text(lesions_rate, lesions_meta))
-
-    st.markdown("---")
-
-    # Gráficos Altair
-    st.markdown("### ⚖️ Distribución por tipo de delito")
-    df_crime = df_f.groupby("delito", as_index=False)["cantidad"].sum().sort_values("cantidad", ascending=False)
-    chart_crime = alt.Chart(df_crime).mark_bar().encode(
-        x=alt.X("cantidad:Q", title="Número de casos"),
-        y=alt.Y("delito:N", sort="-x", title="Delito"),
-        tooltip=["delito", "cantidad"]
-    ).properties(height=400)
-    st.altair_chart(chart_crime, use_container_width=True)
-    st.markdown("---")
-
-    st.markdown("### 📈 Evolución mensual dentro del rango")
-    df_month = df_f.groupby(["anio", "mes"], as_index=False)["cantidad"].sum().sort_values(["anio", "mes"])
-    chart_month = alt.Chart(df_month).mark_line(point=True).encode(
-        x=alt.X("mes:O", title="Mes"),
-        y=alt.Y("cantidad:Q", title="Casos"),
-        color=alt.Color("anio:N", title="Año"),
-        tooltip=["anio", "mes", "cantidad"]
-    ).properties(height=350)
-    st.altair_chart(chart_month, use_container_width=True)
-    st.markdown("---")
-
-    st.markdown("### 🕒 Tendencia histórica global")
-    mask_hist = np.ones(len(df_integrated), dtype=bool)
-    if crime_selected:
-        mask_hist &= df_integrated["delito"].isin(crime_selected)
-    if muni_selected:
-        mask_hist &= df_integrated["municipio"].isin(muni_selected)
     
-    df_hist = df_integrated[mask_hist].groupby("anio", as_index=False)["cantidad"].sum().sort_values("anio")
-    chart_hist = alt.Chart(df_hist).mark_line(point=True).encode(
-        x=alt.X("anio:O", title="Año"),
-        y=alt.Y("cantidad:Q", title="Casos totales"),
-        tooltip=["anio", "cantidad"]
-    ).properties(height=350)
-    st.altair_chart(chart_hist, use_container_width=True)
+    st.write("") 
+
+    # ---------------------------
+    # BLOQUE 1: Metas (EN CONTENEDOR)
+    # ---------------------------
+    with st.container(border=True):
+        st.markdown("### 🎯 Metas departamentales vs realidad (tasa por 100.000 hab.)")
+
+        hom_rate, hom_meta = crime_rate_and_meta(df_f, "HOMICIDIOS", "meta_homicidios")
+        hurto_aliases = ["HURTOS", "HURTO", "HURTO_PERSONAS"]
+        hurto_rate, hurto_meta = crime_rate_and_meta(df_f, hurto_aliases, "meta_hurtos")
+        lesions_rate, lesions_meta = crime_rate_and_meta(df_f, "LESIONES", "meta_lesiones")
+
+        kpi_cols = st.columns(3)
+        with kpi_cols[0]:
+            st.metric("Homicidios (tasa vs meta)", f"{hom_rate:,.2f}", delta=build_delta_text(hom_rate, hom_meta))
+        with kpi_cols[1]:
+            st.metric("Hurtos (tasa vs meta)", f"{hurto_rate:,.2f}", delta=build_delta_text(hurto_rate, hurto_meta))
+        with kpi_cols[2]:
+            st.metric("Lesiones (tasa vs meta)", f"{lesions_rate:,.2f}", delta=build_delta_text(lesions_rate, lesions_meta))
+
+    # ---------------------------
+    # BLOQUE 2: Distribución (EN CONTENEDOR + GRÁFICA AJUSTADA)
+    # ---------------------------
+    with st.container(border=True):
+        st.markdown("### ⚖️ Distribución por tipo de delito")
+        
+        # Agrupar y ordenar
+        df_crime = df_f.groupby("delito", as_index=False)["cantidad"].sum().sort_values("cantidad", ascending=False)
+        
+        # FILTRO: Eliminar delitos con 0 casos
+        df_crime = df_crime[df_crime["cantidad"] > 0]
+        
+        # Base chart
+        base = alt.Chart(df_crime).encode(
+            x=alt.X("cantidad:Q", title="Número de casos"),
+            y=alt.Y("delito:N", sort="-x", title=None), 
+        )
+
+        # Barras: Un solo color por defecto (se quita el encoding de color)
+        bars = base.mark_bar().encode(
+            tooltip=["delito", "cantidad"]
+        )
+
+        # Etiquetas de texto
+        text = base.mark_text(
+            align='left',
+            baseline='middle',
+            dx=3 
+        ).encode(
+            text='cantidad:Q'
+        )
+
+        chart_crime = (bars + text).properties(height=400)
+        
+        st.altair_chart(chart_crime, use_container_width=True)
+
+    # ---------------------------
+    # BLOQUE 3: Evolución Mensual (EN CONTENEDOR)
+    # ---------------------------
+    with st.container(border=True):
+        st.markdown("### 📈 Evolución mensual dentro del rango")
+        df_month = df_f.groupby(["anio", "mes"], as_index=False)["cantidad"].sum().sort_values(["anio", "mes"])
+        
+        chart_month = alt.Chart(df_month).mark_line(point=True).encode(
+            x=alt.X("mes:O", title="Mes"),
+            y=alt.Y("cantidad:Q", title="Casos"),
+            color=alt.Color("anio:N", title="Año"),
+            tooltip=["anio", "mes", "cantidad"]
+        ).properties(height=350)
+        
+        st.altair_chart(chart_month, use_container_width=True)
+
+    # ---------------------------
+    # BLOQUE 4: Tendencia Global (EN CONTENEDOR)
+    # ---------------------------
+    with st.container(border=True):
+        st.markdown("### 🕒 Tendencia histórica global")
+        
+        mask_hist = np.ones(len(df_integrated), dtype=bool)
+        if crime_selected:
+            mask_hist &= df_integrated["delito"].isin(crime_selected)
+        if muni_selected:
+            mask_hist &= df_integrated["municipio"].isin(muni_selected)
+        
+        df_hist = df_integrated[mask_hist].groupby("anio", as_index=False)["cantidad"].sum().sort_values("anio")
+        
+        chart_hist = alt.Chart(df_hist).mark_line(point=True).encode(
+            x=alt.X("anio:O", title="Año"),
+            y=alt.Y("cantidad:Q", title="Casos totales"),
+            tooltip=["anio", "cantidad"]
+        ).properties(height=350)
+        
+        st.altair_chart(chart_hist, use_container_width=True)
     st.markdown("---")
 
 # ============================
@@ -913,7 +950,7 @@ def render():
 
             template = """
             {% macro html(this, kwargs) %}
-            <div style="position: fixed; bottom: 50px; left: 50px; width: 140px; height: 140px; background-color: white; border: 1px solid gray; padding: 5px; z-index:9999; font-size:14px;">
+            <div style="position: fixed; bottom: 50px; left: 50px; width: 140px; height: 170px; background-color: white; border: 1px solid gray; padding: 5px; z-index:9999; font-size:14px;">
                 <b>Clasificación de Riesgo:</b><br>
                 <i style="background:#e74c3c;width:18px;height:18px;display:inline-block"></i> Alto<br>
                 <i style="background:#e67e22;width:18px;height:18px;display:inline-block"></i> Medio-Alto<br>
