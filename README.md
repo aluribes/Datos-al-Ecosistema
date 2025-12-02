@@ -1,6 +1,7 @@
 # 📊 CrimeLab Santander
 ## Datos al Ecosistema - Reto Avanzado: Seguridad en Santander
 ### Propuesta de solución: https://crimelabsantander.streamlit.app/
+### Video Pitch: https://www.youtube.com/watch?v=qliKMSQ1aTQ
 
 Este repositorio contiene el desarrollo de la solución para el reto **"Datos al Ecosistema 2025"**, enfocado en el análisis y modelado de datos de seguridad y convivencia en el departamento de Santander.
 
