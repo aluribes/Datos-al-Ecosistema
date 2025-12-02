@@ -7,34 +7,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DASHBOARD_DIR = os.path.join(BASE_DIR, "data", "gold", "dashboard")
 OUTPUT_FILE = os.path.join(DATA_DASHBOARD_DIR, "historico_integrado.parquet")
 
-def build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos_bucaramanga, delitos_informaticos):
+def build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos_informaticos):
     """
-    Lógica original de integración de datos.
+    Lógica de integración de datos (sin Bucaramanga local).
     """
     print("   -> Iniciando integración de dataframes...")
     
     # Copias de trabajo
     df_pol = policia.copy()
-    df_buc = delitos_bucaramanga.copy()
     df_inf = delitos_informaticos.copy()
 
-    # Normalizaciones
-    if "edad" in df_buc.columns and "edad_persona" not in df_buc.columns:
-        df_buc = df_buc.rename(columns={"edad": "edad_persona"})
-
-    for df_src in (df_pol, df_buc, df_inf):
+    # Asegurar cantidad numérica
+    for df_src in (df_pol, df_inf):
         if "cantidad" in df_src.columns:
             df_src["cantidad"] = pd.to_numeric(df_src["cantidad"], errors="coerce").fillna(0)
 
+    # Normalización específica para informáticos
     if "delito" not in df_inf.columns:
         df_inf["delito"] = "DELITOS INFORMÁTICOS"
 
+    # Origen para trazabilidad
     df_pol["origen"] = "POLICIA_SCRAPING"
-    df_buc["origen"] = "DELITOS_BUCARAMANGA"
     df_inf["origen"] = "DELITOS_INFORMATICOS"
 
-    # Unificar hechos
-    fact = pd.concat([df_pol, df_buc, df_inf], ignore_index=True, sort=False)
+    # Unificar hechos (Solo Policia + Informáticos)
+    fact = pd.concat([df_pol, df_inf], ignore_index=True, sort=False)
     fact.columns = [c.strip() for c in fact.columns]
 
     # Eliminar redundancias espaciales
@@ -89,16 +86,17 @@ def main():
     poblacion = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "poblacion_santander.parquet"))
     policia = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "policia_santander.parquet"))
     municipios = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "municipios.parquet"))
-    delitos_bucaramanga = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "delitos_bucaramanga.parquet"))
+    # Se eliminó la carga de delitos_bucaramanga
     delitos_informaticos = pd.read_parquet(os.path.join(DATA_DASHBOARD_DIR, "delitos_informaticos.parquet"))
 
     # Limpieza de columnas inicial
-    for df in (metas, mandatos, poblacion, policia, municipios, delitos_bucaramanga, delitos_informaticos):
+    for df in (metas, mandatos, poblacion, policia, municipios, delitos_informaticos):
         df.columns = [c.strip() for c in df.columns]
 
     # 2. Ejecutar integración
     print("2. Construyendo dataframe integrado...")
-    df_final = build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos_bucaramanga, delitos_informaticos)
+    # Se eliminó el argumento delitos_bucaramanga
+    df_final = build_integrated_df(metas, mandatos, poblacion, policia, municipios, delitos_informaticos)
 
     # 3. Guardar resultado optimizado
     print(f"3. Guardando archivo optimizado en: {OUTPUT_FILE}")
